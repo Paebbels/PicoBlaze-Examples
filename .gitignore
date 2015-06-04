@@ -1,0 +1,6 @@
+/.project
+psm/*.fmt
+psm/io/*.fmt
+psm/lib/*.fmt
+netlist/
+psm/dev/*.fmt
