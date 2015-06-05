@@ -1,0 +1,9 @@
+[submodule "lib/PoC"]
+	path = lib/PoC
+	url = git@github.com:VLSI-EDA/PoC.git
+[submodule "L_PicoBlaze"]
+	path = lib/L_PicoBlaze
+	url = git@github.com:Paebbels/PicoBlaze-Library.git
+[submodule "lib/opbasm"]
+	path = lib/opbasm
+	url = git@github.com:Paebbels/opbasm.git
