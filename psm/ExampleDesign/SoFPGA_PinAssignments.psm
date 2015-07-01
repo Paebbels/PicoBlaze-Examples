@@ -1,0 +1,73 @@
+; EMACS settings: -*-  tab-width: 2; indent-tabs-mode: t -*-
+; vim: tabstop=2:shiftwidth=2:noexpandtab
+; kate: tab-width 2; replace-tabs off; indent-width 2;
+; 
+; ==============================================================================
+; Authors:					Patrick Lehmann
+;
+; Assembler-Code:		
+; 
+; Description:
+; ------------------------------------
+;		TODO
+;		
+;
+; License:
+; ==============================================================================
+; Copyright 2007-2015 Patrick Lehmann - Dresden, Germany
+; 
+; Licensed under the Apache License, Version 2.0 (the "License");
+; you may not use this file except in compliance with the License.
+; You may obtain a copy of the License at
+; 
+;		http://www.apache.org/licenses/LICENSE-2.0
+; 
+; Unless required by applicable law or agreed to in writing, software
+; distributed under the License is distributed on an "AS IS" BASIS,
+; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+; See the License for the specific language governing permissions and
+; limitations under the License.
+; ==============================================================================
+;
+; system related IO ports
+CONSTANT RESET_PIN_ACCELERATOR,					01			; PicoBlaze Multiplier, 40-Bit scaler
+CONSTANT RESET_PIN_UART,								02			; PicoBlaze UART
+CONSTANT RESET_PIN_UARTFRAME,						04			; UARTFrame StreamSocket
+CONSTANT RESET_PIN_IICC,								08			; IICController
+CONSTANT RESET_PIN_free1,								10			
+CONSTANT RESET_PIN_free2,								20			
+CONSTANT RESET_PIN_SOFPGA,							40			; SoFPGA reset
+CONSTANT RESET_PIN_CSP,									80			; ChipScope init trigger
+;
+;
+; Interrupt Controller
+CONSTANT INTC_PIN0_TIMER,									01		;
+CONSTANT INTC_PIN0_CONVBCD24,							02		;
+CONSTANT INTC_PIN0_DIV,										04		;
+CONSTANT INTC_PIN0_SCALER40,							08		;
+CONSTANT INTC_PIN0_GPIO,									10		;
+CONSTANT INTC_PIN0_UART,									20		;
+CONSTANT INTC_PIN0_IICC1,									40		;
+CONSTANT INTC_PIN0_IICC2,									80		;
+CONSTANT INTC_PIN1_DMATEST,    						02		;
+;
+;
+; GPIO - General Purpose Input Output
+CONSTANT GPIO_OPIN_RAW_LCD,							01
+CONSTANT GPIO_OPIN_RAW_UART,						02
+CONSTANT GPIO_OPIN_RAW_BBIO_IIC,				04
+CONSTANT GPIO_OPIN_RAW_BBIO_SPI,				08
+CONSTANT GPIO_OPIN_FREE0,								10
+CONSTANT GPIO_OPIN_FREE1,								20
+CONSTANT GPIO_OPIN_FREE2,								30
+CONSTANT GPIO_OPIN_RAW_IICSWITCH_RESET,	80
+;
+;
+; BBIO - Bit Banging Input Output
+CONSTANT BBIO_IOPIN_IIC_CLOCK,					01
+CONSTANT BBIO_IOPIN_IIC_DATA,						02
+CONSTANT BBIO_OPIN_SPI_CLOCK,						04		;	SPI - Clock
+CONSTANT BBIO_OPIN_SPI_MOSI,						08		;	SPI - Master-Out, Slave-In
+CONSTANT BBIO_IPIN_SPI_MISO,						08		;	SPI - Master-In, Slave-Out
+CONSTANT BBIO_OPIN_SPI_CS0,							10		;	SPI - ChipSelect 0
+;

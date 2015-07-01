@@ -1,0 +1,106 @@
+
+; EMACS settings: -*-  tab-width: 2; indent-tabs-mode: t -*-
+; vim: tabstop=2:shiftwidth=2:noexpandtab
+; kate: tab-width 2; replace-tabs off; indent-width 2;
+; 
+; ==============================================================================
+; Assembler-Code:		Auto generated string library
+;
+; License:
+; ==============================================================================
+; Copyright 2007-2015 Patrick Lehmann - Dresden, Germany
+; 
+; Licensed under the Apache License, Version 2.0 (the "License");
+; you may not use this file except in compliance with the License.
+; You may obtain a copy of the License at
+; 
+;		http://www.apache.org/licenses/LICENSE-2.0
+; 
+; Unless required by applicable law or agreed to in writing, software
+; distributed under the License is distributed on an "AS IS" BASIS,
+; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+; See the License for the specific language governing permissions and
+; limitations under the License.
+; ==============================================================================
+;
+;
+
+
+;PRAGMA function __SendMsg_IIC_Scan_DeviceMap begin
+;PRAGMA jumptable add __SendMsg_IIC_Scan_DeviceMap begin
+;PRAGMA keep on
+STRING Text_IIC_Scan_DeviceMap$,				"Scanning for I2C devices..."
+;
+__SendMsg_IIC_Scan_DeviceMap:
+		LOAD			REG_PTR_H,		LaR_IIC_Scan_DeviceMap'upper
+		LOAD			REG_PTR_L,		LaR_IIC_Scan_DeviceMap'lower
+		JUMP			__UART_WriteString	; tail call elimination
+		;
+	LaR_IIC_Scan_DeviceMap:
+		LOAD&RETURN REG_LAR,		Text_IIC_Scan_DeviceMap$
+		;LOAD&RETURN REG_LAR,		LF
+		LOAD&RETURN REG_LAR,		NUL
+;PRAGMA keep off
+;PRAGMA jumptable end
+;PRAGMA function end
+;
+
+
+;PRAGMA function __SendMsg_IIC_Dump_Registers begin
+;PRAGMA jumptable add __SendMsg_IIC_Dump_Registers begin
+;PRAGMA keep on
+STRING Text_IIC_Dump_Registers$,				"Reading all registers..."
+;
+__SendMsg_IIC_Dump_Registers:
+		LOAD			REG_PTR_H,		LaR_IIC_Dump_Registers'upper
+		LOAD			REG_PTR_L,		LaR_IIC_Dump_Registers'lower
+		JUMP			__UART_WriteString	; tail call elimination
+		;
+	LaR_IIC_Dump_Registers:
+		LOAD&RETURN REG_LAR,		Text_IIC_Dump_Registers$
+		;LOAD&RETURN REG_LAR,		LF
+		LOAD&RETURN REG_LAR,		NUL
+;PRAGMA keep off
+;PRAGMA jumptable end
+;PRAGMA function end
+;
+
+
+;PRAGMA function __SendMsg_IIC_OK begin
+;PRAGMA jumptable add __SendMsg_IIC_OK begin
+;PRAGMA keep on
+STRING Text_IIC_OK$,				"I2C Configuration successfully written to device"
+;
+__SendMsg_IIC_OK:
+		LOAD			REG_PTR_H,		LaR_IIC_OK'upper
+		LOAD			REG_PTR_L,		LaR_IIC_OK'lower
+		JUMP			__UART_WriteString	; tail call elimination
+		;
+	LaR_IIC_OK:
+		LOAD&RETURN REG_LAR,		Text_IIC_OK$
+		;LOAD&RETURN REG_LAR,		LF
+		LOAD&RETURN REG_LAR,		NUL
+;PRAGMA keep off
+;PRAGMA jumptable end
+;PRAGMA function end
+;
+
+
+;PRAGMA function __SendMsg_IIC_Error begin
+;PRAGMA jumptable add __SendMsg_IIC_Error begin
+;PRAGMA keep on
+STRING Text_IIC_Error$,				"I2C operation failed"
+;
+__SendMsg_IIC_Error:
+		LOAD			REG_PTR_H,		LaR_IIC_Error'upper
+		LOAD			REG_PTR_L,		LaR_IIC_Error'lower
+		JUMP			__UART_WriteString	; tail call elimination
+		;
+	LaR_IIC_Error:
+		LOAD&RETURN REG_LAR,		Text_IIC_Error$
+		;LOAD&RETURN REG_LAR,		LF
+		LOAD&RETURN REG_LAR,		NUL
+;PRAGMA keep off
+;PRAGMA jumptable end
+;PRAGMA function end
+;
