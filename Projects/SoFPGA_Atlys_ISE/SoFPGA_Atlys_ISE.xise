@@ -293,21 +293,6 @@
       <association xil_pn:name="Implementation" xil_pn:seqID="21"/>
       <library xil_pn:name="PoC"/>
     </file>
-    <file xil_pn:name="../../lib/PoC/ucf/Atlys/Clock.SystemClock.ucf" xil_pn:type="FILE_UCF">
-      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
-    </file>
-    <file xil_pn:name="../../lib/PoC/ucf/Atlys/Default.ucf" xil_pn:type="FILE_UCF">
-      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
-    </file>
-    <file xil_pn:name="../../lib/PoC/ucf/Atlys/GPIO.LED.ucf" xil_pn:type="FILE_UCF">
-      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
-    </file>
-    <file xil_pn:name="../../lib/PoC/ucf/Atlys/GPIO.Switch.ucf" xil_pn:type="FILE_UCF">
-      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
-    </file>
-    <file xil_pn:name="../../lib/PoC/ucf/Atlys/USB_UART.ucf" xil_pn:type="FILE_UCF">
-      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
-    </file>
     <file xil_pn:name="../../netlist/XC6SLX45-3CSG324/CSP_ControlVIO.vhdl" xil_pn:type="FILE_VHDL">
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="62"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="58"/>
@@ -432,6 +417,24 @@
       <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="114"/>
       <association xil_pn:name="Implementation" xil_pn:seqID="16"/>
       <library xil_pn:name="PoC"/>
+    </file>
+    <file xil_pn:name="../../lib/PoC/ucf/Atlys/Bus.IIC.ucf" xil_pn:type="FILE_UCF">
+      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+    </file>
+    <file xil_pn:name="../../lib/PoC/ucf/Atlys/Clock.SystemClock.ucf" xil_pn:type="FILE_UCF">
+      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+    </file>
+    <file xil_pn:name="../../lib/PoC/ucf/Atlys/Default.ucf" xil_pn:type="FILE_UCF">
+      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+    </file>
+    <file xil_pn:name="../../lib/PoC/ucf/Atlys/GPIO.LED.ucf" xil_pn:type="FILE_UCF">
+      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+    </file>
+    <file xil_pn:name="../../lib/PoC/ucf/Atlys/GPIO.Switch.ucf" xil_pn:type="FILE_UCF">
+      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+    </file>
+    <file xil_pn:name="../../lib/PoC/ucf/Atlys/USB_UART.ucf" xil_pn:type="FILE_UCF">
+      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
     </file>
   </files>
 
@@ -761,13 +764,7 @@
     <property xil_pn:name="PROP_intWorkingDirUsed" xil_pn:value="Yes" xil_pn:valueState="non-default"/>
   </properties>
 
-  <bindings>
-    <binding xil_pn:location="/DMATest_Atlys" xil_pn:name="../../lib/PoC/ucf/Atlys/Clock.SystemClock.ucf"/>
-    <binding xil_pn:location="/DMATest_Atlys" xil_pn:name="../../lib/PoC/ucf/Atlys/Default.ucf"/>
-    <binding xil_pn:location="/DMATest_Atlys" xil_pn:name="../../lib/PoC/ucf/Atlys/GPIO.LED.ucf"/>
-    <binding xil_pn:location="/DMATest_Atlys" xil_pn:name="../../lib/PoC/ucf/Atlys/GPIO.Switch.ucf"/>
-    <binding xil_pn:location="/DMATest_Atlys" xil_pn:name="../../lib/PoC/ucf/Atlys/USB_UART.ucf"/>
-  </bindings>
+  <bindings/>
 
   <libraries>
     <library xil_pn:name="L_Example"/>

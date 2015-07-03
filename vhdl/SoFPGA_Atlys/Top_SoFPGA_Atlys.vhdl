@@ -51,18 +51,15 @@ entity ExampleDesign_Atlys is
 	port (
 		Atlys_SystemClock_100MHz		: in		STD_LOGIC;
 		
-		Atlys_GPIO_Button_CPU_Reset	: in	STD_LOGIC;
+--		Atlys_GPIO_Button_Reset			: in	STD_LOGIC;
 		Atlys_GPIO_Switches					: in	STD_LOGIC_VECTOR(7 downto 0);
 		Atlys_GPIO_LED							: out	STD_LOGIC_VECTOR(7 downto 0);
  
-		Atlys_USB_UART_TX						: in		STD_LOGIC;			-- USB-UART Bridge is "master"
-		Atlys_USB_UART_RX						: out		STD_LOGIC;			-- USB-UART Bridge is "master"
-		Atlys_USB_UART_RTS_n				: in		STD_LOGIC;			-- Ready to Transmit (USB-UART has new data)
-		Atlys_USB_UART_CTS_n				: out		STD_LOGIC;			-- Clear to Send (FPGA is able to receive data)
+		Atlys_USB_UART_TX						: out		STD_LOGIC;			-- USB-UART Bridge is "slave"
+		Atlys_USB_UART_RX						: in		STD_LOGIC;			-- USB-UART Bridge is "slave"
 
-		Atlys_IIC_SerialClock				: inout	STD_LOGIC;
-		Atlys_IIC_SerialData				: inout	STD_LOGIC;
-		Atlys_IIC_Switch_Reset_n		: out		STD_LOGIC
+		Atlys_JA_SerialClock				: inout	STD_LOGIC;
+		Atlys_JA_SerialData					: inout	STD_LOGIC
 	);
 end;
 --
@@ -70,7 +67,7 @@ end;
 -- LED configuration
 -- =============================================================================================================================================================
 --	LED 7				LED 6				LED 5				LED 4				LED 3				LED 2				LED 1				LED 0
--- <unused>		<unused>		<unused>		LinkOK			SATAClkOK		TestClkOK		Generation(1 downto 0)
+-- <unused>		<unused>		<unused>		<unused>		<unused>		<unused>		<unused>		<unused>
 
 
 architecture top of ExampleDesign_Atlys is
@@ -86,11 +83,11 @@ architecture top of ExampleDesign_Atlys is
 	constant ENABLE_CHIPSCOPE						: BOOLEAN							:= TRUE;
 	constant ENABLE_DEBUGPORT						: BOOLEAN							:= TRUE;
 	
-	constant SYS_CLOCK_FREQ							: FREQ								:= 200.0 MHz;
+	constant SYS_CLOCK_FREQ							: FREQ								:= 100.0 MHz;
 	
 	-- ClockNetwork configuration
 	-- ===========================================================================
-	constant SYSTEM_CLOCK_FREQ					: FREQ								:= SYS_CLOCK_FREQ / 2.0;
+	constant SYSTEM_CLOCK_FREQ					: FREQ								:= SYS_CLOCK_FREQ;
 	
 
 	-- ==========================================================================================================================================================
@@ -119,8 +116,6 @@ architecture top of ExampleDesign_Atlys is
 	attribute KEEP of System_Reset			: signal is TRUE;
 	
 	-- active-low board signals
-	signal Atlys_USB_UART_CTS						: STD_LOGIC;
-	signal Atlys_IIC_Switch_Reset				: STD_LOGIC;
 --	signal Atlys_EthernetPHY_Reset			: STD_LOGIC;
 --	signal Atlys_EthernetPHY_Interrupt	: STD_LOGIC;
 	
@@ -129,7 +124,7 @@ architecture top of ExampleDesign_Atlys is
 	signal Atlys_UART_RX								: STD_LOGIC;
 	
 	-- debounced button signals (debounce circuit works @10 MHz)
-	signal GPIO_Button_CPU_Reset				: STD_LOGIC;
+	signal GPIO_Button_Reset						: STD_LOGIC;
 	
 	-- synchronized button signals
 	signal Button_Reset									: STD_LOGIC;
@@ -164,7 +159,7 @@ begin
 	-- assert statements
 	-- ==========================================================================================================================================================
 	assert FALSE report "SoFPGA configuration:"																								severity NOTE;
-	assert FALSE report "  SYS_CLOCK_FREQ:         " & to_string(SYS_CLOCK_FREQ, 3)						severity note;
+	assert FALSE report "  SYS_CLOCK_FREQ:         " & to_string(SYS_CLOCK_FREQ, 3)						severity NOTE;
 
 	-- ==========================================================================================================================================================
 	-- Input/output buffers
@@ -182,23 +177,21 @@ begin
 --	Atlys_EthernetPHY_Interrupt		<= NOT Atlys_EthernetPHY_Interrupt_n;
 	
 	-- output signals
-	Atlys_USB_UART_CTS_n				<= not Atlys_USB_UART_CTS;
-	Atlys_IIC_Switch_Reset_n		<= not Atlys_IIC_Switch_Reset;
 --	Atlys_EthernetPHY_Reset_n		<= not Atlys_EthernetPHY_Reset;
 
 	-- ==========================================================================================================================================================
 	-- cross-over signal renaming
 	-- ==========================================================================================================================================================
-	-- USB-UART is the master, FPGA is the slave => so TX is an input and RX an output
-	Atlys_USB_UART_RX		<= Atlys_UART_TX;
-	Atlys_UART_RX				<= Atlys_USB_UART_TX;
+	-- USB-UART is the slave, FPGA is the master
+	Atlys_USB_UART_TX		<= Atlys_UART_TX;
+	Atlys_UART_RX				<= Atlys_USB_UART_RX;
 
 
 	-- ==========================================================================================================================================================
 	-- ClockNetwork
 	-- ==========================================================================================================================================================
-	ClkNet_Reset		<= '0';
---	ClkNet_Reset		<= Button_Reset;
+	ClkNet_Reset			<= Button_Reset;
+	Ex_ClkNet_Reset		<= Button_Reset;
 	
 	ClkNet : entity L_Example.ClockNetwork_Atlys
 		generic map (
@@ -224,8 +217,9 @@ begin
 		);
 	
 	-- system signals
-	System_Clock		<= SystemClock_100MHz;
-	System_Reset		<= not SystemClock_Stable_100MHz;
+	System_Clock				<= SystemClock_100MHz;
+	System_ClockStable	<= SystemClock_Stable_100MHz;
+	System_Reset				<= not SystemClock_Stable_100MHz;
 
 	-- ==========================================================================================================================================================
 	-- signal debouncing
@@ -239,20 +233,17 @@ begin
 		port map (
 			clk								=> System_Clock,
 			rst								=> '0',
-			Input(0)					=> Atlys_GPIO_Button_CPU_Reset,
-			Output(0)					=> GPIO_Button_CPU_Reset
+			Input(0)					=> '0',	--Atlys_GPIO_Button_Reset,
+			Output(0)					=> GPIO_Button_Reset
 		);
 
 	-- synchronize to System_Clock
 	sync1 : entity PoC.xil_SyncBits
 		port map (
 			Clock			=> System_Clock,						-- Clock to be synchronized to
-			Input(0)	=> GPIO_Button_CPU_Reset,		-- Data to be synchronized
+			Input(0)	=> GPIO_Button_Reset,				-- Data to be synchronized
 			Output(0)	=> Button_Reset							-- synchronised data
 		);
-
-	-- synchronize to SATAC_Clock
-	
 
 	-- ==========================================================================================================================================================
 	-- main design
@@ -261,32 +252,34 @@ begin
 
 
 	-- Switch inputs
-
+	-- unused				<= Atlys_GPIO_Switches(0);
+	-- unused				<= Atlys_GPIO_Switches(1);
+	-- unused				<= Atlys_GPIO_Switches(2);
+	-- unused				<= Atlys_GPIO_Switches(3);
+	-- unused				<= Atlys_GPIO_Switches(4);
+	-- unused				<= Atlys_GPIO_Switches(5);
+	-- unused				<= Atlys_GPIO_Switches(6);
+	-- unused				<= Atlys_GPIO_Switches(7);
 	
 	-- LED outputs
 	blkLED : block
-		signal GPIO_LED					: T_SLV_8;
-		signal GPIO_LED_meta		: T_SLV_8			:= (others => '0');
-		signal GPIO_LED_sync		: T_SLV_8			:= (others => '0');
+		signal GPIO_LED				: T_SLV_8;
+		signal GPIO_LED_iob		: T_SLV_8			:= (others => '0');
 		
 	begin
-		GPIO_LED(1 downto 0)	<= "00";
-	
-		GPIO_LED(2)						<= ClkNet_ResetDone;
-		GPIO_LED(3)						<= Ex_ClkNet_ResetDone;
+		GPIO_LED(0)						<= ClkNet_ResetDone;
+		GPIO_LED(1)						<= Ex_ClkNet_ResetDone;
+		GPIO_LED(2)						<= '0';
+		GPIO_LED(3)						<= '0';
 		GPIO_LED(4)						<= '0';
 		GPIO_LED(5)						<= '0';
 		GPIO_LED(6)						<= '0';
 		GPIO_LED(7)						<= '0';
 	
-		GPIO_LED_meta					<= GPIO_LED				when rising_edge(System_Clock);
-		GPIO_LED_sync					<= GPIO_LED_meta	when rising_edge(System_Clock);
-		Atlys_GPIO_LED				<= GPIO_LED_sync;
+		GPIO_LED_iob					<= GPIO_LED				when rising_edge(System_Clock);
+		Atlys_GPIO_LED				<= GPIO_LED_iob;
 	end block;
 	
-
-	Ex_ClkNet_Reset		<= '0';
-
 	Ex : entity L_Example.ex_ExampleDesign
 		generic map (
 			DEBUG											=> DEBUG,
@@ -300,6 +293,7 @@ begin
 			ClockNetwork_ResetDone		=> Ex_ClkNet_ResetDone,
 		
 			System_Clock							=> System_Clock,
+			System_ClockStable				=> System_ClockStable,
 			System_Reset							=> System_Reset,
 			
 			UART_TX										=> UART_TX,
@@ -329,13 +323,11 @@ begin
 		signal SerialClock_t				: STD_LOGIC;
 		signal SerialData_o					: STD_LOGIC;
 		signal SerialData_t					: STD_LOGIC;
-		signal IICSwitch_Reset			: STD_LOGIC;
 		
-		signal SerialClock_o_d			: STD_LOGIC					:= '0';
-		signal SerialClock_t_d			: STD_LOGIC					:= '1';
-		signal SerialData_o_d				: STD_LOGIC					:= '0';
-		signal SerialData_t_d				: STD_LOGIC					:= '1';
-		signal IICSwitch_Reset_d		: STD_LOGIC					:= '0';
+		signal SerialClock_o_iob		: STD_LOGIC					:= '0';
+		signal SerialClock_t_iob		: STD_LOGIC					:= '1';
+		signal SerialData_o_iob			: STD_LOGIC					:= '0';
+		signal SerialData_t_iob			: STD_LOGIC					:= '1';
 		
 		signal SerialClock_async		: STD_LOGIC;
 		signal SerialClock_i_meta		: STD_LOGIC					:= '1';
@@ -361,13 +353,10 @@ begin
 		SerialData_o					<= mux(Raw_IIC_mux, IIC_SerialData_o, '0');
 		SerialData_t					<= mux(Raw_IIC_mux, IIC_SerialData_t, Raw_IIC_Data_t);
 		
-		IICSwitch_Reset				<= mux(Raw_IIC_mux, IIC_Switch_Reset, Raw_IIC_Switch_Reset);
-		
-		SerialClock_o_d				<= SerialClock_o			when rising_edge(System_Clock);
-		SerialClock_t_d				<= SerialClock_t			when rising_edge(System_Clock);
-		SerialData_o_d				<= SerialData_o				when rising_edge(System_Clock);
-		SerialData_t_d				<= SerialData_t				when rising_edge(System_Clock);
-		IICSwitch_Reset_d			<= IICSwitch_Reset		when rising_edge(System_Clock);
+		SerialClock_o_iob			<= SerialClock_o			when rising_edge(System_Clock);
+		SerialClock_t_iob			<= SerialClock_t			when rising_edge(System_Clock);
+		SerialData_o_iob			<= SerialData_o				when rising_edge(System_Clock);
+		SerialData_t_iob			<= SerialData_t				when rising_edge(System_Clock);
 		
 		SerialClock_i_meta		<= SerialClock_async	when rising_edge(System_Clock);
 		SerialClock_i_sync		<= SerialClock_i_meta	when rising_edge(System_Clock);
@@ -381,25 +370,23 @@ begin
 	
 		IOBUF_IIC_SerialClock : IOBUF
 			port map (
-				T		=> SerialClock_t_d,					-- 3-state enable input, high=input, low=output
-				I		=> SerialClock_o_d,					-- buffer input
+				T		=> SerialClock_t_iob,				-- 3-state enable input, high=input, low=output
+				I		=> SerialClock_o_iob,				-- buffer input
 				O		=> SerialClock_async,				-- buffer output
-				IO	=> Atlys_IIC_SerialClock		-- buffer inout port (connect directly to top-level port)
+				IO	=> Atlys_JA_SerialClock			-- buffer inout port (connect directly to top-level port)
 			);
 
 		IOBUF_IIC_SerialData : IOBUF
 			port map (
-				T		=> SerialData_t_d,					-- 3-state enable input, high=input, low=output
-				I		=> SerialData_o_d,					-- buffer input
+				T		=> SerialData_t_iob,				-- 3-state enable input, high=input, low=output
+				I		=> SerialData_o_iob,				-- buffer input
 				O		=> SerialData_async,				-- buffer output
-				IO	=> Atlys_IIC_SerialData			-- buffer inout port (connect directly to top-level port)
+				IO	=> Atlys_JA_SerialData			-- buffer inout port (connect directly to top-level port)
 			);
-		
-		Atlys_IIC_Switch_Reset		<= IICSwitch_Reset_d;
 	end block;
 	
 	blkIOBUF_UART : block
-		signal blkUART_TX_d			: STD_LOGIC			:= '1';
+		signal blkUART_TX_iob		: STD_LOGIC			:= '1';
 		
 		signal blkUART_RX_async	: STD_LOGIC;
 		signal blkUART_RX_meta	: STD_LOGIC			:= '1';
@@ -413,11 +400,11 @@ begin
 		attribute SHREG_EXTRACT of blkUART_RX_sync	: signal is "NO";
 		
 	begin
-		blkUART_TX_d		<= UART_TX	when rising_edge(System_Clock);
+		blkUART_TX_iob		<= UART_TX	when rising_edge(System_Clock);
 	
 		OBUF_UART_TX : OBUF
 			port map (
-				I => blkUART_TX_d,
+				I => blkUART_TX_iob,
 				O => Atlys_UART_TX
 			);
 	
@@ -426,8 +413,6 @@ begin
 				I => Atlys_UART_RX,
 				O => blkUART_RX_async
 			);
-	
-		Atlys_USB_UART_CTS	<= '1';		-- USB-UART can always send new data to the FPGA
 	
 		blkUART_RX_meta			<= blkUART_RX_async	when rising_edge(System_Clock);
 		blkUART_RX_sync			<= blkUART_RX_meta	when rising_edge(System_Clock);

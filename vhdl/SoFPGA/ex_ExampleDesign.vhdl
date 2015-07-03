@@ -63,6 +63,7 @@ entity ex_ExampleDesign is
 		ClockNetwork_ResetDone		: out	STD_LOGIC;
 		
 		System_Clock							: in	STD_LOGIC;
+		System_ClockStable				: in	STD_LOGIC;
 		System_Reset							: in	STD_LOGIC;
 
 --		LCD_en										: out STD_LOGIC;
@@ -101,7 +102,7 @@ architecture rtl of ex_ExampleDesign is
 	-- configurations
 	-- ===========================================================================
 	-- UART configuration																													921.6 kBit/s	115.2 kBit/s	
-	constant UART_BAUDRATE											: BAUD				:= ite(SIMULATION,	921600 Bd,		115200 Bd);
+	constant UART_BAUDRATE											: BAUD				:= ite(SIMULATION,	921600 Bd,		921600 Bd);
 
 	-- ===========================================================================
 	-- SoFPGA configuration
@@ -202,8 +203,8 @@ begin
 				SYNC_OUT		=> ControlVIO_Out
 			);
 
-		ControlVIO_In(0)				<= '0';										-- ClockNetwork_ResetDone;
-		ControlVIO_In(1)				<= '0';										-- ClockTest
+		ControlVIO_In(0)				<= System_ClockStable;		-- 
+		ControlVIO_In(1)				<= '0';										-- unused
 		ControlVIO_In(2)				<= '0';										-- unused
 		ControlVIO_In(3)				<= '0';										-- unused
 		ControlVIO_In(4)				<= '0';										-- unused
