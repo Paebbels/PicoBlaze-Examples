@@ -1,0 +1,338 @@
+; EMACS settings: -*-  tab-width: 2; indent-tabs-mode: t -*-
+; vim: tabstop=2:shiftwidth=2:noexpandtab
+; kate: tab-width 2; replace-tabs off; indent-width 2;
+; 
+; ==============================================================================
+; Authors:					Patrick Lehmann
+;
+; Assembler-Code:		Entry-Point assembler file
+; 
+; Description:
+; ------------------------------------
+;		TODO
+;		
+;
+; License:
+; ==============================================================================
+; Copyright 2007-2015 Patrick Lehmann - Dresden, Germany
+; 
+; Licensed under the Apache License, Version 2.0 (the "License");
+; you may not use this file except in compliance with the License.
+; You may obtain a copy of the License at
+; 
+;		http://www.apache.org/licenses/LICENSE-2.0
+; 
+; Unless required by applicable law or agreed to in writing, software
+; distributed under the License is distributed on an "AS IS" BASIS,
+; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+; See the License for the specific language governing permissions and
+; limitations under the License.
+; ==============================================================================
+;
+;
+; global constants
+; ===============================================
+CONSTANT __STACK_POINTER,		FB
+;
+; ==============================================================================
+; entry point; soft reboot; infinite loops
+; ==============================================================================
+;PRAGMA function _ERROR_BLOCK begin
+;PRAGMA keep on
+__Init:								JUMP		__End
+__Reboot:							JUMP		__End
+__End:								JUMP		__End
+__Empty_Instruction:	JUMP		__Empty_Instruction
+__ISR_Error:					JUMP		__ISR_Error
+__Page0_Error:				JUMP		__Page0_Error
+__Error:							;
+__Page1_Error:				JUMP		__Page1_Error
+__Page2_Error:				JUMP		__Page2_Error
+__Page3_Error:				JUMP		__Page3_Error
+__Page4_Error:				JUMP		__Page4_Error
+__Page5_Error:				JUMP		__Page5_Error
+__Page6_Error:				JUMP		__Page6_Error
+__Page7_Error:				JUMP		__Page7_Error
+;PRAGMA keep off
+;PRAGMA function end
+;
+DEFAULT_JUMP					__Empty_Instruction
+ADDRESS								010
+;
+;
+; ==============================================================================
+; Includes
+; ==============================================================================
+; load predefined register names
+INCLUDE "..\..\lib\L_PicoBlaze\psm\RegisterNames.psm"
+;
+; I/O port definitions
+; ======================================
+INCLUDE "SoFPGA_PortID.psm"							; auto generated from VHDL
+INCLUDE "SoFPGA_PinAssignments.psm"			; 
+;
+; include some assembler libraries
+; ======================================
+INCLUDE "..\..\lib\L_PicoBlaze\psm\lib\lib_Stack.psm"
+INCLUDE "..\..\lib\L_PicoBlaze\psm\lib\lib_Sleep_100MHz.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\lib\lib_Thread.psm"
+INCLUDE "..\..\lib\L_PicoBlaze\psm\lib\lib_String.psm"
+;
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\io\io_LCDisplay.psm"
+INCLUDE "..\..\lib\L_PicoBlaze\psm\io\io_UART.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\io\io_UARTFrame.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\io\io_IIC.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\io\io_IICController.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\io\io_BitBanging_IIC.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\io\io_BitBanging_SPI.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\io\io_DRP.psm"
+;;
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Timer.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Mult16.psm"
+INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Mult32.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Div16.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Div32.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Scaler40.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_ConvBCD24.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_BCDCounter.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_GPIO.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_BBIO.psm"
+INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Terminal.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_PCA9548.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Si570.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Si5324.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_M24C08.psm"
+;
+;
+changequote(<!,!>)dnl ; Change quotes so "`" and "'" signs can be emitted
+dnl
+define(<!DEFAUL_WRITE_FUNCTION!>, <!__UART_WriteString!>)dnl
+define(<!DEFAUL_WRITE_NL_FUNCTION!>, <!__UART_WriteLine!>)dnl
+define(<!STRING_PREFIX!>,	<!TEXT_!>)dnl
+define(<!BLOCK_PREFIX!>,	<!LAR_!>)dnl
+dnl ============================================================================
+define(<!TEXT_BLOCK_NL!>, Text_Block_NL($1, <!__SendMsg_$1!>, `$2', $3))dnl
+define(<!Text_Block_NL!>, <!;PRAGMA function $2 begin
+STRING STRING_PREFIX`'$1$, "$3"
+$2:
+	LOAD			REG_PTR_H,		BLOCK_PREFIX`'$1'upper
+	LOAD			REG_PTR_L,		BLOCK_PREFIX`'$1'lower
+	JUMP			ifdef($4, $4, DEFAUL_WRITE_NL_FUNCTION)
+	BLOCK_PREFIX`'$1:
+		LOAD&RETURN REG_LAR,	STRING_PREFIX`'$1$
+		LOAD&RETURN REG_LAR,	NUL
+;PRAGMA function end
+;!>)dnl
+dnl ============================================================================
+define(<!TEXT_BLOCK!>, Text_Block($1, <!__SendMsg_$1!>, `$2', $3))dnl
+define(<!Text_Block!>, <!;PRAGMA function $2 begin
+STRING STRING_PREFIX`'$1$, "$3"
+$2:
+	LOAD			REG_PTR_H,		BLOCK_PREFIX`'$1'upper
+	LOAD			REG_PTR_L,		BLOCK_PREFIX`'$1'lower
+	JUMP			ifdef($4, $4, DEFAUL_WRITE_FUNCTION)
+	BLOCK_PREFIX`'$1:
+		LOAD&RETURN REG_LAR,	STRING_PREFIX`'$1$
+		LOAD&RETURN REG_LAR,	NUL
+;PRAGMA function end
+;!>)dnl
+dnl ============================================================================
+define(<!TEXT_BLOCK_GREEN_NL!>, Text_Block_Green_NL($1, <!__SendMsg_$1!>, `$2', $3))dnl
+define(<!Text_Block_Green_NL!>, <!;PRAGMA function $2 begin
+STRING STRING_PREFIX`'$1$, "$3"
+$2:
+	CALL			__dev_Term_TextColor_Green
+	LOAD			REG_PTR_H,		BLOCK_PREFIX`'$1'upper
+	LOAD			REG_PTR_L,		BLOCK_PREFIX`'$1'lower
+	CALL			ifdef($4, $4, DEFAUL_WRITE_NL_FUNCTION)
+	JUMP			__dev_Term_TextColor_Reset
+	BLOCK_PREFIX`'$1:
+		LOAD&RETURN REG_LAR,	STRING_PREFIX`'$1$
+		LOAD&RETURN REG_LAR,	NUL
+;PRAGMA function end
+;!>)dnl
+dnl ============================================================================
+define(<!TEXT_BLOCK_RED!>, Text_Block_Red($1, <!__SendMsg_$1!>, `$2', $3))dnl
+define(<!Text_Block_Red!>, <!;PRAGMA function $2 begin
+STRING STRING_PREFIX`'$1$, "$3"
+$2:
+	CALL			__dev_Term_TextColor_Red
+	LOAD			REG_PTR_H,		BLOCK_PREFIX`'$1'upper
+	LOAD			REG_PTR_L,		BLOCK_PREFIX`'$1'lower
+	CALL			ifdef($4, $4, DEFAUL_WRITE_FUNCTION)
+	JUMP			__dev_Term_TextColor_Reset
+	BLOCK_PREFIX`'$1:
+		LOAD&RETURN REG_LAR,	STRING_PREFIX`'$1$
+		LOAD&RETURN REG_LAR,	NUL
+;PRAGMA function end
+;!>)dnl
+dnl ============================================================================
+define(<!TEXT_BLOCK_RED_NL!>, Text_Block_Red_NL($1, <!__SendMsg_$1!>, `$2', $3))dnl
+define(<!Text_Block_Red_NL!>, <!;PRAGMA function $2 begin
+STRING STRING_PREFIX`'$1$, "$3"
+$2:
+	CALL			__dev_Term_TextColor_Red
+	LOAD			REG_PTR_H,		BLOCK_PREFIX`'$1'upper
+	LOAD			REG_PTR_L,		BLOCK_PREFIX`'$1'lower
+	CALL			ifdef($4, $4, DEFAUL_WRITE_NL_FUNCTION)
+	JUMP			__dev_Term_TextColor_Reset
+	BLOCK_PREFIX`'$1:
+		LOAD&RETURN REG_LAR,	STRING_PREFIX`'$1$
+		LOAD&RETURN REG_LAR,	NUL
+;PRAGMA function end
+;!>)dnl
+dnl ============================================================================
+define(<!TEXT_BLOCK_YELLOW!>, Text_Block_Yellow($1, <!__SendMsg_$1!>, `$2', $3))dnl
+define(<!Text_Block_Yellow!>, <!;PRAGMA function $2 begin
+STRING STRING_PREFIX`'$1$, "$3"
+$2:
+	CALL			__dev_Term_TextColor_Yellow
+	LOAD			REG_PTR_H,		BLOCK_PREFIX`'$1'upper
+	LOAD			REG_PTR_L,		BLOCK_PREFIX`'$1'lower
+	CALL			ifdef($4, $4, DEFAUL_WRITE_FUNCTION)
+	JUMP			__dev_Term_TextColor_Reset
+	BLOCK_PREFIX`'$1:
+		LOAD&RETURN REG_LAR,	STRING_PREFIX`'$1$
+		LOAD&RETURN REG_LAR,	NUL
+;PRAGMA function end
+;!>)dnl
+dnl ============================================================================
+define(<!TEXT_BLOCK_YELLOW_NL!>, Text_Block_Yellow_NL($1, <!__SendMsg_$1!>, `$2', $3))dnl
+define(<!Text_Block_Yellow_NL!>, <!;PRAGMA function $2 begin
+STRING STRING_PREFIX`'$1$, "$3"
+$2:
+	CALL			__dev_Term_TextColor_Yellow
+	LOAD			REG_PTR_H,		BLOCK_PREFIX`'$1'upper
+	LOAD			REG_PTR_L,		BLOCK_PREFIX`'$1'lower
+	CALL			ifdef($4, $4, DEFAUL_WRITE_NL_FUNCTION)
+	JUMP			__dev_Term_TextColor_Reset
+	BLOCK_PREFIX`'$1:
+		LOAD&RETURN REG_LAR,	STRING_PREFIX`'$1$
+		LOAD&RETURN REG_LAR,	NUL
+;PRAGMA function end
+;!>)dnl
+dnl ============================================================================
+changequote`'dnl
+;
+;
+; ==============================================================================
+; function table
+; ==============================================================================
+;PRAGMA keep on
+__FunctionTable2:	JUMP			__SendMsg_SoFPGA_Banner								; slot 00
+									JUMP			__SendMsg_SoFPGA_Done									; slot 01
+									JUMP			__SendMsg_SoFPGA_Error								; slot 02
+									JUMP			__SendMsg_SoFPGA_Fatal								; slot 03
+									JUMP			__SendMsg_SoFPGA_Prompt								; slot 04
+									JUMP			__SendMsg_SoFPGA_UnknownCommand				; slot 05
+									JUMP			__SendMsg_Help_Commands_Short					; slot 06
+									JUMP			__SendMsg_Help_Commands_Long					; slot 07
+									JUMP			__SendMsg_SoFPGA_Reboot								; slot 08
+									JUMP			__SendMsg_SoFPGA_ArmChipScope					; slot 09
+									JUMP			__SendMsg_SoFPGA_Failed								; slot 10
+									JUMP			__Error																; slot 
+									JUMP			__Error																; slot 
+									JUMP			__Error																; slot 
+									JUMP			__Error																; slot 
+									JUMP			__Error																; slot 15
+;PRAGMA keep off
+;
+; ==============================================================================
+; load text blocks
+; ==============================================================================
+TEXT_BLOCK_YELLOW(SoFPGA_Prompt,					`SATA> ')
+TEXT_BLOCK_GREEN_NL(SoFPGA_Done,					`[DONE]')
+TEXT_BLOCK_RED(SoFPGA_Error,							`ERROR: ')
+TEXT_BLOCK_RED_NL(SoFPGA_Failed,					`[FAILED]')
+TEXT_BLOCK_RED_NL(SoFPGA_Fatal,						`[FATAL] -> HALT!')
+TEXT_BLOCK_RED_NL(SoFPGA_UnknownCommand,	`Unknown Command')
+TEXT_BLOCK_RED_NL(SoFPGA_Reboot,					`Rebooting SoFPGA ...')
+TEXT_BLOCK_YELLOW(SoFPGA_ArmChipScope,		`Arm ChipScope triggers now! Waiting for 5 seconds ... ')
+;
+INCLUDE "Page1_old_SoFPGA_Texts.psm"
+;
+;TEXT_BLOCK(PCA9548_Config_Si570,	`Configuring PCA9548 I2C switch for Si570 access... ')
+;
+;TEXT_BLOCK_NL(Si570_RegMap,			`Dumping Si570 register map:')
+;TEXT_BLOCK_NL(Si570_Operations,	`Configuring Si570:')
+;TEXT_BLOCK(Si570_Recall,				`  Recalling configuration from NVRAM... ')
+;TEXT_BLOCK(Si570_Read,					`  Loading configuration into RAM... ')
+;TEXT_BLOCK(Si570_Write,					`  Saving configuration to device... ')
+;TEXT_BLOCK(Si570_Config,				`Settings: ')
+;TEXT_BLOCK(Si570_HSDiv,					`HS-DIV: ')
+;TEXT_BLOCK(Si570_RFreq,					`RFreq: ')
+;TEXT_BLOCK(Si570_Calc_150,			`  Calculating new RFreq for 150 MHz... ')
+;
+;;PRAGMA function _sendmsg_si570_n1 begin
+;__SendMsg_Si570_N1:						LOAD			REG_ARG_0,	"N"
+;															LOAD			REG_ARG_1,	"1"
+;															LOAD			REG_ARG_2,	":"
+;															LOAD			REG_ARG_3,	" "
+;															JUMP			__UART_WriteQuadChar										; tail call elimination
+;;PRAGMA function end
+;
+;TEXT_BLOCK(SATAC_ClkNetRstDone,	`  wait for ClockNetwork_Reset... ')
+;TEXT_BLOCK(SATAC_InitRstDone,		`  wait for initial Reset... ')
+;TEXT_BLOCK(SATAC_PowerDown,			`Powering down SATAController... ')
+;TEXT_BLOCK(SATAC_PowerUp,				`Powering up SATAController... ')
+;TEXT_BLOCK(SATAC_Reset,					`Resetting SATAController... ')
+;TEXT_BLOCK(SATAC_Generation,		`Current SATAGeneration: ')
+;TEXT_BLOCK(SATAC_GenerationMin,	`Setting SATAGenerationMin to ')
+;TEXT_BLOCK(SATAC_GenerationMax,	`Setting SATAGenerationMax to ')
+;TEXT_BLOCK(SATAC_Wait_PhyIdle,	`  wait for SATAC.PhysicalLayer... ')
+;TEXT_BLOCK(SATAC_Wait_LinkIdle,	`  wait for SATAC.LinkLayer... ')
+;
+INCLUDE "Page1_Texts.psm"
+;
+; ==============================================================================
+; 
+; ==============================================================================
+; ==============================================================================
+;PRAGMA keep on
+ADDRESS FB0			;
+INCLUDE "..\..\lib\L_PicoBlaze\psm\lib\lib_Paging.psm"
+;PRAGMA keep off
+;
+; ==============================================================================
+; main interrupt service routines
+; ==============================================================================
+;PRAGMA function _main_isr begin
+ADDRESS FE0					;
+_MAIN_ISR:					REGBANK B
+										;
+										INPUT		REG_ARG_0,	IPORT_INTC_INTSOURCE		; read interrupt source
+										LOAD		REG_PTR_L,	_MAIN_ISR_Vector'lower	; load ISR_Vector table address
+										LOAD		REG_PTR_H,	_MAIN_ISR_Vector'upper	;
+										ADD			REG_PTR_L,	REG_ARG_0
+										ADDCY		REG_PTR_H,	00
+										JUMP		__Pager_Page0_HandleInterrupt
+										; ack interrupt
+										; TODO
+										; return with enabled interrupts
+										RETURNI	ENABLE
+;
+; Interrupt VectorTable
+; ======================================
+;PRAGMA keep on
+ADDRESS FF0					;
+_MAIN_ISR_Vector:		JUMP		__ISR_Error					; Scaler 40 bit
+										JUMP		__ISR_Error					; GPIO
+										JUMP		__ISR_Error					; UART
+										JUMP		__ISR_Error					; UARTFrame StreamSocket
+										JUMP		__ISR_Error					; IIC Controller1
+										JUMP		__ISR_Error					; IIC Controller2
+										JUMP		__ISR_Error					; SATAController
+										JUMP		__ISR_Error					; SATAStreamingController
+										;
+										; catch undefined ISR routines
+										JUMP		__ISR_Error
+										JUMP		__ISR_Error
+										JUMP		__ISR_Error
+										JUMP		__ISR_Error
+										JUMP		__ISR_Error
+										JUMP		__ISR_Error
+										JUMP		__ISR_Error
+										JUMP		__ISR_Error
+;PRAGMA function end
+;PRAGMA keep off
+;

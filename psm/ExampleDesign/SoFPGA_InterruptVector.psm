@@ -1,0 +1,22 @@
+; Generate by synthesis for 'System on FPGA'
+;
+; This file contains the PicoBlaze InterruptVector table.
+; =======================================================
+JUMP __ISR_Timer           ;  0: Timer
+JUMP __ISR_ConvBCD24       ;  1: Converter Bin2BCD (24 bit)
+JUMP __ISR_Div32           ;  2: Divider (32 bit)
+JUMP __ISR_GPIO            ;  3: General Purpose I/O
+JUMP __ISR_UART            ;  4: UART
+;
+; catch undefined ISR routines
+JUMP __ISR_Error           ; 5: 
+JUMP __ISR_Error           ; 6: 
+JUMP __ISR_Error           ; 7: 
+JUMP __ISR_Error           ; 8: 
+JUMP __ISR_Error           ; 9: 
+JUMP __ISR_Error           ; 10: 
+JUMP __ISR_Error           ; 11: 
+JUMP __ISR_Error           ; 12: 
+JUMP __ISR_Error           ; 13: 
+JUMP __ISR_Error           ; 14: 
+JUMP __ISR_Error           ; 15: 

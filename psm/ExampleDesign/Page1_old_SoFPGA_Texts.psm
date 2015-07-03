@@ -1,0 +1,152 @@
+; EMACS settings: -*-  tab-width: 2; indent-tabs-mode: t -*-
+; vim: tabstop=2:shiftwidth=2:noexpandtab
+; kate: tab-width 2; replace-tabs off; indent-width 2;
+; 
+; ==============================================================================
+; Authors:					Patrick Lehmann
+;										Martin Zabel
+;
+; Assembler-Code:		
+; 
+; Description:
+; ------------------------------------
+;		TODO
+;		
+;
+; License:
+; ==============================================================================
+; Copyright 2007-2015 Patrick Lehmann - Dresden, Germany
+; 
+; Licensed under the Apache License, Version 2.0 (the "License");
+; you may not use this file except in compliance with the License.
+; You may obtain a copy of the License at
+; 
+;		http://www.apache.org/licenses/LICENSE-2.0
+; 
+; Unless required by applicable law or agreed to in writing, software
+; distributed under the License is distributed on an "AS IS" BASIS,
+; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+; See the License for the specific language governing permissions and
+; limitations under the License.
+; ==============================================================================
+;
+; Welcome message created with figlet
+;		-> http://www.figlet.org (Linux tool)
+;		-> http://www.lemoda.net/games/figlet/ (Online generator)
+;
+;
+;PRAGMA function _sendmsg_sofpga_banner begin
+STRING Text_SoFPGA_Banner1$,	"     ____        _____ ____   ____    _"
+STRING Text_SoFPGA_Banner2$,	"    / ___|  ___ |  ___|  _ \ / ___|  / \"
+STRING Text_SoFPGA_Banner3$,	"    \___ \ / _ \| |_  | |_) | |  _  / _ \"
+STRING Text_SoFPGA_Banner4$,	"     ___) | (_) |  _| |  __/| |_| |/ ___ \"
+STRING Text_SoFPGA_Banner5$,	"    |____/ \___/|_|   |_|    \____/_/   \_\"
+;STRING Text_SoFPGA_Banner6$,	"================================================================================"
+STRING Text_SoFPGA_Banner7$,	"License: Apache License 2.0"
+STRING Text_SoFPGA_Banner8$,	"Authors: Patrick Lehmann"
+STRING Text_SoFPGA_Banner9$,	"Design:  ExampleDesign_Atlys - Reference Design"
+;STRING Text_SoFPGA_Banner10$,	"================================================================================"
+;
+__SendMsg_SoFPGA_Banner:			CALL			__dev_Term_TextColor_Magenta
+															LOAD			REG_PTR_H,		LaR_SoFPGA_Banner'upper
+															LOAD			REG_PTR_L,		LaR_SoFPGA_Banner'lower
+															CALL			__UART_WriteLine
+															CALL			__dev_Term_TextColor_Reset
+															CALL			__UART_WriteHorizontalLine
+															ADD				REG_PTR_L,		1'd
+															ADDCY			REG_PTR_H,		0'd
+															CALL			__UART_WriteLine
+															CALL			__UART_WriteHorizontalLine
+															JUMP			__UART_WriteNewline									; tail call elimination
+															;
+	LaR_SoFPGA_Banner:					LOAD&RETURN REG_LAR,		Text_SoFPGA_Banner1$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_SoFPGA_Banner2$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_SoFPGA_Banner3$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_SoFPGA_Banner4$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_SoFPGA_Banner5$
+															LOAD&RETURN REG_LAR,		NUL
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_SoFPGA_Banner7$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_SoFPGA_Banner8$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_SoFPGA_Banner9$
+															LOAD&RETURN REG_LAR,		NUL
+;PRAGMA function end
+;
+;PRAGMA function _sendmsg_help_commands_short begin
+STRING Text_Help_Commands1$,	"List of available commands: h, H, r, R, p, P, m, c, 1, 2, 3, 4, 5, 6, 9, 0"
+STRING Text_Help_Commands2$,	"(press H for explanation)"
+;
+__SendMsg_Help_Commands_Short:	LOAD			REG_PTR_H,		LaR_Help_Commands_Short'upper
+																LOAD			REG_PTR_L,		LaR_Help_Commands_Short'lower
+																JUMP			__UART_WriteLine									; tail call elimination
+																;
+	LaR_Help_Commands_Short:			LOAD&RETURN REG_LAR,		Text_Help_Commands1$
+																LOAD&RETURN REG_LAR,		LF
+																LOAD&RETURN REG_LAR,		Text_Help_Commands2$
+																LOAD&RETURN REG_LAR,		LF
+																LOAD&RETURN REG_LAR,		NUL
+;PRAGMA function end
+;
+;PRAGMA function _sendmsg_help_commands_long begin
+STRING Text_Help_Commands11$,	"List of available commands:"
+STRING Text_Help_Commands12$,	"  H  display this help page"
+STRING Text_Help_Commands13$,	"  c  clear display"
+STRING Text_Help_Commands14$,	"  m  measure frequency"
+STRING Text_Help_Commands15$,	"  r  reset SATAStack"
+STRING Text_Help_Commands16$,	"  R  reboot SoFPGA"
+STRING Text_Help_Commands17$,	"  p  power down SATAStack"
+STRING Text_Help_Commands18$,	"  P  power up SATAStack"
+STRING Text_Help_Commands19$,	"  1  read 10 times 1 MiB starting from offset 0"
+STRING Text_Help_Commands20$,	"  2  read 10 times 1 GiB starting from offset 0"
+STRING Text_Help_Commands21$,	"  3  read 64 GiB at offset 0, takes 2--3 minutes"
+STRING Text_Help_Commands22$,	"  4  write 10 times 1 MiB starting from offset 0"
+STRING Text_Help_Commands23$,	"  5  write 10 times 1 GiB starting from offset 0"
+STRING Text_Help_Commands24$,	"  6  write 64 GiB at offset 0, takes 2--3 minutes"
+STRING Text_Help_Commands25$,	"  9  set BurstSize to 256 KiB"
+STRING Text_Help_Commands26$,	"  0  set BurstSize to 32 MiB"
+;
+__SendMsg_Help_Commands_Long:	LOAD			REG_PTR_H,		LaR_Help_Commands_Long'upper
+															LOAD			REG_PTR_L,		LaR_Help_Commands_Long'lower
+															JUMP			__UART_WriteLine									; tail call elimination
+															;
+	LaR_Help_Commands_Long:			LOAD&RETURN REG_LAR,		Text_Help_Commands11$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_Help_Commands12$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_Help_Commands13$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_Help_Commands14$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_Help_Commands15$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_Help_Commands16$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_Help_Commands17$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_Help_Commands18$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_Help_Commands19$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_Help_Commands20$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_Help_Commands21$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_Help_Commands22$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_Help_Commands23$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_Help_Commands24$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_Help_Commands25$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		Text_Help_Commands26$
+															LOAD&RETURN REG_LAR,		LF
+															LOAD&RETURN REG_LAR,		NUL
+;PRAGMA function end
+;

@@ -1,6 +1,40 @@
+# general file excludes
+~*.tmp
+~*.docx
+*.fmt
+*~
+~$*
+
+# ignore Python caches
+__pycache__
+
+# ignore Xilinx iMPACT files
+/iMPACT/*.*
+!/iMPACT/*.ipf
+/iMPACT/auto_project*.ipf
+
+# ignore Xilinx IPCore files
+/netlist/**/*.*
+!/netlist/**/*.cgp
+!/netlist/**/*.xco
+!/netlist/**/*.vhdl
+
+# ignore Xilinx ISE files
+/Projects/**/*.*
+/Projects/**/ise
+!/Projects/**/*.xise
+!/Projects/**/*.xpr
+!/Projects/**/iseconfig/filter.filter
+
+# ignore PicoBlaze files
+/psm/**/*.*
+!/psm/**/*.psm
+!/psm/**/*.psm4
+!/psm/**/*.vhdl
+!/psm/**/*.ps1
+!/psm/**/*.sh
+
+# ignore files from PoC
+/vhdl/ExampleDesign/Common/PoC.my_project.vhdl
+
 /.project
-psm/*.fmt
-psm/io/*.fmt
-psm/lib/*.fmt
-netlist/
-psm/dev/*.fmt

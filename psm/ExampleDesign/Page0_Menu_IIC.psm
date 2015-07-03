@@ -1,0 +1,98 @@
+; EMACS settings: -*-  tab-width: 2; indent-tabs-mode: t -*-
+; vim: tabstop=2:shiftwidth=2:noexpandtab
+; kate: tab-width 2; replace-tabs off; indent-width 2;
+; 
+; ==============================================================================
+; Authors:					Patrick Lehmann
+; 
+; Assembler-Code:		TODO
+;
+; Description:
+; ------------------------------------
+;		TODO
+;		
+;
+; License:
+; ==============================================================================
+; Copyright 2007-2015	Technische Universitaet Dresden - Germany,
+; 
+; Licensed under the Apache License, Version 2.0 (the "License");
+; you may not use this file except in compliance with the License.
+; You may obtain a copy of the License at
+; 
+;		http://www.apache.org/licenses/LICENSE-2.0
+; 
+; Unless required by applicable law or agreed to in writing, software
+; distributed under the License is distributed on an "AS IS" BASIS,
+; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+; See the License for the specific language governing permissions and
+; limitations under the License.
+; ==============================================================================
+;
+;
+;
+; ==============================================================================
+; Main Menu
+; ==============================================================================
+;PRAGMA function _MainMenu_Switch begin
+__MenuIIC_Switch:									; ignore CarriageReturn and NewLine (LineFeed)
+																	COMPARE		REG_ARG_0,	CR
+																	JUMP	Z,	__MenuIIC_wo_Prompt
+																	COMPARE		REG_ARG_0,	LF
+																	JUMP	Z,	__MenuIIC_wo_Prompt
+																	;
+																	; immediately return input char (command)
+																	LOAD			REG_ARG_1,	LF
+																	CALL			__UART_WriteDoubleChar
+																	;
+																	COMPARE		REG_ARG_0,	"x"
+																	JUMP	Z,	__MenuIIC_Exit
+																	;
+																	COMPARE		REG_ARG_0,	"m"
+																	JUMP	Z,	__MenuIIC_DeviceMap
+																	;
+																	COMPARE		REG_ARG_0,	"s"
+																	JUMP	Z,	__MenuIIC_ConfigSwitch
+																	;
+																	JUMP			__MenuIIC_UnknownCommand
+															
+__MenuIIC_w_Prompt:								LOAD			REG_PTR_L,	UART_SENDMSG_SOFPGA_PROMPT
+																	CALL			__Pager_Page1_Call_Table2
+__MenuIIC_wo_Prompt:							RETURN
+;
+; ==============================================================================
+;
+__MenuIIC_Exit:										JUMP			__MenuMain_w_Prompt
+																	;
+__MenuIIC_UnknownCommand:					LOAD			REG_PTR_L,	UART_SENDMSG_SOFPGA_UNKNOWN_COMMAND
+																	CALL			__Pager_Page1_Call_Table2
+																	JUMP			__MenuIIC_w_Prompt
+																	;
+__MenuIIC_SoFPGA_Reboot:					LOAD			REG_PTR_L,	UART_SENDMSG_SOFPGA_REBOOT
+																	CALL			__Pager_Page1_Call_Table2
+																	CALL			__Sleep_1_s
+																	JUMP			__Reboot
+																	;
+__MenuIIC_ShortHelp:							LOAD			REG_PTR_L,	UART_SENDMSG_SOFPGA_HELP_CMD_SHORT
+																	CALL			__Pager_Page1_Call_Table2
+																	JUMP			__MenuIIC_w_Prompt
+																	;
+__MenuIIC_LongHelp:								LOAD			REG_PTR_L,	UART_SENDMSG_SOFPGA_HELP_CMD_LONG
+																	CALL			__Pager_Page1_Call_Table2
+																	JUMP			__MenuIIC_w_Prompt
+																	;
+__MenuIIC_ClearScreen:						CALL			__dev_Term_ClearScreen_All
+																	JUMP			__MenuIIC_w_Prompt
+																	;
+__MenuIIC_DeviceMap:							; print I2C device map
+																	CALL			__tui_IIC_Scan_DeviceMap
+																	CALL			__UART_WriteNewline
+																	JUMP			__MenuIIC_w_Prompt
+
+; configure ii2 address before this function call
+															; print register map of the SI570 (before recall)
+															;LOAD			REG_ARG_0,	IICBUS_SI570_ADDRESS
+															;CALL			__IO_IIC_Dump_RegMap
+															;CALL			__UART_WriteNewline
+;PRAGMA function end
+;
