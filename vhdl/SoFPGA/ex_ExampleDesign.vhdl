@@ -102,12 +102,12 @@ architecture rtl of ex_ExampleDesign is
 	-- configurations
 	-- ===========================================================================
 	-- UART configuration																													921.6 kBit/s	115.2 kBit/s	
-	constant UART_BAUDRATE											: BAUD				:= ite(SIMULATION,	921600 Bd,		921600 Bd);
+	constant UART_BAUDRATE											: BAUD				:= ite(SIMULATION,	921600 Bd,		115200 Bd);
 
 	-- ===========================================================================
 	-- SoFPGA configuration
 	-- ===========================================================================
-	constant USE_PRECOMPILED_SOFPGA	: BOOLEAN			:= TRUE;
+	constant ENABLE_JTAG_LOADER			: BOOLEAN			:= TRUE;
 	constant ENABLE_SOFPGA_TRACER		: BOOLEAN			:= ENABLE_CHIPSCOPE;
 	
 	constant EXTNERN_PB_IOBUS_PORTS	: NATURAL			:= pb_GetBusWidth(SOFPGA_SYSTEM, "Extern");
@@ -231,10 +231,12 @@ begin
 			ENABLE_CHIPSCOPE						=> ENABLE_SOFPGA_TRACER,
 			CLOCK_FREQ									=> SYSTEM_CLOCK_FREQ,
 			EXTERNAL_DEVICE_COUNT				=> EXTNERN_PB_IOBUS_PORTS,
-			UART_BAUDRATE								=> UART_BAUDRATE
+			UART_BAUDRATE								=> UART_BAUDRATE,
+			ENABLE_JTAG_LOADER					=> ENABLE_JTAG_LOADER
 		)
 		port map (
 			Clock												=> System_Clock,
+			ClockStable									=> System_ClockStable,
 			Reset												=> System_Reset,
 			
 			CSP_ICON_ControlBus_Trace		=> ICON_ControlBus(CSP_ICON_BUSID_SOFPGA_ILA),

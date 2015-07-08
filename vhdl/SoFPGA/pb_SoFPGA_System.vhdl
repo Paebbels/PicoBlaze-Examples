@@ -61,10 +61,12 @@ entity pb_SoFPGA_System is
 		ENABLE_CHIPSCOPE					: BOOLEAN												:= TRUE;
 		CLOCK_FREQ								: FREQ													:= 100 MHz;
 		EXTERNAL_DEVICE_COUNT			: NATURAL												:= 1;
-		UART_BAUDRATE							: BAUD													:= 115200 Bd
+		UART_BAUDRATE							: BAUD													:= 115200 Bd;
+		ENABLE_JTAG_LOADER				: BOOLEAN												:= TRUE
 	);
 	port (
 		Clock											: in		STD_LOGIC;
+		ClockStable								: in		STD_LOGIC;
 		Reset											: in		STD_LOGIC;
 		
 		CSP_ICON_ControlBus_Trace	: inout	T_XIL_CHIPSCOPE_CONTROL;
@@ -158,6 +160,7 @@ architecture rtl of pb_SoFPGA_System is
 	signal SoFPGA_Reset									: STD_LOGIC;
 	
 	signal CPU_Clock										: STD_LOGIC;
+	signal CPU_ClockStable							: STD_LOGIC;
 	signal CPU_Reset										: STD_LOGIC;
 	signal CPU_Reset_i									: STD_LOGIC;
 	signal PB_Sleep											: STD_LOGIC;
@@ -206,7 +209,8 @@ architecture rtl of pb_SoFPGA_System is
 	
 begin
 	CPU_Clock				<= Clock;
-	CPU_Reset				<= Reset			or SoFPGA_Reset;
+	CPU_ClockStable	<= ClockStable;
+	CPU_Reset				<= Reset			or SoFPGA_Reset or not CPU_ClockStable;
 	CPU_Reset_i			<= CPU_Reset	or ROM_RebootCPU;
 	PB_Sleep				<= '0';
 
@@ -276,7 +280,8 @@ begin
 			generic map (
 				PAGES								=> ROM_PAGES,
 				SOURCE_DIRECTORY		=> SOURCE_DIRECTORY,
-				DEVICE_INSTANCE			=> DEVICE_INST
+				DEVICE_INSTANCE			=> DEVICE_INST,
+				ENABLE_JTAG_LOADER	=> ENABLE_JTAG_LOADER
 			)
 			port map (
 				Clock								=> CPU_Clock,

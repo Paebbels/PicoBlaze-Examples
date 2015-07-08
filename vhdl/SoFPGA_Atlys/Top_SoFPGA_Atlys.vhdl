@@ -51,7 +51,7 @@ entity ExampleDesign_Atlys is
 	port (
 		Atlys_SystemClock_100MHz		: in		STD_LOGIC;
 		
---		Atlys_GPIO_Button_Reset			: in	STD_LOGIC;
+		Atlys_GPIO_Button_Reset_n		: in	STD_LOGIC;
 		Atlys_GPIO_Switches					: in	STD_LOGIC_VECTOR(7 downto 0);
 		Atlys_GPIO_LED							: out	STD_LOGIC_VECTOR(7 downto 0);
  
@@ -110,12 +110,14 @@ architecture top of ExampleDesign_Atlys is
 	signal SystemClock_Stable_10MHz			: STD_LOGIC;
 
 	signal System_Clock									: STD_LOGIC;
+	signal System_ClockStable						: STD_LOGIC;
 	signal System_Reset									: STD_LOGIC;
 	
 	attribute KEEP of System_Clock			: signal is TRUE;
 	attribute KEEP of System_Reset			: signal is TRUE;
-	
+
 	-- active-low board signals
+	signal Atlys_GPIO_Button_Reset			: STD_LOGIC;
 --	signal Atlys_EthernetPHY_Reset			: STD_LOGIC;
 --	signal Atlys_EthernetPHY_Interrupt	: STD_LOGIC;
 	
@@ -174,6 +176,7 @@ begin
 	-- active-low to active-high conversion
 	-- ==========================================================================================================================================================
 	-- input signals
+	Atlys_GPIO_Button_Reset				<= not Atlys_GPIO_Button_Reset_n;
 --	Atlys_EthernetPHY_Interrupt		<= NOT Atlys_EthernetPHY_Interrupt_n;
 	
 	-- output signals
@@ -233,7 +236,7 @@ begin
 		port map (
 			clk								=> System_Clock,
 			rst								=> '0',
-			Input(0)					=> '0',	--Atlys_GPIO_Button_Reset,
+			Input(0)					=> Atlys_GPIO_Button_Reset,
 			Output(0)					=> GPIO_Button_Reset
 		);
 
