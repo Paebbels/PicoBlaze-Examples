@@ -51,7 +51,7 @@ entity ExampleDesign_Atlys is
 	port (
 		Atlys_SystemClock_100MHz		: in		STD_LOGIC;
 		
---		Atlys_GPIO_Button_Reset_n		: in	STD_LOGIC;
+		Atlys_GPIO_Button_Reset_n		: in	STD_LOGIC;
 		Atlys_GPIO_Switches					: in	STD_LOGIC_VECTOR(7 downto 0);
 		Atlys_GPIO_LED							: out	STD_LOGIC_VECTOR(7 downto 0);
  
@@ -116,11 +116,8 @@ architecture top of ExampleDesign_Atlys is
 	attribute KEEP of System_Clock			: signal is TRUE;
 	attribute KEEP of System_Reset			: signal is TRUE;
 
-	-- input buffer signals
-	signal GPIO_Button_Reset_n_IBUF			: STD_LOGIC;
-	
 	-- active-low board signals
-	signal GPIO_Button_Reset_IBUF				: STD_LOGIC;
+	signal Atlys_GPIO_Button_Reset			: STD_LOGIC;
 --	signal Atlys_EthernetPHY_Reset			: STD_LOGIC;
 --	signal Atlys_EthernetPHY_Interrupt	: STD_LOGIC;
 	
@@ -179,7 +176,7 @@ begin
 	-- active-low to active-high conversion
 	-- ==========================================================================================================================================================
 	-- input signals
-	GPIO_Button_Reset_IBUF				<= not '1';	--GPIO_Button_Reset_n_IBUF;
+	Atlys_GPIO_Button_Reset				<= not Atlys_GPIO_Button_Reset_n;
 --	Atlys_EthernetPHY_Interrupt		<= NOT Atlys_EthernetPHY_Interrupt_n;
 	
 	-- output signals
@@ -230,12 +227,6 @@ begin
 	-- ==========================================================================================================================================================
 	-- signal debouncing
 	-- ==========================================================================================================================================================
---	IBUF_GPIO_Button_Reset : IBUF
---		port map (
---			I => Atlys_GPIO_Button_Reset_n,
---			O => GPIO_Button_Reset_n_IBUF
---		);
-	
 	DebBtn : entity PoC.io_Debounce
 		generic map (
 			CLOCK_FREQ				=> SYSTEM_CLOCK_FREQ,		-- 100 MHz
@@ -245,7 +236,7 @@ begin
 		port map (
 			clk								=> System_Clock,
 			rst								=> '0',
-			Input(0)					=> GPIO_Button_Reset_IBUF,
+			Input(0)					=> Atlys_GPIO_Button_Reset,
 			Output(0)					=> GPIO_Button_Reset
 		);
 

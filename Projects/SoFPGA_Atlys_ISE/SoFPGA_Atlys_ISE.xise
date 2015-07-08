@@ -439,6 +439,9 @@
     <file xil_pn:name="../../ucf/ExampleDesign/ClockingConstraints.ucf" xil_pn:type="FILE_UCF">
       <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
     </file>
+    <file xil_pn:name="../../lib/PoC/ucf/Atlys/GPIO.Button.Special.ucf" xil_pn:type="FILE_UCF">
+      <association xil_pn:name="Implementation" xil_pn:seqID="0"/>
+    </file>
   </files>
 
   <properties>
