@@ -60,9 +60,9 @@ package pb_SoFPGA is
 			pb_CreateDeviceInstance(PB_DEV_RESET,								"Intern",		 0,		0) &	-- 0..0		0..0				Reset
 			pb_CreateDeviceInstance(PB_DEV_ROM,									"Intern",		 1,		1) &	-- 1..1		1..1				InstructionROM
 			--																																					-- 2..3								------
-			pb_CreateDeviceInstance(PB_DEV_INTERRUPT,						"Intern",		 4,		4) &	-- 4..7		4..7				InterruptController
+			pb_CreateDeviceInstance(PB_DEV_INTERRUPT,						"Intern",		 4,		4) &	-- 4..7		4..7				InterruptController 16 ports
 			pb_CreateDeviceInstance(PB_DEV_TIMER,								"Intern",		 8,		2) &	-- 8..11	2..2		*		Timer
-			pb_CreateDeviceInstance(PB_DEV_CONVERTER_BCD24,			"Intern",		12		 ) &	-- 12..15					*		Scaler 40 bit
+			pb_CreateDeviceInstance(PB_DEV_CONVERTER_BCD24,			"Intern",		12		 ) &	-- 12..15					*		BCD2BIN converter 24 bit
 			pb_CreateDeviceInstance(PB_DEV_MULTIPLIER32,				"Intern",		16		 ) &	-- 16..23							Multiplier 32 bit
 			pb_CreateDeviceInstance(PB_DEV_DIVIDER32,						"Intern",		24		 ) &	-- 24..31					*		Divider 32 bit
 			pb_CreateDeviceInstance(PB_DEV_GPIO,								"Intern",		40,		8) &	-- 40..41					*		General Perpose I/O

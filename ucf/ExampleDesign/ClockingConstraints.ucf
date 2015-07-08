@@ -1,0 +1,27 @@
+## =============================================================================
+## User defined timing groups
+## =============================================================================
+NET "*_async"		TIG;
+INST "*_meta*"	TNM = "METASTABILITY_FFS";
+TIMESPEC "TS_MetaStability" = FROM FFS TO "METASTABILITY_FFS" TIG;
+
+
+TIMESPEC "TS_SystemClock"					= PERIOD "NET_SystemClock_100MHz"		100 MHz	HIGH 50 %;		# 100 MHz oscillator (50%/50% duty-cycle)
+
+NET "*/blkROM.ROM/genJTAGLoader.JTAGLoader/drck"																		TNM_NET = "NET_JTAGLoader_Clock";
+NET "*/blkROM.ROM/genJTAGLoader.JTAGLoader/jtag_clk*"																TNM_NET = "NET_JTAGLoader_Update";
+
+TIMESPEC "TS_JTAGLoader_Clock"		= PERIOD "NET_JTAGLoader_Clock"			30 MHz	HIGH 50 %;		# F_max supported by Digitlent Programmer
+TIMESPEC "TS_JTAGLoader_Update"		= PERIOD "NET_JTAGLoader_Update"		30 MHz	HIGH 50 %;		# < 30 MHz
+
+# ===================================================================
+# CrossClock paths			(maximum delay is period of fastest clock)
+# ===================================================================
+# JTAGLoader
+TIMESPEC "TS_CrossClock_0" = FROM "NET_JTAGLoader_Clock"	TO "NET_JTAGLoader_Update"	30 MHz DATAPATHONLY;
+TIMESPEC "TS_CrossClock_1" = FROM "NET_JTAGLoader_Update"	TO "NET_JTAGLoader_Clock"		30 MHz DATAPATHONLY;
+
+# Ignore timings on async I/O pins
+NET "Atlys_GPIO_*"						TIG;
+NET "Atlys_USB_UART_*"				TIG;
+NET "Atlys_JA_*"							TIG;

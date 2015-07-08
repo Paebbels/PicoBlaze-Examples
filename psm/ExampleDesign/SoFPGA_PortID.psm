@@ -12,7 +12,7 @@ CONSTANT IPORT_INSTROM_PAGENUMBER,                 1'd    ; PageNumber(dummy[3:0
 CONSTANT OPORT_INSTROM_PAGENUMBER,                 1'd    ; PageNumber
 CONSTANT KPORT_INSTROM_PAGENUMBER,                 1'd    ; PageNumber
 ;
-; Interrupt Controller
+; Interrupt Controller (16 ports)
 CONSTANT OPORT_INTC_INTENABLE0,                    4'd    ; IntEnable0
 CONSTANT KPORT_INTC_INTENABLE0,                    4'd    ; IntEnable0
 CONSTANT OPORT_INTC_INTENABLE1,                    5'd    ; IntEnable1

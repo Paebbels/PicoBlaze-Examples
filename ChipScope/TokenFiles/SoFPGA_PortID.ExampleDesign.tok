@@ -46,7 +46,7 @@ WK_InstROM_PageNumber=4D1
 WK_InstROM_PageNumber=4E1
 WK_InstROM_PageNumber=4F1
 #
-# Interrupt Controller
+# Interrupt Controller (16 ports)
 WR_IntC_IntEnable0=104
 WK_IntC_IntEnable0=404
 WK_IntC_IntEnable0=414

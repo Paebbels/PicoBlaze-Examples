@@ -75,7 +75,7 @@ if ($PSCmdlet.MyInvocation.BoundParameters["Debug"].IsPresent) 		{	$Script_Enabl
 if ($PSCmdlet.MyInvocation.BoundParameters["Verbose"].IsPresent)	{	$Script_EnableVerbose =	$true	}
 
 # 
-$TemplateFile = "..\..\lib\L_PicoBlaze\ROM Templates\PAGE.template.vhdl"
+$TemplateFile = "..\..\lib\L_PicoBlaze\ROM Templates\Page.Series-7.template.vhdl"
 
 # pages
 $Pages = @(
