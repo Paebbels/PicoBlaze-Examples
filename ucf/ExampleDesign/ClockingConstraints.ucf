@@ -1,11 +1,6 @@
 ## =============================================================================
 ## User defined timing groups
 ## =============================================================================
-NET "*_async"		TIG;
-INST "*_meta*"	TNM = "METASTABILITY_FFS";
-TIMESPEC "TS_MetaStability" = FROM FFS TO "METASTABILITY_FFS" TIG;
-
-
 TIMESPEC "TS_SystemClock"					= PERIOD "NET_SystemClock_100MHz"		100 MHz	HIGH 50 %;		# 100 MHz oscillator (50%/50% duty-cycle)
 
 NET "*/blkROM.ROM/genJTAGLoader.JTAGLoader/drck"																		TNM_NET = "NET_JTAGLoader_Clock";
