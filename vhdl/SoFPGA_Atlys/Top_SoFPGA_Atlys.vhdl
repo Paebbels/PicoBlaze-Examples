@@ -83,7 +83,7 @@ architecture top of ExampleDesign_Atlys is
 	constant ENABLE_CHIPSCOPE						: BOOLEAN							:= TRUE;
 	constant ENABLE_DEBUGPORT						: BOOLEAN							:= TRUE;
 	
-	constant SYS_CLOCK_FREQ							: FREQ								:= 100.0 MHz;
+	constant SYS_CLOCK_FREQ							: FREQ								:= 100 MHz;
 	
 	-- ClockNetwork configuration
 	-- ===========================================================================

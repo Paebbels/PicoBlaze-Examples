@@ -7,3 +7,6 @@
 [submodule "lib/opbasm"]
 	path = lib/opbasm
 	url = git@github.com:Paebbels/opbasm.git
+[submodule "lib/pauloBlaze"]
+	path = lib/pauloBlaze
+	url = git@github.com:Paebbels/pauloBlaze.git
