@@ -1,0 +1,318 @@
+; EMACS settings: -*-  tab-width: 2; indent-tabs-mode: t -*-
+; vim: tabstop=2:shiftwidth=2:noexpandtab
+; kate: tab-width 2; replace-tabs off; indent-width 2;
+; 
+; ==============================================================================
+; Authors:					Patrick Lehmann
+;										Martin Zabel
+;
+; Assembler-Code:		Entry-Point assembler file
+; 
+; Description:
+; ------------------------------------
+;		TODO
+;		
+;
+; License:
+; ==============================================================================
+; Copyright 2007-2015 Patrick Lehmann - Dresden, Germany
+; 
+; Licensed under the Apache License, Version 2.0 (the "License");
+; you may not use this file except in compliance with the License.
+; You may obtain a copy of the License at
+; 
+;		http://www.apache.org/licenses/LICENSE-2.0
+; 
+; Unless required by applicable law or agreed to in writing, software
+; distributed under the License is distributed on an "AS IS" BASIS,
+; WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+; See the License for the specific language governing permissions and
+; limitations under the License.
+; ==============================================================================
+;
+;
+; global constants
+; ===============================================
+CONSTANT __STACK_POINTER,		FB
+;
+; ==============================================================================
+; entry point; soft reboot; infinite loops
+; ==============================================================================
+;PRAGMA function _ERROR_BLOCK begin
+;PRAGMA keep on
+__Init:								JUMP		__BootUp
+__Reboot:							OUTPUTK RESET_PIN_SOFPGA, KPORT_RESET_RESET
+__End:								JUMP		__End
+__Empty_Instruction:	JUMP		__Empty_Instruction
+__ISR_Error:					JUMP		__ISR_Error
+__Error:							;
+__Page0_Error:				JUMP		__Page0_Error
+__Page1_Error:				JUMP		__Page1_Error
+__Page2_Error:				JUMP		__Page2_Error
+__Page3_Error:				JUMP		__Page3_Error
+__Page4_Error:				JUMP		__Page4_Error
+__Page5_Error:				JUMP		__Page5_Error
+__Page6_Error:				JUMP		__Page6_Error
+__Page7_Error:				JUMP		__Page7_Error
+;PRAGMA keep off
+;PRAGMA function end
+;
+DEFAULT_JUMP					__Empty_Instruction
+ADDRESS								010
+;
+;
+; ==============================================================================
+; Includes
+; ==============================================================================
+; load predefined register names
+INCLUDE "..\..\lib\L_PicoBlaze\psm\RegisterNames.psm"
+;
+; I/O port definitions
+; ======================================
+INCLUDE "SoFPGA_PortID.psm"							; auto generated from VHDL
+INCLUDE "SoFPGA_PinAssignments.psm"			; 
+;
+; include some assembler libraries
+; ======================================
+INCLUDE "..\..\lib\L_PicoBlaze\psm\lib\lib_Stack.psm"
+INCLUDE "..\..\lib\L_PicoBlaze\psm\lib\lib_Sleep_100MHz.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\lib\lib_Thread.psm"
+INCLUDE "..\..\lib\L_PicoBlaze\psm\lib\lib_String.psm"
+;
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\io\io_LCDisplay.psm"
+INCLUDE "..\..\lib\L_PicoBlaze\psm\io\io_UART.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\io\io_UARTFrame.psm"
+INCLUDE "..\..\lib\L_PicoBlaze\psm\io\io_IIC.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\io\io_IICController.psm"
+INCLUDE "..\..\lib\L_PicoBlaze\psm\io\io_BitBanging_IIC.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\io\io_BitBanging_SPI.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\io\io_DRP.psm"
+;
+INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Timer.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Mult16.psm"
+INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Mult32.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Div16.psm"
+INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Div32.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Scaler40.psm"
+INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_ConvBCD24.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_BCDCounter.psm"
+INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_GPIO.psm"
+INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_BBIO.psm"
+INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Terminal.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_PCA9548.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Si570.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_Si5324.psm"
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\dev\dev_M24C08.psm"
+;
+INCLUDE "..\..\lib\L_PicoBlaze\psm\tui\tui_IIC.psm"
+;
+;INCLUDE "..\..\lib\L_PicoBlaze\psm\brd\brd_KC705_IICBus.psm"
+;
+;
+INCLUDE "Page1_FunctionList.psm"
+INCLUDE "Page1_TextIDs.psm"					; common texts
+;
+; include the working thread files
+; ======================================
+;INCLUDE "..\th_Main.psm"
+;
+;
+; ==============================================================================
+; boot up code
+; ==============================================================================
+;PRAGMA function _BootUp begin
+__BootUp:											; initialize spezial registers and data structures
+															LOAD  		REG_SP,		__STACK_POINTER							; initialize stack
+															;
+															; configure InterruptController
+															ENABLE INTERRUPT																; enable interrupt handling
+															OUTPUTK		INTC_PIN0_DIV,			KPORT_INTC_INTENABLE0
+															OUTPUTK		INTC_PIN0_SCALER40,	KPORT_INTC_INTENABLE0
+															OUTPUTK		INTC_PIN0_GPIO,			KPORT_INTC_INTENABLE0
+															OUTPUTK		INTC_PIN0_UART,			KPORT_INTC_INTENABLE0
+															;
+															;OUTPUTK		INTC_PIN0_SATASTACK,	KPORT_INTC_INTENABLE0
+															;
+															CALL			__io_BBIO_IIC_Initialise
+															;
+															CALL			__UART_EnableRaw											; enable raw UART interface
+															CALL			__io_BBIO_IIC_EnableRaw								; enable raw IIC interface (Bit Banging)
+															;
+															CALL			__dev_Term_Initialize
+															;
+															JUMP			__Initialize
+;PRAGMA function end
+;
+;PRAGMA function __FatalError begin
+__FatalError:									; print fatal error message
+															CALL			__UART_WriteNewline
+															LOAD			REG_PTR_L,	UART_SENDMSG_SOFPGA_FATAL
+															CALL			__Pager_Page1_Call_Table2
+															JUMP		__End
+;PRAGMA function end
+;
+INCLUDE "Page0_Initialize.psm"
+;
+; ==============================================================================
+; main routine
+; ==============================================================================
+;PRAGMA function _main begin
+__Main:												OUTPUTK		INTC_PIN0_UART,		KPORT_INTC_INTDISABLE0
+															CALL			__UART_WriteNewline
+															LOAD			REG_PTR_L,	UART_SENDMSG_SOFPGA_HELP_CMD_SHORT
+															CALL			__Pager_Page1_Call_Table2
+															;
+	_Main_Loop:									LOAD			REG_PTR_L,	UART_SENDMSG_SOFPGA_PROMPT
+															CALL			__Pager_Page1_Call_Table2
+	_Main_Loop_wo_Prompt:				CALL			__UART_ReadChar_block
+															;
+															; ignore CarriageReturn and NewLine (LineFeed)
+															COMPARE		REG_ARG_0,	CR
+															JUMP	Z,	_Main_Loop_wo_Prompt
+															COMPARE		REG_ARG_0,	LF
+															JUMP	Z,	_Main_Loop_wo_Prompt
+															;
+															; immediately return input char (command)
+															LOAD			REG_ARG_1,	LF
+															CALL			__UART_WriteDoubleChar
+															;
+															COMPARE		REG_ARG_0,	"h"
+															JUMP	Z,	_Main_ShortHelp
+															COMPARE		REG_ARG_0,	"H"
+															JUMP	Z,	_Main_LongHelp
+															COMPARE		REG_ARG_0,	"c"
+															JUMP	Z,	_Main_ClearScreen
+															COMPARE		REG_ARG_0,	"R"
+															JUMP	Z,	_Main_SoFPGA_Reboot
+															;
+															;JUMP			_Main_UnknownCommand
+															;
+	_Main_UnknownCommand:				LOAD			REG_PTR_L,	UART_SENDMSG_SOFPGA_UNKNOWN_COMMAND
+															CALL			__Pager_Page1_Call_Table2
+															JUMP			_Main_Loop
+															;
+	_Main_SoFPGA_Reboot:				LOAD			REG_PTR_L,	UART_SENDMSG_SOFPGA_REBOOT
+															CALL			__Pager_Page1_Call_Table2
+															CALL			__Sleep_1_s
+															JUMP			__Reboot
+															;
+	_Main_ShortHelp:						LOAD			REG_PTR_L,	UART_SENDMSG_SOFPGA_HELP_CMD_SHORT
+															CALL			__Pager_Page1_Call_Table2
+															JUMP			_Main_Loop
+															;
+	_Main_LongHelp:							LOAD			REG_PTR_L,	UART_SENDMSG_SOFPGA_HELP_CMD_LONG
+															CALL			__Pager_Page1_Call_Table2
+															JUMP			_Main_Loop
+															;
+	_Main_ClearScreen:					CALL			__dev_Term_ClearScreen_All
+															JUMP			_Main_Loop
+															;
+;	_Main_MeasureClock:					LOAD			REG_PTR_L,	SENDMSG_FreqM_Measure
+;															CALL			__Pager_Page1_Call_Table1
+;															CALL			__MeasureClock
+;															LOAD			REG_PTR_L,	SENDMSG_FreqM_MHz
+;															CALL			__Pager_Page1_Call_Table1
+;															CALL			__UART_WriteNewline
+;															JUMP			_Main_Loop
+															;
+															
+	_Main_Exit:									CALL			__Sleep_1_ms									;
+															CALL			__UART_DisableRaw							; disable raw UART interface
+															;
+															JUMP			__End
+										
+;PRAGMA function end
+;
+;;PRAGMA function _measureclock begin
+;__MeasureClock:								LOAD			REG_TMP_0,	01
+;															OUTPUT		REG_TMP_0,	OPORT_FREQM_COMMAND
+;															LOAD			REG_TMP_0,	REG_TMP_0					; NOP
+;															LOAD			REG_TMP_0,	REG_TMP_0					; NOP
+;															LOAD			REG_TMP_0,	REG_TMP_0					; NOP
+;															LOAD			REG_TMP_0,	REG_TMP_0					; NOP
+;															;
+;	_MeasureClock_wait:					INPUT			REG_TMP_0,	IPORT_FREQM_STATUS
+;															TEST			REG_TMP_0,	80
+;															JUMP NC,	_MeasureClock_wait
+;															;
+;															INPUT			REG_ARG_0,	IPORT_FREQM_FREQCNTVALUE0
+;															INPUT			REG_ARG_1,	IPORT_FREQM_FREQCNTVALUE1
+;															INPUT			REG_ARG_2,	IPORT_FREQM_FREQCNTVALUE2
+;															INPUT			REG_ARG_3,	IPORT_FREQM_STATUS
+;															AND				REG_ARG_3,	0F
+;															CALL			__Str_QuadByteToDecimal
+;															;
+;															CALL			__pop_arg0
+;															CALL			__pop_arg0
+;															CALL			__pop_arg1
+;															CALL			__pop_arg2
+;															ADD				REG_ARG_0,	"0"
+;															ADD				REG_ARG_1,	"0"
+;															ADD				REG_ARG_2,	"0"
+;															LOAD			REG_ARG_3,	"."
+;															CALL			__UART_WriteQuadChar
+;															;
+;															CALL			__pop_arg0
+;															CALL			__pop_arg1
+;															CALL			__pop_arg2
+;															ADD				REG_ARG_0,	"0"
+;															ADD				REG_ARG_1,	"0"
+;															ADD				REG_ARG_2,	"0"
+;															LOAD			REG_ARG_3,	","
+;															CALL			__UART_WriteQuadChar
+;															;
+;															CALL			__pop_arg0
+;															CALL			__pop_arg1
+;															CALL			__pop_arg2
+;															ADD				REG_ARG_0,	"0"
+;															ADD				REG_ARG_1,	"0"
+;															ADD				REG_ARG_2,	"0"
+;															LOAD			REG_ARG_3,	" "
+;															CALL			__UART_WriteQuadChar
+;															;
+;															RETURN
+;;PRAGMA function end
+;
+;
+; ==============================================================================
+; load text blocks
+; ==============================================================================
+INCLUDE "SoFPGA_Text.psm"
+;
+; ==============================================================================
+; 
+; ==============================================================================
+;PRAGMA keep on
+ADDRESS FB0					;
+__FunctionTable1:		; dummy lable
+__FunctionTable2:		; dummy lable
+INCLUDE "..\..\lib\L_PicoBlaze\psm\lib\lib_Paging.psm"
+;PRAGMA keep off
+;
+; ==============================================================================
+; main interrupt service routines
+; ==============================================================================
+;PRAGMA function _main_isr begin
+ADDRESS FE0					;
+_MAIN_ISR:					REGBANK B
+										;
+										INPUT		REG_ARG_0,	IPORT_INTC_INTSOURCE			; read interrupt source
+										LOAD		REG_PTR_L,	_MAIN_ISR_Vector'lower	; load ISR_Vector table address
+										LOAD		REG_PTR_H,	_MAIN_ISR_Vector'upper	;
+										ADD			REG_PTR_L,	REG_ARG_0
+										ADDCY		REG_PTR_H,	00
+										CALL@		(REG_PTR_H,	REG_PTR_L)
+										; ack interrupt
+										; TODO
+										; return with enabled interrupts
+										RETURNI	ENABLE
+;
+; Interrupt VectorTable
+; ======================================
+;PRAGMA keep on
+ADDRESS FF0					;
+_MAIN_ISR_Vector:		; include auto generated Interrupt VectorTable
+INCLUDE "SoFPGA_InterruptVector.psm"
+;PRAGMA function end
+;PRAGMA keep off
+;

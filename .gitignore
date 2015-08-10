@@ -35,6 +35,6 @@ __pycache__
 !/psm/**/*.sh
 
 # ignore files from PoC
-/vhdl/ExampleDesign/Common/PoC.my_project.vhdl
+/vhdl/**/PoC.my_project.vhdl
 
 /.project

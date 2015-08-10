@@ -50,6 +50,8 @@ use			PoC.xil.all;
 library	L_PicoBlaze;
 use			L_PicoBlaze.pb.all;
 
+library L_PauloBlaze;
+
 library L_Example;
 use			L_Example.pb_SoFPGA.all;
 --use			L_PicoBlaze.main_Page0_sim.all;
@@ -215,10 +217,12 @@ begin
 	CPU_Reset_i			<= CPU_Reset	or ROM_RebootCPU;
 	PB_Sleep				<= '0';
 
+	genPico : if (FALSE) generate
+	begin
 	PicoBlaze : entity L_PicoBlaze.KCPSM6
 		generic map (
-			hwbuild									=> X"00",
-			interrupt_vector				=> X"FE0",
+			hwbuild									=> x"00",
+			interrupt_vector				=> x"FE0",
 			scratch_pad_memory_size => 256
 		)
 		port map (
@@ -240,6 +244,50 @@ begin
 			interrupt								=> IntC_Interrupt,
 			interrupt_ack						=> open
 		);
+	end generate;
+	
+	genPaulo : if (TRUE) generate
+		signal InstructionAddress	: UNSIGNED(PB_InstructionPointer'range);
+		signal Instruction				: UNSIGNED(ROM_Instruction'range);
+		
+		signal PortID							: UNSIGNED(PB_PortID'range);
+		signal DataOut						: UNSIGNED(PB_DataOut'range);
+		signal DataIn							: UNSIGNED(PB_DataIn'range);
+		
+	begin
+		InstructionAddress	<= unsigned(PB_InstructionPointer);
+		Instruction					<= unsigned(ROM_Instruction);
+		
+		PB_PortID						<= std_logic_vector(PortID);
+		PB_DataOut					<= std_logic_vector(DataOut);
+		DataIn							<= unsigned(PB_DataIn);
+	
+		PauloBlaze : entity L_PauloBlaze.PauloBlaze
+			generic map (
+				hwbuild									=> x"00",
+				interrupt_vector				=> x"FE0",
+				scratch_pad_memory_size => 256
+			)
+			port map (
+				clk											=> CPU_Clock,
+				reset										=> CPU_Reset_i,
+				sleep										=> PB_Sleep,
+			
+				bram_enable							=> PB_InstructionFetch,
+				address									=> InstructionAddress,
+				instruction							=> Instruction,
+
+				port_id									=> PortID,
+				read_strobe							=> PB_ReadStrobe,
+				write_strobe						=> PB_WriteStrobe,
+				k_write_strobe					=> PB_WriteStrobe_k,
+				out_port								=> DataOut,
+				in_port									=> DataIn,
+
+				interrupt								=> IntC_Interrupt,
+				interrupt_ack						=> open
+			);
+	end generate;
 
 	-- new interrupt ack signal on RETURNI instruction
 	PB_InstructionFetch_d	<= PB_InstructionFetch when rising_edge(CPU_Clock);
