@@ -102,13 +102,14 @@ architecture rtl of ex_ExampleDesign is
 	-- configurations
 	-- ===========================================================================
 	-- UART configuration																													921.6 kBit/s	115.2 kBit/s	
-	constant UART_BAUDRATE											: BAUD				:= ite(SIMULATION,	921600 Bd,		115200 Bd);
+	constant UART_BAUDRATE											: BAUD				:= ite(SIMULATION,	921600 Bd,		921600 Bd);
 
 	-- ===========================================================================
 	-- SoFPGA configuration
 	-- ===========================================================================
 	constant ENABLE_JTAG_LOADER			: BOOLEAN			:= TRUE;
 	constant ENABLE_SOFPGA_TRACER		: BOOLEAN			:= ENABLE_CHIPSCOPE;
+	constant ENABLE_SOFPGA_UART_ILA	: BOOLEAN			:= ENABLE_CHIPSCOPE;	-- FALSE
 	
 	constant EXTNERN_PB_IOBUS_PORTS	: NATURAL			:= pb_GetBusWidth(SOFPGA_SYSTEM, "Extern");
 	constant TEST_PB_IOBUS_PORTS		: NATURAL			:= pb_GetBusWidth(SOFPGA_SYSTEM, "Test");
@@ -128,14 +129,30 @@ architecture rtl of ex_ExampleDesign is
 	signal ClkNet_Reset											: STD_LOGIC;
 	signal ClkNet_ResetDone									: STD_LOGIC;
 	
+	function condAdd(cond : BOOLEAN; add : INTEGER := 1; pass : INTEGER := 0) return INTEGER is
+	begin
+		if cond then
+			return pass + add;
+		else
+			return pass;
+		end if;
+	end function;
+	
 	-- ChipScope Pro signals
 	-- ================================================================
-	constant CSP_ICON_PORTS												: NATURAL	:= ite(not ENABLE_CHIPSCOPE, 0, 2);
+	constant CSP_ICON_PORTS												: NATURAL	:=
+		ite(not ENABLE_CHIPSCOPE, 0,
+			condAdd(ENABLE_SOFPGA_TRACER,		1,
+			condAdd(ENABLE_SOFPGA_UART_ILA,	1,
+																			1)
+		));
 
 	constant CSP_ICON_BUSID_EXAMPLE_CTRL					: NATURAL	:= imin(CSP_ICON_PORTS, 0);
 	constant CSP_ICON_BUSID_SOFPGA_ILA						: NATURAL	:= imin(CSP_ICON_PORTS, 1);
+	constant CSP_ICON_BUSID_SOFPGA_UART_ILA				: NATURAL	:= imin(CSP_ICON_PORTS, ite(ENABLE_SOFPGA_UART_ILA, 2, 2));
 	
 	signal ICON_ControlBus												: T_XIL_CHIPSCOPE_CONTROL_VECTOR(imax(0, CSP_ICON_PORTS - 1) downto 0);
+	signal ICON_DummyBus													: T_XIL_CHIPSCOPE_CONTROL;
 	
 	-- System on Chip
 	-- ================================================================
@@ -228,11 +245,12 @@ begin
 	SoFPGA : entity L_Example.pb_SoFPGA_System
 		generic map (
 			DEBUG												=> DEBUG,
-			ENABLE_CHIPSCOPE						=> ENABLE_SOFPGA_TRACER,
 			CLOCK_FREQ									=> SYSTEM_CLOCK_FREQ,
 			EXTERNAL_DEVICE_COUNT				=> EXTNERN_PB_IOBUS_PORTS,
 			UART_BAUDRATE								=> UART_BAUDRATE,
-			ENABLE_JTAG_LOADER					=> ENABLE_JTAG_LOADER
+			ENABLE_JTAG_LOADER					=> ENABLE_JTAG_LOADER,
+			ENABLE_SOFPGA_TRACER				=> ENABLE_SOFPGA_TRACER,
+			ENABLE_UART_ILA							=> ENABLE_SOFPGA_UART_ILA
 		)
 		port map (
 			Clock												=> System_Clock,
@@ -240,6 +258,7 @@ begin
 			Reset												=> System_Reset,
 			
 			CSP_ICON_ControlBus_Trace		=> ICON_ControlBus(CSP_ICON_BUSID_SOFPGA_ILA),
+			CSP_ICON_ControlBus_UART		=> ICON_ControlBus(CSP_ICON_BUSID_SOFPGA_UART_ILA),
 			CSP_Tracer_TriggerEvent			=> SoFPGA_Tracer_TriggerEvent,
 			
 			PicoBlazeBusOut							=> SoFPGA_PicoBlazeDeviceBus,

@@ -58,11 +58,12 @@ use			L_Example.pb_SoFPGA.all;
 entity pb_SoFPGA_System is
 	generic (
 		DEBUG											: BOOLEAN												:= TRUE;
-		ENABLE_CHIPSCOPE					: BOOLEAN												:= TRUE;
 		CLOCK_FREQ								: FREQ													:= 100 MHz;
 		EXTERNAL_DEVICE_COUNT			: NATURAL												:= 1;
 		UART_BAUDRATE							: BAUD													:= 115200 Bd;
-		ENABLE_JTAG_LOADER				: BOOLEAN												:= TRUE
+		ENABLE_JTAG_LOADER				: BOOLEAN												:= TRUE;
+		ENABLE_SOFPGA_TRACER			: BOOLEAN												:= TRUE;
+		ENABLE_UART_ILA						: BOOLEAN												:= FALSE
 	);
 	port (
 		Clock											: in		STD_LOGIC;
@@ -383,7 +384,7 @@ begin
 		end process;
 	end block;
 	
-	genCSP : if (ENABLE_CHIPSCOPE = TRUE) generate
+	genCSP : if (ENABLE_SOFPGA_TRACER = TRUE) generate
 		signal Tracer_DataIn			: STD_LOGIC_VECTOR(62 downto 0);
 		signal Tracer_Trigger0		: STD_LOGIC_VECTOR(14 downto 0);
 		signal Tracer_Trigger1		: T_SLV_8;
@@ -776,7 +777,7 @@ begin
 		UART : entity L_PicoBlaze.pb_UART_Wrapper
 			generic map (
 				DEBUG								=> DEBUG,
-				ENABLE_CHIPSCOPE		=> FALSE,	--ENABLE_CHIPSCOPE,
+				ENABLE_CHIPSCOPE		=> ENABLE_UART_ILA,
 				CLOCK_FREQ					=> CLOCK_FREQ,
 				DEVICE_INSTANCE			=> DEVICE_INST,
 				BAUDRATE						=> UART_BAUDRATE
