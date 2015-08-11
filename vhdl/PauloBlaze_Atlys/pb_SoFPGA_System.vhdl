@@ -247,21 +247,7 @@ begin
 	end generate;
 	
 	genPaulo : if (TRUE) generate
-		signal InstructionAddress	: UNSIGNED(PB_InstructionPointer'range);
-		signal Instruction				: UNSIGNED(ROM_Instruction'range);
-		
-		signal PortID							: UNSIGNED(PB_PortID'range);
-		signal DataOut						: UNSIGNED(PB_DataOut'range);
-		signal DataIn							: UNSIGNED(PB_DataIn'range);
-		
 	begin
-		InstructionAddress	<= unsigned(PB_InstructionPointer);
-		Instruction					<= unsigned(ROM_Instruction);
-		
-		PB_PortID						<= std_logic_vector(PortID);
-		PB_DataOut					<= std_logic_vector(DataOut);
-		DataIn							<= unsigned(PB_DataIn);
-	
 		PauloBlaze : entity L_PauloBlaze.PauloBlaze
 			generic map (
 				hwbuild									=> x"00",
@@ -274,15 +260,15 @@ begin
 				sleep										=> PB_Sleep,
 			
 				bram_enable							=> PB_InstructionFetch,
-				address									=> InstructionAddress,
-				instruction							=> Instruction,
+				address									=> PB_InstructionPointer,
+				instruction							=> ROM_Instruction,
 
-				port_id									=> PortID,
+				port_id									=> PB_PortID,
 				read_strobe							=> PB_ReadStrobe,
 				write_strobe						=> PB_WriteStrobe,
 				k_write_strobe					=> PB_WriteStrobe_k,
-				out_port								=> DataOut,
-				in_port									=> DataIn,
+				out_port								=> PB_DataOut,
+				in_port									=> PB_DataIn,
 
 				interrupt								=> IntC_Interrupt,
 				interrupt_ack						=> open
