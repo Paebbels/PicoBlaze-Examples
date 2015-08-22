@@ -66,13 +66,6 @@ entity ex_ExampleDesign is
 		System_ClockStable				: in	STD_LOGIC;
 		System_Reset							: in	STD_LOGIC;
 
---		LCD_en										: out STD_LOGIC;
---		LCD_rw										: out STD_LOGIC;
---		LCD_rs										: out STD_LOGIC;
---		LCD_Data_i								: in	T_SLV_4;
---		LCD_Data_o								: out	T_SLV_4;
---		LCD_Data_t								: out	T_SLV_4;
-		
 		UART_TX										: out	STD_LOGIC;
 		UART_RX										: in	STD_LOGIC;
 		
@@ -80,8 +73,7 @@ entity ex_ExampleDesign is
 		Raw_IIC_Clock_i						: in	STD_LOGIC;
 		Raw_IIC_Clock_t						: out	STD_LOGIC;
 		Raw_IIC_Data_i						: in	STD_LOGIC;
-		Raw_IIC_Data_t						: out	STD_LOGIC;
-		Raw_IIC_Switch_Reset			: out	STD_LOGIC
+		Raw_IIC_Data_t						: out	STD_LOGIC
 		
 --		IIC_SerialClock_i					: in	STD_LOGIC;
 --		IIC_SerialClock_o					: out	STD_LOGIC;
@@ -264,13 +256,6 @@ begin
 			PicoBlazeBusOut							=> SoFPGA_PicoBlazeDeviceBus,
 			PicoBlazeBusIn							=> SoFPGA_DevicePicoBlazeBus,
 			
---			LCD_en											=> LCD_en,
---			LCD_rw											=> LCD_rw,
---			LCD_rs											=> LCD_rs,
---			LCD_Data_i									=> LCD_Data_i,
---			LCD_Data_o									=> LCD_Data_o,
---			LCD_Data_t									=> LCD_Data_t,
-			
 			UART_TX											=> UART_TX,
 			UART_RX											=> UART_RX,
 			
@@ -278,8 +263,7 @@ begin
 			Raw_IIC_Clock_i							=> Raw_IIC_Clock_i,
 			Raw_IIC_Clock_t							=> Raw_IIC_Clock_t,
 			Raw_IIC_Data_i							=> Raw_IIC_Data_i,
-			Raw_IIC_Data_t							=> Raw_IIC_Data_t,
-			Raw_IIC_Switch_Reset				=> Raw_IIC_Switch_Reset
+			Raw_IIC_Data_t							=> Raw_IIC_Data_t
 			
 --			-- IICController_IIC interface
 --			IIC1_Request								=> SoFPGA_PBIIC1_Request,

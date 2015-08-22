@@ -653,26 +653,26 @@ begin
 				Message							=> Intern_DevicePicoBlazeBus(DIV_BUSINDEX).Message
 			);
 
---		ConvBCD : entity L_PicoBlaze.pb_ConverterBCD24_Device
---			generic map (
---				DEVICE_INSTANCE			=> BCD_DEVICE_INST
---			)
---			port map (
---				Clock								=> CPU_Clock,
---				Reset								=> Scaler_Reset,
---				
---				-- PicoBlaze interface
---				Address							=> Intern_PicoBlazeDeviceBus(BCD_BUSINDEX).PortID,
---				WriteStrobe					=> Intern_PicoBlazeDeviceBus(BCD_BUSINDEX).WriteStrobe,
---				WriteStrobe_K				=> Intern_PicoBlazeDeviceBus(BCD_BUSINDEX).WriteStrobe_K,
---				ReadStrobe					=> Intern_PicoBlazeDeviceBus(BCD_BUSINDEX).ReadStrobe,
---				DataIn							=> Intern_PicoBlazeDeviceBus(BCD_BUSINDEX).Data,
---				DataOut							=> Intern_DevicePicoBlazeBus(BCD_BUSINDEX).Data,
---				
---				Interrupt						=> Intern_DevicePicoBlazeBus(BCD_BUSINDEX).Interrupt,
---				Interrupt_Ack				=> Intern_PicoBlazeDeviceBus(BCD_BUSINDEX).Interrupt_Ack,
---				Message							=> Intern_DevicePicoBlazeBus(BCD_BUSINDEX).Message
---			);
+		ConvBCD : entity L_PicoBlaze.pb_ConverterBCD24_Device
+			generic map (
+				DEVICE_INSTANCE			=> BCD_DEVICE_INST
+			)
+			port map (
+				Clock								=> CPU_Clock,
+				Reset								=> BCD_Reset,
+				
+				-- PicoBlaze interface
+				Address							=> Intern_PicoBlazeDeviceBus(BCD_BUSINDEX).PortID,
+				WriteStrobe					=> Intern_PicoBlazeDeviceBus(BCD_BUSINDEX).WriteStrobe,
+				WriteStrobe_K				=> Intern_PicoBlazeDeviceBus(BCD_BUSINDEX).WriteStrobe_K,
+				ReadStrobe					=> Intern_PicoBlazeDeviceBus(BCD_BUSINDEX).ReadStrobe,
+				DataIn							=> Intern_PicoBlazeDeviceBus(BCD_BUSINDEX).Data,
+				DataOut							=> Intern_DevicePicoBlazeBus(BCD_BUSINDEX).Data,
+				
+				Interrupt						=> Intern_DevicePicoBlazeBus(BCD_BUSINDEX).Interrupt,
+				Interrupt_Ack				=> Intern_PicoBlazeDeviceBus(BCD_BUSINDEX).Interrupt_Ack,
+				Message							=> Intern_DevicePicoBlazeBus(BCD_BUSINDEX).Message
+			);
 	end block;
 
 	blkGPIO : block

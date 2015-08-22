@@ -41,7 +41,7 @@ FPGA_CLOUD_JTAGLOADER_SCRIPT="programPicoBlaze.sh"
 
 POSTPROCESSOR="../../lib/L_PicoBlaze/py/psmProcessor.py"
 
-TEMPLATE_FILE="../../lib/L_PicoBlaze/ROM Templates/PAGE.template.vhdl"
+TEMPLATE_FILE="../../lib/L_PicoBlaze/ROM Templates/Page.Series-7.template.vhdl"
 PAGES="Page0 Page1 Page2 Page3"
 
 ANSI_RED="\e[31m"

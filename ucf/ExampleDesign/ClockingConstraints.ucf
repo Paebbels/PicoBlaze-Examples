@@ -1,8 +1,6 @@
 ## =============================================================================
 ## User defined timing groups
 ## =============================================================================
-TIMESPEC "TS_SystemClock"					= PERIOD "NET_SystemClock_100MHz"		100 MHz	HIGH 50 %;		# 100 MHz oscillator (50%/50% duty-cycle)
-
 NET "*/blkROM.ROM/genJTAGLoader.JTAGLoader/drck"																		TNM_NET = "NET_JTAGLoader_Clock";
 NET "*/blkROM.ROM/genJTAGLoader.JTAGLoader/jtag_clk*"																TNM_NET = "NET_JTAGLoader_Update";
 
@@ -15,8 +13,3 @@ TIMESPEC "TS_JTAGLoader_Update"		= PERIOD "NET_JTAGLoader_Update"		30 MHz	HIGH 5
 # JTAGLoader
 TIMESPEC "TS_CrossClock_0" = FROM "NET_JTAGLoader_Clock"	TO "NET_JTAGLoader_Update"	30 MHz DATAPATHONLY;
 TIMESPEC "TS_CrossClock_1" = FROM "NET_JTAGLoader_Update"	TO "NET_JTAGLoader_Clock"		30 MHz DATAPATHONLY;
-
-# Ignore timings on async I/O pins
-NET "Atlys_GPIO_*"						TIG;
-NET "Atlys_USB_UART_*"				TIG;
-NET "Atlys_JA_*"							TIG;

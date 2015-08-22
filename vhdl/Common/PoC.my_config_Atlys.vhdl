@@ -47,10 +47,12 @@ package my_config is
 	-- Change these lines to setup configuration.
 	constant MY_BOARD					: string	:= "Atlys";		-- Digilent Atlys - Xilinx Spartan-6: XC6SLX45
 	constant MY_DEVICE				: string	:= "None";		-- infer from MY_BOARD
+		
+	-- For internal use only
 	constant MY_VERBOSE				: boolean	:= FALSE;
-end my_config;
+end package;
 
 
 package body my_config is
 
-end my_config;
+end package body;
