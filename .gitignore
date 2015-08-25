@@ -19,18 +19,24 @@ __pycache__
 !/netlist/**/*.xco
 !/netlist/**/*.vhdl
 
-# ignore Xilinx ISE files
+# ignore project files
 /Projects/**/*.*
 /Projects/**/ise
+# allow Xilinx ISE setting files
 !/Projects/**/*.xise
 !/Projects/**/*.xpr
 !/Projects/**/iseconfig/filter.filter
+# allow Altera QuartusII setting files
+!/Projects/**/*.qpf
+!/Projects/**/*.qsf
 
 # ignore PicoBlaze files
 /psm/**/*.*
 !/psm/**/*.psm
 !/psm/**/*.psm4
 !/psm/**/*.vhdl
+!/psm/**/*.hex
+!/psm/**/*.mif
 !/psm/**/*.ps1
 !/psm/**/*.sh
 
