@@ -1,0 +1,264 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 1991-2014 Altera Corporation. All rights reserved.
+# Your use of Altera Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Altera Program License 
+# Subscription Agreement, the Altera Quartus II License Agreement,
+# the Altera MegaCore Function License Agreement, or other 
+# applicable license agreement, including, without limitation, 
+# that your use is for the sole purpose of programming logic 
+# devices manufactured by Altera and sold by Altera or its 
+# authorized distributors.  Please refer to the applicable 
+# agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus II 64-Bit
+# Version 14.0.2 Build 209 09/17/2014 SJ Full Version
+# Date created = 11:09:09  August 12, 2015
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		PauloBlaze_DE4_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus II software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "Stratix IV"
+set_global_assignment -name DEVICE EP4SGX230KF40C2
+set_global_assignment -name TOP_LEVEL_ENTITY Top_PauloBlaze_DE4
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 14.0
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "11:09:09  AUGUST 12, 2015"
+set_global_assignment -name LAST_QUARTUS_VERSION 15.0.0
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
+set_global_assignment -name EDA_SIMULATION_TOOL "QuestaSim (VHDL)"
+set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT VHDL -section_id eda_simulation
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name VHDL_INPUT_VERSION VHDL_2008
+set_global_assignment -name VHDL_SHOW_LMF_MAPPING_MESSAGES OFF
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "2.5 V"
+set_location_assignment PIN_V28 -to DE4_GPIO_LED_n[0]
+set_location_assignment PIN_W28 -to DE4_GPIO_LED_n[1]
+set_location_assignment PIN_R29 -to DE4_GPIO_LED_n[2]
+set_location_assignment PIN_P29 -to DE4_GPIO_LED_n[3]
+set_location_assignment PIN_N29 -to DE4_GPIO_LED_n[4]
+set_location_assignment PIN_M29 -to DE4_GPIO_LED_n[5]
+set_location_assignment PIN_M30 -to DE4_GPIO_LED_n[6]
+set_location_assignment PIN_N30 -to DE4_GPIO_LED_n[7]
+set_location_assignment PIN_AH32 -to DE4_UART_RS232_RX
+set_location_assignment PIN_AN34 -to DE4_UART_RS232_TX
+set_location_assignment PIN_V34 -to DE4_GPIO_Button_Reset_n
+set_location_assignment PIN_AG6 -to DE4_GPIO_DipSwitches_n[7]
+set_location_assignment PIN_AH6 -to DE4_GPIO_DipSwitches_n[6]
+set_location_assignment PIN_AC8 -to DE4_GPIO_DipSwitches_n[5]
+set_location_assignment PIN_AB9 -to DE4_GPIO_DipSwitches_n[4]
+set_location_assignment PIN_AB10 -to DE4_GPIO_DipSwitches_n[3]
+set_location_assignment PIN_AB11 -to DE4_GPIO_DipSwitches_n[2]
+set_location_assignment PIN_AB12 -to DE4_GPIO_DipSwitches_n[1]
+set_location_assignment PIN_AB13 -to DE4_GPIO_DipSwitches_n[0]
+set_location_assignment PIN_J7 -to DE4_GPIO_SlideSwitches[0]
+set_location_assignment PIN_K7 -to DE4_GPIO_SlideSwitches[1]
+set_location_assignment PIN_AK6 -to DE4_GPIO_SlideSwitches[2]
+set_location_assignment PIN_L7 -to DE4_GPIO_SlideSwitches[3]
+set_instance_assignment -name IO_STANDARD "3.0-V PCI" -to DE4_GPIO_DipSwitches_n[7]
+set_instance_assignment -name IO_STANDARD "3.0-V PCI" -to DE4_GPIO_DipSwitches_n[5]
+set_instance_assignment -name IO_STANDARD "3.0-V PCI" -to DE4_GPIO_DipSwitches_n[4]
+set_instance_assignment -name IO_STANDARD "3.0-V PCI" -to DE4_GPIO_DipSwitches_n[3]
+set_instance_assignment -name IO_STANDARD "3.0-V PCI" -to DE4_GPIO_DipSwitches_n[2]
+set_instance_assignment -name IO_STANDARD "3.0-V PCI" -to DE4_GPIO_DipSwitches_n[1]
+set_instance_assignment -name IO_STANDARD "3.0-V PCI" -to DE4_GPIO_DipSwitches_n[0]
+set_location_assignment PIN_AH8 -to DE4_GPIO_Button_n[3]
+set_location_assignment PIN_AG7 -to DE4_GPIO_Button_n[2]
+set_location_assignment PIN_AG5 -to DE4_GPIO_Button_n[1]
+set_location_assignment PIN_AH5 -to DE4_GPIO_Button_n[0]
+set_instance_assignment -name IO_STANDARD "3.0-V PCI" -to DE4_GPIO_Button_n[3]
+set_instance_assignment -name IO_STANDARD "3.0-V PCI" -to DE4_GPIO_Button_n[2]
+set_instance_assignment -name IO_STANDARD "3.0-V PCI" -to DE4_GPIO_Button_n[1]
+set_instance_assignment -name IO_STANDARD "3.0-V PCI" -to DE4_GPIO_Button_n[0]
+set_instance_assignment -name IO_STANDARD "3.0-V PCI" -to DE4_GPIO_SlideSwitches[2]
+set_location_assignment PIN_AL34 -to DE4_GPIO_Seg7_Digit0_n[7]
+set_location_assignment PIN_K32 -to DE4_GPIO_Seg7_Digit0_n[6]
+set_location_assignment PIN_L35 -to DE4_GPIO_Seg7_Digit0_n[5]
+set_location_assignment PIN_J33 -to DE4_GPIO_Seg7_Digit0_n[4]
+set_location_assignment PIN_H31 -to DE4_GPIO_Seg7_Digit0_n[3]
+set_location_assignment PIN_M33 -to DE4_GPIO_Seg7_Digit0_n[2]
+set_location_assignment PIN_M34 -to DE4_GPIO_Seg7_Digit0_n[1]
+set_location_assignment PIN_L34 -to DE4_GPIO_Seg7_Digit0_n[0]
+set_location_assignment PIN_AL35 -to DE4_GPIO_Seg7_Digit1_n[7]
+set_location_assignment PIN_D34 -to DE4_GPIO_Seg7_Digit1_n[6]
+set_location_assignment PIN_D33 -to DE4_GPIO_Seg7_Digit1_n[5]
+set_location_assignment PIN_C33 -to DE4_GPIO_Seg7_Digit1_n[4]
+set_location_assignment PIN_C34 -to DE4_GPIO_Seg7_Digit1_n[3]
+set_location_assignment PIN_G31 -to DE4_GPIO_Seg7_Digit1_n[2]
+set_location_assignment PIN_F31 -to DE4_GPIO_Seg7_Digit1_n[1]
+set_location_assignment PIN_E31 -to DE4_GPIO_Seg7_Digit1_n[0]
+set_location_assignment PIN_AN35 -to DE4_UART_RS232_CTS
+set_location_assignment PIN_AH33 -to DE4_UART_RS232_RTS
+set_location_assignment PIN_AP20 -to DE4_FanControl
+set_instance_assignment -name IO_STANDARD "1.8 V" -to DE4_FanControl
+set_location_assignment PIN_AP19 -to DE4_SMBus_Alert
+set_location_assignment PIN_AN18 -to DE4_SMBus_SerialClock
+set_location_assignment PIN_AP18 -to DE4_SMBus_SerialData
+set_instance_assignment -name IO_STANDARD "1.8 V" -to DE4_SMBus_Alert
+set_instance_assignment -name IO_STANDARD "1.8 V" -to DE4_SMBus_SerialClock
+set_instance_assignment -name IO_STANDARD "1.8 V" -to DE4_SMBus_SerialData
+set_location_assignment PIN_G33 -to DE4_IIC_EEPROM_SerialClock
+set_location_assignment PIN_F33 -to DE4_IIC_EEPROM_SerialData
+
+set_location_assignment PIN_B20 -to DE4_EthernetPHY0_Interrupt_n
+set_location_assignment PIN_R30 -to DE4_EthernetPHY0_MDIO_Clock
+set_location_assignment PIN_W32 -to DE4_EthernetPHY0_MDIO_Data
+set_location_assignment PIN_V31 -to DE4_EthernetPHY0_RX_n
+set_location_assignment PIN_U31 -to DE4_EthernetPHY0_RX_p
+set_location_assignment PIN_T31 -to DE4_EthernetPHY0_TX_n
+set_location_assignment PIN_T30 -to DE4_EthernetPHY0_TX_p
+set_location_assignment PIN_AG30 -to DE4_EthernetPHY1_Interrupt_n
+set_location_assignment PIN_J6 -to DE4_EthernetPHY1_MDIO_Clock
+set_location_assignment PIN_J5 -to DE4_EthernetPHY1_MDIO_Data
+set_location_assignment PIN_N34 -to DE4_EthernetPHY1_RX_n
+set_location_assignment PIN_N33 -to DE4_EthernetPHY1_RX_p
+set_location_assignment PIN_R33 -to DE4_EthernetPHY1_TX_n
+set_location_assignment PIN_R32 -to DE4_EthernetPHY1_TX_p
+set_location_assignment PIN_AE30 -to DE4_EthernetPHY2_Interrupt_n
+set_location_assignment PIN_K6 -to DE4_EthernetPHY2_MDIO_Clock
+set_location_assignment PIN_K5 -to DE4_EthernetPHY2_MDIO_Data
+set_location_assignment PIN_K35 -to DE4_EthernetPHY2_RX_n
+set_location_assignment PIN_K34 -to DE4_EthernetPHY2_RX_p
+set_location_assignment PIN_L32 -to DE4_EthernetPHY2_TX_n
+set_location_assignment PIN_M32 -to DE4_EthernetPHY2_TX_p
+set_location_assignment PIN_AE31 -to DE4_EthernetPHY3_Interrupt_n
+set_location_assignment PIN_N7 -to DE4_EthernetPHY3_MDIO_Clock
+set_location_assignment PIN_N8 -to DE4_EthernetPHY3_MDIO_Data
+set_location_assignment PIN_J35 -to DE4_EthernetPHY3_RX_n
+set_location_assignment PIN_J34 -to DE4_EthernetPHY3_RX_p
+set_location_assignment PIN_P32 -to DE4_EthernetPHY3_TX_n
+set_location_assignment PIN_P31 -to DE4_EthernetPHY3_TX_p
+set_location_assignment PIN_V29 -to DE4_EthernetPHY_Reset_n
+set_instance_assignment -name IO_STANDARD LVDS -to DE4_EthernetPHY3_RX_n
+set_instance_assignment -name IO_STANDARD LVDS -to DE4_EthernetPHY3_RX_p
+set_instance_assignment -name IO_STANDARD LVDS -to DE4_EthernetPHY3_TX_n
+set_instance_assignment -name IO_STANDARD LVDS -to DE4_EthernetPHY3_TX_p
+set_instance_assignment -name IO_STANDARD LVDS -to DE4_EthernetPHY2_TX_p
+set_instance_assignment -name IO_STANDARD LVDS -to DE4_EthernetPHY2_TX_n
+set_instance_assignment -name IO_STANDARD LVDS -to DE4_EthernetPHY2_RX_p
+set_instance_assignment -name IO_STANDARD LVDS -to DE4_EthernetPHY2_RX_n
+set_instance_assignment -name IO_STANDARD LVDS -to DE4_EthernetPHY1_TX_p
+set_instance_assignment -name IO_STANDARD LVDS -to DE4_EthernetPHY1_TX_n
+set_instance_assignment -name IO_STANDARD LVDS -to DE4_EthernetPHY1_RX_p
+set_instance_assignment -name IO_STANDARD LVDS -to DE4_EthernetPHY1_RX_n
+set_instance_assignment -name IO_STANDARD LVDS -to DE4_EthernetPHY0_TX_p
+set_instance_assignment -name IO_STANDARD LVDS -to DE4_EthernetPHY0_TX_n
+set_instance_assignment -name IO_STANDARD LVDS -to DE4_EthernetPHY0_RX_p
+set_instance_assignment -name IO_STANDARD LVDS -to DE4_EthernetPHY0_RX_n
+set_instance_assignment -name IO_STANDARD "1.8 V" -to DE4_EthernetPHY0_Interrupt_n
+set_instance_assignment -name IO_STANDARD "1.8 V" -to DE4_SystemClock_100MHz
+set_location_assignment PIN_A21 -to DE4_SystemClock_100MHz
+set_global_assignment -name VHDL_FILE "../../netlist/XC6SLX45-3CSG324/CSP_ControlVIO.vhdl" -hdl_version VHDL_2008 -library L_Example
+set_global_assignment -name VHDL_FILE "../../lib/L_PicoBlaze/netlist/XC6SLX45-3CSG324/CSP_UART_ILA.vhdl" -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE "../../lib/L_PicoBlaze/netlist/XC6SLX45-3CSG324/CSP_PB_Tracer_ILA.vhdl" -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE "../../lib/L_PicoBlaze/netlist/XC6SLX45-3CSG324/CSP_DRP_ILA.vhdl" -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE mypll.vhd -hdl_version VHDL_2008 -library L_Example
+set_global_assignment -name VHDL_FILE "../../lib/L_PicoBlaze/vhdl/IO Adapter/pb_AddressDecoder.vhdl" -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE "../../lib/L_PicoBlaze/vhdl/IO Adapter/pb_GPIO_Adapter.vhdl" -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE ../../lib/L_PicoBlaze/vhdl/Device/pb_BitBangingIO_Device.vhdl -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE ../../lib/L_PicoBlaze/vhdl/Device/pb_ConverterBCD24_Device.vhdl -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE ../../lib/L_PicoBlaze/vhdl/Device/pb_Divider_Device.vhdl -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE ../../lib/L_PicoBlaze/vhdl/Device/pb_InstructionROM_Device.vhdl -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE ../../lib/L_PicoBlaze/vhdl/Device/pb_InterruptController_Device.vhdl -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE ../../lib/L_PicoBlaze/vhdl/Device/pb_Multiplier_Device.vhdl -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE ../../lib/L_PicoBlaze/vhdl/Device/pb_Scaler_Device.vhdl -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE ../../lib/L_PicoBlaze/vhdl/Device/pb_UART_Device.vhdl -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE ../../lib/L_PicoBlaze/vhdl/Wrapper/pb_UART_Wrapper.vhdl -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE ../../lib/L_PicoBlaze/vhdl/pb.comp.vhdl -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE ../../lib/L_PicoBlaze/vhdl/pb.pkg.vhdl -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE ../../lib/L_PicoBlaze/vhdl/pb_Devices.pkg.vhdl -hdl_version VHDL_2008 -library L_PicoBlaze
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/arith/arith.pkg.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/arith/arith_convert_bin2bcd.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/arith/arith_div.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/arith/arith_scaler.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/arith/arith_sqrt.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/bus/bus_Arbiter.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/common/board.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/common/components.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/common/config.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/common/debug.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/common/physical.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/common/strings.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/common/utils.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/common/vectors.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/fifo/fifo.pkg.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/fifo/fifo_cc_got.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/fifo/fifo_cc_got_tempgot.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/fifo/fifo_cc_got_tempput.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/fifo/fifo_glue.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/fifo/fifo_ic_got.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/io/io.pkg.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/io/io_Debounce.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/io/io_FanControl.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/io/io_FrequencyCounter.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/io/io_GlitchFilter.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/io/io_PulseWidthModulation.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/io/io_TimingCounter.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/io/uart/uart.pkg.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/io/uart/uart_bclk.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/io/uart/uart_fifo.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/io/uart/uart_rx.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/io/uart/uart_tx.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/mem/ocram/altera/ocram_esdp_altera.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/mem/ocram/altera/ocram_sp_altera.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/mem/ocram/altera/ocram_tdp_altera.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/mem/ocram/ocram.pkg.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/mem/ocram/ocram_esdp.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/mem/ocram/ocram_sdp.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/mem/ocram/ocram_sp.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/mem/ocram/ocram_tdp.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/mem/ocrom/ocrom_dp.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/mem/ocrom/ocrom_sp.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/misc/sync/sync.pkg.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/misc/sync/sync_Bits.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/misc/sync/sync_Bits_Altera.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/misc/sync/sync_Command.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/misc/sync/sync_Reset.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/misc/sync/sync_Reset_Altera.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/misc/sync/sync_Strobe.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/misc/sync/sync_Vector.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/PoC/src/xil/xil.pkg.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../lib/pauloBlaze/sources/alu.vhd -hdl_version VHDL_2008 -library L_PauloBlaze
+set_global_assignment -name VHDL_FILE ../../lib/pauloBlaze/sources/decoder.vhd -hdl_version VHDL_2008 -library L_PauloBlaze
+set_global_assignment -name VHDL_FILE ../../lib/pauloBlaze/sources/io_module.vhd -hdl_version VHDL_2008 -library L_PauloBlaze
+set_global_assignment -name VHDL_FILE ../../lib/pauloBlaze/sources/op_codes.vhd -hdl_version VHDL_2008 -library L_PauloBlaze
+set_global_assignment -name VHDL_FILE ../../lib/pauloBlaze/sources/pauloBlaze.vhd -hdl_version VHDL_2008 -library L_PauloBlaze
+set_global_assignment -name VHDL_FILE ../../lib/pauloBlaze/sources/program_counter.vhd -hdl_version VHDL_2008 -library L_PauloBlaze
+set_global_assignment -name VHDL_FILE ../../lib/pauloBlaze/sources/regFile.vhd -hdl_version VHDL_2008 -library L_PauloBlaze
+set_global_assignment -name VHDL_FILE ../../vhdl/Common/PoC.my_config_DE4.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../vhdl/Common/clknet_ClockNetwork_DE4.vhdl -hdl_version VHDL_2008 -library L_Example
+set_global_assignment -name VHDL_FILE ../../vhdl/ExampleDesign/ex_ExampleDesign.pkg.vhdl -hdl_version VHDL_2008 -library L_Example
+set_global_assignment -name VHDL_FILE ../../vhdl/ExampleDesign/ex_ExampleDesign.vhdl -hdl_version VHDL_2008 -library L_Example
+set_global_assignment -name VHDL_FILE ../../vhdl/PauloBlaze_DE4/PoC.my_project.vhdl -hdl_version VHDL_2008 -library PoC
+set_global_assignment -name VHDL_FILE ../../vhdl/PauloBlaze_DE4/Top_PauloBlaze_DE4.vhdl -hdl_version VHDL_2008 -library L_Example
+set_global_assignment -name VHDL_FILE ../../vhdl/PauloBlaze_DE4/pb_SoFPGA.pkg.vhdl -hdl_version VHDL_2008 -library L_Example
+set_global_assignment -name VHDL_FILE ../../vhdl/PauloBlaze_DE4/pb_SoFPGA_System.vhdl -hdl_version VHDL_2008 -library L_Example
+set_global_assignment -name SDC_FILE ../../ucf/ExampleDesign/PauloBlaze_DE4.sdc
+set_global_assignment -name CDF_FILE output_files/DE4.cdf
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
