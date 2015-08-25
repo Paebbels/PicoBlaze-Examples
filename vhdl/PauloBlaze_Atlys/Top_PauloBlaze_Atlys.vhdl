@@ -80,7 +80,7 @@ architecture top of PauloBlaze_Atlys is
 	-- ==========================================================================================================================================================
 	-- common configuration
 	constant DEBUG											: BOOLEAN							:= TRUE;
-	constant ENABLE_CHIPSCOPE						: BOOLEAN							:= TRUE;
+	constant ENABLE_CHIPSCOPE						: BOOLEAN							:= (VENDOR = VENDOR_XILINX);
 	constant ENABLE_DEBUGPORT						: BOOLEAN							:= TRUE;
 	
 	constant SYS_CLOCK_FREQ							: FREQ								:= 100 MHz;
@@ -109,6 +109,8 @@ architecture top of PauloBlaze_Atlys is
 	signal SystemClock_Stable_100MHz		: STD_LOGIC;
 	signal SystemClock_Stable_10MHz			: STD_LOGIC;
 
+	signal Control_Clock								: STD_LOGIC;
+	
 	signal System_Clock									: STD_LOGIC;
 	signal System_ClockStable						: STD_LOGIC;
 	signal System_Reset									: STD_LOGIC;
@@ -193,8 +195,8 @@ begin
 	-- ==========================================================================================================================================================
 	-- ClockNetwork
 	-- ==========================================================================================================================================================
-	ClkNet_Reset			<= Button_Reset;
-	Ex_ClkNet_Reset		<= Button_Reset;
+	ClkNet_Reset			<= GPIO_Button_Reset;
+	Ex_ClkNet_Reset		<= GPIO_Button_Reset;
 	
 	ClkNet : entity L_Example.ClockNetwork_Atlys
 		generic map (
@@ -206,7 +208,7 @@ begin
 			ClockNetwork_Reset			=> ClkNet_Reset,
 			ClockNetwork_ResetDone	=> ClkNet_ResetDone,
 			
-			Control_Clock_100MHz		=> open,
+			Control_Clock_100MHz		=> Control_Clock,
 			
 			Clock_200MHz						=> SystemClock_200MHz,
 			Clock_125MHz						=> SystemClock_125MHz,
@@ -229,19 +231,20 @@ begin
 	-- ==========================================================================================================================================================
 	DebBtn : entity PoC.io_Debounce
 		generic map (
-			CLOCK_FREQ				=> SYSTEM_CLOCK_FREQ,		-- 100 MHz
-			BOUNCE_TIME				=> 5.0 ms,							-- 5.0 ms
-			BITS							=> 1										-- 3 bit
+			CLOCK_FREQ							=> SYSTEM_CLOCK_FREQ,
+			BOUNCE_TIME							=> 5 ms,
+			BITS										=> 1,
+			ADD_INPUT_SYNCHRONIZERS	=> TRUE
 		)
 		port map (
-			clk								=> System_Clock,
-			rst								=> '0',
+			Clock							=> Control_Clock,
+			Reset							=> '0',
 			Input(0)					=> Atlys_GPIO_Button_Reset,
 			Output(0)					=> GPIO_Button_Reset
 		);
 
 	-- synchronize to System_Clock
-	sync1 : entity PoC.xil_SyncBits
+	sync1 : entity PoC.sync_Bits_Xilinx
 		port map (
 			Clock			=> System_Clock,						-- Clock to be synchronized to
 			Input(0)	=> GPIO_Button_Reset,				-- Data to be synchronized
@@ -306,8 +309,7 @@ begin
 			Raw_IIC_Clock_i						=> Raw_IIC_Clock_i,
 			Raw_IIC_Clock_t						=> Raw_IIC_Clock_t,
 			Raw_IIC_Data_i						=> Raw_IIC_Data_i,
-			Raw_IIC_Data_t						=> Raw_IIC_Data_t,
-			Raw_IIC_Switch_Reset			=> Raw_IIC_Switch_Reset--,
+			Raw_IIC_Data_t						=> Raw_IIC_Data_t--,
 			
 --			IIC_SerialClock_i					=> IIC_SerialClock_i,
 --			IIC_SerialClock_o					=> IIC_SerialClock_o,

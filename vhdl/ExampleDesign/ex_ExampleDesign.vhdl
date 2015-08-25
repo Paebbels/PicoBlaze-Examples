@@ -87,14 +87,14 @@ end;
 
 
 architecture rtl of ex_ExampleDesign is
-	attribute KEEP											: BOOLEAN;
-	attribute ENUM_ENCODING							: STRING;
+	attribute PRESERVE							: BOOLEAN;
+	attribute ENUM_ENCODING					: STRING;
 
 	-- ===========================================================================
 	-- configurations
 	-- ===========================================================================
-	-- UART configuration																													921.6 kBit/s	115.2 kBit/s	
-	constant UART_BAUDRATE											: BAUD				:= ite(SIMULATION,	921600 Bd,		921600 Bd);
+	-- UART configuration																							921.6 kBit/s	board dependent
+	constant UART_BAUDRATE					: BAUD				:= ite(SIMULATION,	921600 Bd,		to_baud(BOARD_UART_BAUDRATE));
 
 	-- ===========================================================================
 	-- SoFPGA configuration
@@ -108,10 +108,10 @@ architecture rtl of ex_ExampleDesign is
 
 	constant SOFPGA_DUMMY 					: T_BOOLVEC 	:= (
 		0 => pb_PrintAddressMapping(SOFPGA_SYSTEM),
-		1 => pb_PrintBusses(SOFPGA_SYSTEM),
-		2 => pb_ExportAddressMappingAsAssemblerConstants(SOFPGA_SYSTEM,				PROJECT_DIR & "psm/" & MY_PROJECT_NAME & "/SoFPGA_PortID.psm"),
-		3 => pb_ExportAddressMappingAsAssemblerInterruptVector(SOFPGA_SYSTEM,	PROJECT_DIR & "psm/" & MY_PROJECT_NAME & "/SoFPGA_InterruptVector.psm", 16),
-		4 => pb_ExportAddressMappingAsChipScopeTokens(SOFPGA_SYSTEM,					PROJECT_DIR & "ChipScope/TokenFiles/SoFPGA_PortID." & MY_PROJECT_NAME & ".tok")
+		1 => pb_PrintBusses(SOFPGA_SYSTEM)--,
+--		2 => pb_ExportAddressMappingAsAssemblerConstants(SOFPGA_SYSTEM,				PROJECT_DIR & "psm/" & MY_PROJECT_NAME & "/SoFPGA_PortID.psm"),
+--		3 => pb_ExportAddressMappingAsAssemblerInterruptVector(SOFPGA_SYSTEM,	PROJECT_DIR & "psm/" & MY_PROJECT_NAME & "/SoFPGA_InterruptVector.psm", 16),
+--		4 => pb_ExportAddressMappingAsChipScopeTokens(SOFPGA_SYSTEM,					PROJECT_DIR & "ChipScope/TokenFiles/SoFPGA_PortID." & MY_PROJECT_NAME & ".tok")
 	);
 
 	-- ===========================================================================
@@ -191,12 +191,15 @@ architecture rtl of ex_ExampleDesign is
 --	signal IICBus_PBIIC2_RP_Last						: STD_LOGIC;
 
 begin
+	ClkNet_Reset						<= ClockNetwork_Reset;
+	ClkNet_ResetDone				<= not ClkNet_Reset;
+	ClockNetwork_ResetDone	<= ClkNet_ResetDone;
 
 	genCSP : if (ENABLE_CHIPSCOPE and (CSP_ICON_PORTS > 0)) generate
 		signal ControlVIO_In		: STD_LOGIC_VECTOR(7 downto 0);
 		signal ControlVIO_Out		: STD_LOGIC_VECTOR(7 downto 0);
 	begin
-		ICON : entity PoC.xil_ChipScopeICON
+		ICON : xil_ChipScopeICON
 			generic map (
 				PORTS				=> CSP_ICON_PORTS
 			)

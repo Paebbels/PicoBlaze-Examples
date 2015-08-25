@@ -96,7 +96,7 @@ begin
 	-- ResetControl
 	-- ==================================================================
 	-- synchronize external (async) ClockNetwork_Reset and internal (but async) DCM_Locked signals to "Control_Clock" domain
-	syncControlClock : entity PoC.xil_SyncBits
+	syncControlClock : entity PoC.sync_Bits_Xilinx
 		generic map (
 			BITS					=> 2										-- number of BITS to synchronize
 		)
@@ -223,28 +223,28 @@ begin
 	Clock_10MHz						<= DCM_Clock_10MHz_BUFG;
 
 	-- synchronize internal Locked signal to ouput clock domains
-	syncLocked200MHz : entity PoC.xil_SyncBits
+	syncLocked200MHz : entity PoC.sync_Bits_Xilinx
 		port map (
 			Clock					=> DCM_Clock_200MHz_BUFG,		-- Clock to be synchronized to
 			Input(0)			=> Locked,										-- Data to be synchronized
 			Output(0)			=> Clock_Stable_200MHz				-- synchronised data
 		);
 
-	syncLocked125MHz : entity PoC.xil_SyncBits
+	syncLocked125MHz : entity PoC.sync_Bits_Xilinx
 		port map (
 			Clock					=> DCM_Clock_125MHz_BUFG,		-- Clock to be synchronized to
 			Input(0)			=> Locked,										-- Data to be synchronized
 			Output(0)			=> Clock_Stable_125MHz				-- synchronised data
 		);
 
-	syncLocked100MHz : entity PoC.xil_SyncBits
+	syncLocked100MHz : entity PoC.sync_Bits_Xilinx
 		port map (
 			Clock					=> DCM_Clock_100MHz_BUFG,		-- Clock to be synchronized to
 			Input(0)			=> Locked,										-- Data to be synchronized
 			Output(0)			=> Clock_Stable_100MHz				-- synchronised data
 		);
 
-	syncLocked10MHz : entity PoC.xil_SyncBits
+	syncLocked10MHz : entity PoC.sync_Bits_Xilinx
 		port map (
 			Clock					=> DCM_Clock_10MHz_BUFG,			-- Clock to be synchronized to
 			Input(0)			=> Locked,										-- Data to be synchronized

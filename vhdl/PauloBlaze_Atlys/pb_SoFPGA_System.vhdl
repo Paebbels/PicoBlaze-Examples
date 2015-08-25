@@ -153,6 +153,9 @@ architecture rtl of pb_SoFPGA_System is
 	constant INTERN_PB_IOBUS_PORTS			: NATURAL					:= pb_GetBusWidth(SOFPGA_SYSTEM, "Intern");
 	constant EXTERN_PB_IOBUS_PORTS			: NATURAL					:= pb_GetBusWidth(SOFPGA_SYSTEM, "Extern");
 	
+	constant USE_PB_UART								: BOOLEAN					:= TRUE;
+	constant USE_POC_UART								: BOOLEAN					:= ite((VENDOR = VENDOR_ALTERA), TRUE, not USE_PB_UART);
+	
 	signal Any_PicoBlazeDeviceBus				: T_PB_IOBUS_PB_DEV_VECTOR(ANY_PB_IOBUS_PORTS - 1 downto 0)			:= (others => T_PB_IOBUS_PB_DEV_Z);
 	signal Any_DevicePicoBlazeBus				: T_PB_IOBUS_DEV_PB_VECTOR(ANY_PB_IOBUS_PORTS - 1 downto 0)			:= (others => T_PB_IOBUS_DEV_PB_Z);
 	signal Intern_PicoBlazeDeviceBus		: T_PB_IOBUS_PB_DEV_VECTOR(INTERN_PB_IOBUS_PORTS - 1 downto 0)	:= (others => T_PB_IOBUS_PB_DEV_Z);
@@ -179,6 +182,7 @@ architecture rtl of pb_SoFPGA_System is
 	signal PB_DataIn										: T_SLV_8;
 	signal PB_DataOut										: T_SLV_8;
 	signal PB_Interrupt_Ack							: STD_LOGIC;
+	
 	attribute KEEP of PB_PortID					: signal is DEBUG;
 	attribute KEEP of PB_ReadStrobe			: signal is DEBUG;
 	attribute KEEP of PB_WriteStrobe		: signal is DEBUG;
@@ -814,7 +818,8 @@ begin
 				ENABLE_CHIPSCOPE		=> ENABLE_UART_ILA,
 				CLOCK_FREQ					=> CLOCK_FREQ,
 				DEVICE_INSTANCE			=> DEVICE_INST,
-				BAUDRATE						=> UART_BAUDRATE
+				BAUDRATE						=> UART_BAUDRATE,
+				USE_POC_UART				=> USE_POC_UART
 			)
 			port map (
 				Clock								=> CPU_Clock,

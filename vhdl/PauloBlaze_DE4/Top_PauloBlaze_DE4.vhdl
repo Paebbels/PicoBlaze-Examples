@@ -121,7 +121,7 @@ architecture top of Top_PauloBlaze_DE4 is
 	-- ==========================================================================================================================================================
 	-- common configuration
 	constant DEBUG											: BOOLEAN							:= TRUE;
-	constant ENABLE_CHIPSCOPE						: BOOLEAN							:= TRUE;
+	constant ENABLE_CHIPSCOPE						: BOOLEAN							:= (VENDOR = VENDOR_XILINX);
 	constant ENABLE_DEBUGPORT						: BOOLEAN							:= TRUE;
 	
 	constant SYS_CLOCK_FREQ							: FREQ								:= 100 MHz;
@@ -280,13 +280,14 @@ begin
 	-- ==========================================================================================================================================================
 	DebBtn : entity PoC.io_Debounce
 		generic map (
-			CLOCK_FREQ				=> SYSTEM_CLOCK_FREQ,
-			BOUNCE_TIME				=> 50 ms,
-			BITS							=> 1
+			CLOCK_FREQ							=> SYSTEM_CLOCK_FREQ,
+			BOUNCE_TIME							=> 50 ms,
+			BITS										=> 1,
+			ADD_INPUT_SYNCHRONIZERS	=> TRUE
 		)
 		port map (
-			clk								=> Control_Clock,
-			rst								=> '0',
+			Clock							=> Control_Clock,
+			Reset							=> '0',
 			Input(0)					=> DE4_GPIO_Button_Reset,
 			Output(0)					=> GPIO_Button_Reset
 		);

@@ -33,8 +33,8 @@ library IEEE;
 use			IEEE.STD_LOGIC_1164.all;
 use			IEEE.NUMERIC_STD.all;
 
-library UNISIM;
-use			UNISIM.VCOMPONENTS.all;
+--library UNISIM;
+--use			UNISIM.VCOMPONENTS.all;
 
 library PoC;
 use			PoC.config.all;
@@ -47,6 +47,8 @@ use			PoC.xil.all;
 
 library	L_PicoBlaze;
 use			L_PicoBlaze.pb.all;
+
+library	L_PauloBlaze;
 
 library L_Example;
 use			L_Example.pb_SoFPGA.all;
@@ -207,7 +209,7 @@ begin
 	CPU_Reset_i			<= CPU_Reset	or ROM_RebootCPU;
 	PB_Sleep				<= '0';
 
-	PicoBlaze : entity L_PicoBlaze.KCPSM6
+	PauloBlaze : entity L_PauloBlaze.PauloBlaze
 		generic map (
 			hwbuild									=> X"00",
 			interrupt_vector				=> X"FE0",
@@ -374,63 +376,63 @@ begin
 		end process;
 	end block;
 	
-	genCSP : if (ENABLE_CHIPSCOPE = TRUE) generate
-		signal Tracer_DataIn			: STD_LOGIC_VECTOR(62 downto 0);
-		signal Tracer_Trigger0		: STD_LOGIC_VECTOR(14 downto 0);
-		signal Tracer_Trigger1		: T_SLV_8;
-		signal Tracer_Trigger2		: STD_LOGIC_VECTOR(5 downto 0);
-		signal Tracer_Trigger3		: T_SLV_16;
-		
-		signal Tracer_DataIn_d		: STD_LOGIC_VECTOR(62 downto 0)			:= (others => '0');
-		signal Tracer_Trigger0_d	: STD_LOGIC_VECTOR(14 downto 0)			:= (others => '0');
-		signal Tracer_Trigger1_d	: T_SLV_8														:= (others => '0');
-		signal Tracer_Trigger2_d	: STD_LOGIC_VECTOR(5 downto 0)			:= (others => '0');
-		signal Tracer_Trigger3_d	: T_SLV_16													:= (others => '0');
-		
-	begin
-		Tracer_DataIn(11 downto	 0)		<= PB_InstructionPointer;
-		Tracer_DataIn(29 downto 12)		<= ROM_Instruction;
-		Tracer_DataIn(37 downto 30)		<= PB_PortID;
-		Tracer_DataIn(45 downto 38)		<= PB_DataOut;
-		Tracer_DataIn(53 downto 46)		<= PB_DataIn;
-		Tracer_DataIn(54)							<= PB_WriteStrobe;
-		Tracer_DataIn(55)							<= PB_WriteStrobe_K;
-		Tracer_DataIn(56)							<= PB_ReadStrobe;
-		Tracer_DataIn(57)							<= IntC_Interrupt;
-		Tracer_DataIn(58)							<= ROM_RebootCPU;
-		Tracer_DataIn(59)							<= CSP_Trigger;
-		Tracer_DataIn(62 downto 60)		<= DBG_PageNumber(2 downto 0);
-		
-		Tracer_Trigger0(11 downto 0)	<= PB_InstructionPointer;
-		Tracer_Trigger0(14 downto 12)	<= DBG_PageNumber(2 downto 0);
-		Tracer_Trigger1								<= PB_PortID;
-		Tracer_Trigger2(0)						<= PB_WriteStrobe;
-		Tracer_Trigger2(1)						<= PB_WriteStrobe_K;
-		Tracer_Trigger2(2)						<= PB_ReadStrobe;
-		Tracer_Trigger2(3)						<= IntC_Interrupt;
-		Tracer_Trigger2(4)						<= ROM_RebootCPU;
-		Tracer_Trigger2(5)						<= CSP_Trigger;
-		Tracer_Trigger3(7	 downto 0)	<= PB_DataOut;
-		Tracer_Trigger3(15 downto 8)	<= PB_DataIn;
-		
-		Tracer_DataIn_d			<= Tracer_DataIn		when rising_edge(CPU_Clock);
-		Tracer_Trigger0_d		<= Tracer_Trigger0	when rising_edge(CPU_Clock);
-		Tracer_Trigger1_d		<= Tracer_Trigger1	when rising_edge(CPU_Clock);
-		Tracer_Trigger2_d		<= Tracer_Trigger2	when rising_edge(CPU_Clock);
-		Tracer_Trigger3_d		<= Tracer_Trigger3	when rising_edge(CPU_Clock);
-		
-		Tracer : entity L_PicoBlaze.CSP_PB_Tracer_ILA
-			port map (
-				CONTROL		=> CSP_ICON_ControlBus_Trace,
-				CLK				=> CPU_Clock,
-				DATA			=> Tracer_DataIn_d,
-				TRIG0			=> Tracer_Trigger0_d,
-				TRIG1			=> Tracer_Trigger1_d,
-				TRIG2			=> Tracer_Trigger2_d,
-				TRIG3			=> Tracer_Trigger3_d,
-				TRIG_OUT	=> CSP_Tracer_TriggerEvent
-			);
-	end generate;
+--	genCSP : if (ENABLE_CHIPSCOPE = TRUE) generate
+--		signal Tracer_DataIn			: STD_LOGIC_VECTOR(62 downto 0);
+--		signal Tracer_Trigger0		: STD_LOGIC_VECTOR(14 downto 0);
+--		signal Tracer_Trigger1		: T_SLV_8;
+--		signal Tracer_Trigger2		: STD_LOGIC_VECTOR(5 downto 0);
+--		signal Tracer_Trigger3		: T_SLV_16;
+--		
+--		signal Tracer_DataIn_d		: STD_LOGIC_VECTOR(62 downto 0)			:= (others => '0');
+--		signal Tracer_Trigger0_d	: STD_LOGIC_VECTOR(14 downto 0)			:= (others => '0');
+--		signal Tracer_Trigger1_d	: T_SLV_8														:= (others => '0');
+--		signal Tracer_Trigger2_d	: STD_LOGIC_VECTOR(5 downto 0)			:= (others => '0');
+--		signal Tracer_Trigger3_d	: T_SLV_16													:= (others => '0');
+--		
+--	begin
+--		Tracer_DataIn(11 downto	 0)		<= PB_InstructionPointer;
+--		Tracer_DataIn(29 downto 12)		<= ROM_Instruction;
+--		Tracer_DataIn(37 downto 30)		<= PB_PortID;
+--		Tracer_DataIn(45 downto 38)		<= PB_DataOut;
+--		Tracer_DataIn(53 downto 46)		<= PB_DataIn;
+--		Tracer_DataIn(54)							<= PB_WriteStrobe;
+--		Tracer_DataIn(55)							<= PB_WriteStrobe_K;
+--		Tracer_DataIn(56)							<= PB_ReadStrobe;
+--		Tracer_DataIn(57)							<= IntC_Interrupt;
+--		Tracer_DataIn(58)							<= ROM_RebootCPU;
+--		Tracer_DataIn(59)							<= CSP_Trigger;
+--		Tracer_DataIn(62 downto 60)		<= DBG_PageNumber(2 downto 0);
+--		
+--		Tracer_Trigger0(11 downto 0)	<= PB_InstructionPointer;
+--		Tracer_Trigger0(14 downto 12)	<= DBG_PageNumber(2 downto 0);
+--		Tracer_Trigger1								<= PB_PortID;
+--		Tracer_Trigger2(0)						<= PB_WriteStrobe;
+--		Tracer_Trigger2(1)						<= PB_WriteStrobe_K;
+--		Tracer_Trigger2(2)						<= PB_ReadStrobe;
+--		Tracer_Trigger2(3)						<= IntC_Interrupt;
+--		Tracer_Trigger2(4)						<= ROM_RebootCPU;
+--		Tracer_Trigger2(5)						<= CSP_Trigger;
+--		Tracer_Trigger3(7	 downto 0)	<= PB_DataOut;
+--		Tracer_Trigger3(15 downto 8)	<= PB_DataIn;
+--		
+--		Tracer_DataIn_d			<= Tracer_DataIn		when rising_edge(CPU_Clock);
+--		Tracer_Trigger0_d		<= Tracer_Trigger0	when rising_edge(CPU_Clock);
+--		Tracer_Trigger1_d		<= Tracer_Trigger1	when rising_edge(CPU_Clock);
+--		Tracer_Trigger2_d		<= Tracer_Trigger2	when rising_edge(CPU_Clock);
+--		Tracer_Trigger3_d		<= Tracer_Trigger3	when rising_edge(CPU_Clock);
+--		
+--		Tracer : entity L_PicoBlaze.CSP_PB_Tracer_ILA
+--			port map (
+--				CONTROL		=> CSP_ICON_ControlBus_Trace,
+--				CLK				=> CPU_Clock,
+--				DATA			=> Tracer_DataIn_d,
+--				TRIG0			=> Tracer_Trigger0_d,
+--				TRIG1			=> Tracer_Trigger1_d,
+--				TRIG2			=> Tracer_Trigger2_d,
+--				TRIG3			=> Tracer_Trigger3_d,
+--				TRIG_OUT	=> CSP_Tracer_TriggerEvent
+--			);
+--	end generate;
 	
 	-- Reset registers
 	blkReset : block
