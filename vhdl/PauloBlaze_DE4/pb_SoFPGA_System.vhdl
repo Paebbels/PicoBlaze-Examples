@@ -34,11 +34,8 @@ library IEEE;
 use			IEEE.STD_LOGIC_1164.all;
 use			IEEE.NUMERIC_STD.all;
 
-library UNISIM;
-use			UNISIM.VCOMPONENTS.all;
-
 library PoC;
-use			PoC.my_project.MY_PROJECT_NAME;
+use			PoC.my_project.all;
 use			PoC.config.all;
 use			PoC.utils.all;
 use			PoC.vectors.all;
@@ -99,8 +96,7 @@ entity pb_SoFPGA_System is
 		Raw_IIC_Clock_i						: in		STD_LOGIC;
 		Raw_IIC_Clock_t						: out		STD_LOGIC;
 		Raw_IIC_Data_i						: in		STD_LOGIC;
-		Raw_IIC_Data_t						: out		STD_LOGIC;
-		Raw_IIC_Switch_Reset			: out		STD_LOGIC
+		Raw_IIC_Data_t						: out		STD_LOGIC
 		
 --		-- IICController_IIC interface	
 --		IIC1_Request							: out		STD_LOGIC;
@@ -148,13 +144,11 @@ architecture rtl of pb_SoFPGA_System is
 
 	constant SOURCE_DIRECTORY						: STRING					:= PROJECT_DIR & "psm/" & MY_PROJECT_NAME & "/";
 	constant ROM_PAGES									: POSITIVE				:= 2;
-
+	constant USE_POC_UART								: BOOLEAN					:= TRUE;
+	
 	constant ANY_PB_IOBUS_PORTS					: NATURAL					:= pb_GetBusWidth(SOFPGA_SYSTEM, "Any");
 	constant INTERN_PB_IOBUS_PORTS			: NATURAL					:= pb_GetBusWidth(SOFPGA_SYSTEM, "Intern");
 	constant EXTERN_PB_IOBUS_PORTS			: NATURAL					:= pb_GetBusWidth(SOFPGA_SYSTEM, "Extern");
-	
-	constant USE_PB_UART								: BOOLEAN					:= TRUE;
-	constant USE_POC_UART								: BOOLEAN					:= ite((VENDOR = VENDOR_ALTERA), TRUE, not USE_PB_UART);
 	
 	signal Any_PicoBlazeDeviceBus				: T_PB_IOBUS_PB_DEV_VECTOR(ANY_PB_IOBUS_PORTS - 1 downto 0)			:= (others => T_PB_IOBUS_PB_DEV_Z);
 	signal Any_DevicePicoBlazeBus				: T_PB_IOBUS_DEV_PB_VECTOR(ANY_PB_IOBUS_PORTS - 1 downto 0)			:= (others => T_PB_IOBUS_DEV_PB_Z);
@@ -182,7 +176,6 @@ architecture rtl of pb_SoFPGA_System is
 	signal PB_DataIn										: T_SLV_8;
 	signal PB_DataOut										: T_SLV_8;
 	signal PB_Interrupt_Ack							: STD_LOGIC;
-	
 	attribute KEEP of PB_PortID					: signal is DEBUG;
 	attribute KEEP of PB_ReadStrobe			: signal is DEBUG;
 	attribute KEEP of PB_WriteStrobe		: signal is DEBUG;
@@ -221,9 +214,7 @@ begin
 	CPU_Reset_i			<= CPU_Reset	or ROM_RebootCPU;
 	PB_Sleep				<= '0';
 
-	genPico : if (TRUE) generate
-	begin
-	PicoBlaze : entity L_PicoBlaze.KCPSM6
+	PauloBlaze : entity L_PauloBlaze.PauloBlaze
 		generic map (
 			hwbuild									=> x"00",
 			interrupt_vector				=> x"FE0",
@@ -248,36 +239,6 @@ begin
 			interrupt								=> IntC_Interrupt,
 			interrupt_ack						=> open
 		);
-	end generate;
-	
-	genPaulo : if (FALSE) generate
-	begin
-		PauloBlaze : entity L_PauloBlaze.PauloBlaze
-			generic map (
-				hwbuild									=> x"00",
-				interrupt_vector				=> x"FE0",
-				scratch_pad_memory_size => 256
-			)
-			port map (
-				clk											=> CPU_Clock,
-				reset										=> CPU_Reset_i,
-				sleep										=> PB_Sleep,
-			
-				bram_enable							=> PB_InstructionFetch,
-				address									=> PB_InstructionPointer,
-				instruction							=> ROM_Instruction,
-
-				port_id									=> PB_PortID,
-				read_strobe							=> PB_ReadStrobe,
-				write_strobe						=> PB_WriteStrobe,
-				k_write_strobe					=> PB_WriteStrobe_k,
-				out_port								=> PB_DataOut,
-				in_port									=> PB_DataIn,
-
-				interrupt								=> IntC_Interrupt,
-				interrupt_ack						=> open
-			);
-	end generate;
 
 	-- new interrupt ack signal on RETURNI instruction
 	PB_InstructionFetch_d	<= PB_InstructionFetch when rising_edge(CPU_Clock);
@@ -313,7 +274,6 @@ begin
 		constant DEV_SHORT		: STRING								:= "InstROM";
 		constant BUSINDEX			: NATURAL								:= pb_GetBusIndex(SOFPGA_SYSTEM, DEV_SHORT);
 		constant DEVICE_INST	: T_PB_DEVICE_INSTANCE	:= pb_GetDeviceInstance(SOFPGA_SYSTEM, DEV_SHORT);
-		
 	begin
 		ROM : entity L_PicoBlaze.pb_InstructionROM_Device
 			generic map (
@@ -421,64 +381,6 @@ begin
 			end if;
 		end process;
 	end block;
-	
-	genCSP : if (ENABLE_SOFPGA_TRACER = TRUE) generate
-		signal Tracer_DataIn			: STD_LOGIC_VECTOR(62 downto 0);
-		signal Tracer_Trigger0		: STD_LOGIC_VECTOR(14 downto 0);
-		signal Tracer_Trigger1		: T_SLV_8;
-		signal Tracer_Trigger2		: STD_LOGIC_VECTOR(5 downto 0);
-		signal Tracer_Trigger3		: T_SLV_16;
-		
-		signal Tracer_DataIn_d		: STD_LOGIC_VECTOR(62 downto 0)			:= (others => '0');
-		signal Tracer_Trigger0_d	: STD_LOGIC_VECTOR(14 downto 0)			:= (others => '0');
-		signal Tracer_Trigger1_d	: T_SLV_8														:= (others => '0');
-		signal Tracer_Trigger2_d	: STD_LOGIC_VECTOR(5 downto 0)			:= (others => '0');
-		signal Tracer_Trigger3_d	: T_SLV_16													:= (others => '0');
-		
-	begin
-		Tracer_DataIn(11 downto	 0)		<= PB_InstructionPointer;
-		Tracer_DataIn(29 downto 12)		<= ROM_Instruction;
-		Tracer_DataIn(37 downto 30)		<= PB_PortID;
-		Tracer_DataIn(45 downto 38)		<= PB_DataOut;
-		Tracer_DataIn(53 downto 46)		<= PB_DataIn;
-		Tracer_DataIn(54)							<= PB_WriteStrobe;
-		Tracer_DataIn(55)							<= PB_WriteStrobe_K;
-		Tracer_DataIn(56)							<= PB_ReadStrobe;
-		Tracer_DataIn(57)							<= IntC_Interrupt;
-		Tracer_DataIn(58)							<= ROM_RebootCPU;
-		Tracer_DataIn(59)							<= CSP_Trigger;
-		Tracer_DataIn(62 downto 60)		<= DBG_PageNumber(2 downto 0);
-		
-		Tracer_Trigger0(11 downto 0)	<= PB_InstructionPointer;
-		Tracer_Trigger0(14 downto 12)	<= DBG_PageNumber(2 downto 0);
-		Tracer_Trigger1								<= PB_PortID;
-		Tracer_Trigger2(0)						<= PB_WriteStrobe;
-		Tracer_Trigger2(1)						<= PB_WriteStrobe_K;
-		Tracer_Trigger2(2)						<= PB_ReadStrobe;
-		Tracer_Trigger2(3)						<= IntC_Interrupt;
-		Tracer_Trigger2(4)						<= ROM_RebootCPU;
-		Tracer_Trigger2(5)						<= CSP_Trigger;
-		Tracer_Trigger3(7	 downto 0)	<= PB_DataOut;
-		Tracer_Trigger3(15 downto 8)	<= PB_DataIn;
-		
-		Tracer_DataIn_d			<= Tracer_DataIn		when rising_edge(CPU_Clock);
-		Tracer_Trigger0_d		<= Tracer_Trigger0	when rising_edge(CPU_Clock);
-		Tracer_Trigger1_d		<= Tracer_Trigger1	when rising_edge(CPU_Clock);
-		Tracer_Trigger2_d		<= Tracer_Trigger2	when rising_edge(CPU_Clock);
-		Tracer_Trigger3_d		<= Tracer_Trigger3	when rising_edge(CPU_Clock);
-		
-		Tracer : entity L_PicoBlaze.CSP_PB_Tracer_ILA
-			port map (
-				CONTROL		=> CSP_ICON_ControlBus_Trace,
-				CLK				=> CPU_Clock,
-				DATA			=> Tracer_DataIn_d,
-				TRIG0			=> Tracer_Trigger0_d,
-				TRIG1			=> Tracer_Trigger1_d,
-				TRIG2			=> Tracer_Trigger2_d,
-				TRIG3			=> Tracer_Trigger3_d,
-				TRIG_OUT	=> CSP_Tracer_TriggerEvent
-			);
-	end generate;
 	
 	-- Reset registers
 	blkReset : block
@@ -595,46 +497,46 @@ begin
 		pb_AssignInterruptAck(Any_PicoBlazeDeviceBus, IntC_Interrupt_Ack, SOFPGA_SYSTEM);
 	end block;
 
---	blkTimer : block
---		constant DEV_SHORT		: STRING								:= "Timer";
---		constant BUSINDEX			: NATURAL								:= pb_GetBusIndex(SOFPGA_SYSTEM, DEV_SHORT);
---		constant DEVICE_INST	: T_PB_DEVICE_INSTANCE	:= pb_GetDeviceInstance(SOFPGA_SYSTEM, DEV_SHORT);
---	
---	begin
---		Timer : entity L_PicoBlaze.pb_Timer
---			generic map (
---				DEVICE_INSTANCE			=> DEVICE_INST
---			)
---			port map (
---				Clock								=> CPU_Clock,
---				Reset								=> CPU_Reset_i,
---				
---				-- PicoBlaze interface
---				Address							=> Intern_PicoBlazeDeviceBus(BUSINDEX).PortID,
---				WriteStrobe					=> Intern_PicoBlazeDeviceBus(BUSINDEX).WriteStrobe,
---				WriteStrobe_K				=> Intern_PicoBlazeDeviceBus(BUSINDEX).WriteStrobe_K,
---				ReadStrobe					=> Intern_PicoBlazeDeviceBus(BUSINDEX).ReadStrobe,
---				DataIn							=> Intern_PicoBlazeDeviceBus(BUSINDEX).Data,
---				DataOut							=> Intern_DevicePicoBlazeBus(BUSINDEX).Data,
---				
---				Interrupt						=> Intern_DevicePicoBlazeBus(BUSINDEX).Interrupt,
---				Interrupt_Ack				=> Intern_PicoBlazeDeviceBus(BUSINDEX).Interrupt_Ack,
---				Message							=> Intern_DevicePicoBlazeBus(BUSINDEX).Message,
---				
---				EventIn							=> "00001"
---			);
---	end block;
+----	blkTimer : block
+----		constant DEV_SHORT		: STRING								:= "Timer";
+----		constant BUSINDEX			: NATURAL								:= pb_GetBusIndex(SOFPGA_SYSTEM, DEV_SHORT);
+----		constant DEVICE_INST	: T_PB_DEVICE_INSTANCE	:= pb_GetDeviceInstance(SOFPGA_SYSTEM, DEV_SHORT);
+----	
+----	begin
+----		Timer : entity L_PicoBlaze.pb_Timer
+----			generic map (
+----				DEVICE_INSTANCE			=> DEVICE_INST
+----			)
+----			port map (
+----				Clock								=> CPU_Clock,
+----				Reset								=> CPU_Reset_i,
+----				
+----				-- PicoBlaze interface
+----				Address							=> Intern_PicoBlazeDeviceBus(BUSINDEX).PortID,
+----				WriteStrobe					=> Intern_PicoBlazeDeviceBus(BUSINDEX).WriteStrobe,
+----				WriteStrobe_K				=> Intern_PicoBlazeDeviceBus(BUSINDEX).WriteStrobe_K,
+----				ReadStrobe					=> Intern_PicoBlazeDeviceBus(BUSINDEX).ReadStrobe,
+----				DataIn							=> Intern_PicoBlazeDeviceBus(BUSINDEX).Data,
+----				DataOut							=> Intern_DevicePicoBlazeBus(BUSINDEX).Data,
+----				
+----				Interrupt						=> Intern_DevicePicoBlazeBus(BUSINDEX).Interrupt,
+----				Interrupt_Ack				=> Intern_PicoBlazeDeviceBus(BUSINDEX).Interrupt_Ack,
+----				Message							=> Intern_DevicePicoBlazeBus(BUSINDEX).Message,
+----				
+----				EventIn							=> "00001"
+----			);
+----	end block;
 
 	blkAccellerator : block
-		constant MULT_SHORT					: STRING								:= "Mult32";
+		constant MULT_SHORT					: STRING								:= "Mult";
 		constant MULT_BUSINDEX			: NATURAL								:= pb_GetBusIndex(SOFPGA_SYSTEM, MULT_SHORT);
 		constant MULT_DEVICE_INST		: T_PB_DEVICE_INSTANCE	:= pb_GetDeviceInstance(SOFPGA_SYSTEM, MULT_SHORT);
 		
-		constant DIV_SHORT					: STRING								:= "Div32";
+		constant DIV_SHORT					: STRING								:= "Div";
 		constant DIV_BUSINDEX				: NATURAL								:= pb_GetBusIndex(SOFPGA_SYSTEM, DIV_SHORT);
 		constant DIV_DEVICE_INST		: T_PB_DEVICE_INSTANCE	:= pb_GetDeviceInstance(SOFPGA_SYSTEM, DIV_SHORT);
 		
-		constant BCD_SHORT					: STRING								:= "ConvBCD24";
+		constant BCD_SHORT					: STRING								:= "ConvBCD";
 		constant BCD_BUSINDEX				: NATURAL								:= pb_GetBusIndex(SOFPGA_SYSTEM, BCD_SHORT);
 		constant BCD_DEVICE_INST		: T_PB_DEVICE_INSTANCE	:= pb_GetDeviceInstance(SOFPGA_SYSTEM, BCD_SHORT);
 
@@ -748,15 +650,18 @@ begin
 		
 		GPIO_DataIn						<= x"00";
 		
---		Raw_LCD_mux						<= GPIO_DataOut(0);
---		Raw_UART_mux					<= GPIO_DataOut(1);
+--		<unused>							<= GPIO_DataOut(0);
+--		<unused>							<= GPIO_DataOut(1);
 		Raw_IIC_mux						<= GPIO_DataOut(2);
-		
-		Raw_IIC_Switch_Reset	<= GPIO_DataOut(7);
+--		<unused>							<= GPIO_DataOut(3);
+--		<unused>							<= GPIO_DataOut(4);
+--		<unused>							<= GPIO_DataOut(5);
+--		<unused>							<= GPIO_DataOut(6);		
+--		<unused>							<= GPIO_DataOut(7);
 	end block;
 	
 	blkBBIO : block
-		constant DEV_SHORT				: STRING								:= "BBIO8";
+		constant DEV_SHORT				: STRING								:= "BBIO";
 		constant BUSINDEX					: NATURAL								:= pb_GetBusIndex(SOFPGA_SYSTEM, DEV_SHORT);
 		constant DEVICE_INST			: T_PB_DEVICE_INSTANCE	:= pb_GetDeviceInstance(SOFPGA_SYSTEM, DEV_SHORT);
 		

@@ -32,9 +32,6 @@ library IEEE;
 use			IEEE.STD_LOGIC_1164.all;
 use			IEEE.NUMERIC_STD.all;
 
-library UNISIM;
-use			UNISIM.VCOMPONENTS.all;
-
 library PoC;
 use			PoC.config.all;
 use			PoC.utils.all;
@@ -42,24 +39,70 @@ use			PoC.vectors.all;
 use			PoC.strings.all;
 use			PoC.physical.all;
 use			PoC.components.all;
-use			PoC.xil.all;
+--use			PoC.xil.all;
+use			PoC.io.all;
 
 library L_Example;
 
 
-entity PauloBlaze_Atlys is
+entity Top_PauloBlaze_DE4 is
 	port (
-		Atlys_SystemClock_100MHz		: in		STD_LOGIC;
+		DE4_SystemClock_100MHz		: in		STD_LOGIC;
 		
-		Atlys_GPIO_Button_Reset_n		: in	STD_LOGIC;
-		Atlys_GPIO_Switches					: in	STD_LOGIC_VECTOR(7 downto 0);
-		Atlys_GPIO_LED							: out	STD_LOGIC_VECTOR(7 downto 0);
+		DE4_GPIO_Button_Reset_n		: in		STD_LOGIC;
+		DE4_GPIO_Button_n					: in		STD_LOGIC_VECTOR(3 downto 0);
+		DE4_GPIO_SlideSwitches		: in		STD_LOGIC_VECTOR(3 downto 0);
+		DE4_GPIO_DipSwitches_n		: in		STD_LOGIC_VECTOR(7 downto 0);
+		DE4_GPIO_LED_n						: out		STD_LOGIC_VECTOR(7 downto 0);
+		DE4_GPIO_Seg7_Digit0_n		: out		STD_LOGIC_VECTOR(7 downto 0);
+		DE4_GPIO_Seg7_Digit1_n		: out		STD_LOGIC_VECTOR(7 downto 0);
  
-		Atlys_USB_UART_TX						: out		STD_LOGIC;			-- USB-UART Bridge is "slave"
-		Atlys_USB_UART_RX						: in		STD_LOGIC;			-- USB-UART Bridge is "slave"
+		DE4_UART_RS232_TX					: out		STD_LOGIC;			-- USB-UART Bridge is "slave"
+		DE4_UART_RS232_RX					: in		STD_LOGIC;			-- USB-UART Bridge is "slave"
+		DE4_UART_RS232_CTS				: out		STD_LOGIC;			-- USB-UART Bridge is "slave"
+		DE4_UART_RS232_RTS				: in		STD_LOGIC;			-- USB-UART Bridge is "slave"
 
-		Atlys_JA_SerialClock				: inout	STD_LOGIC;
-		Atlys_JA_SerialData					: inout	STD_LOGIC
+		DE4_IIC_EEPROM_SerialClock			: inout	STD_LOGIC;
+		DE4_IIC_EEPROM_SerialData				: inout	STD_LOGIC;
+		
+		DE4_SMBus_SerialClock						: inout	STD_LOGIC;
+		DE4_SMBus_SerialData						: inout	STD_LOGIC;
+		DE4_SMBus_Alert									: in		STD_LOGIC;
+		
+		DE4_FanControl									: out		STD_LOGIC;
+		
+		DE4_EthernetPHY_Reset_n					: out		STD_LOGIC;
+		DE4_EthernetPHY0_Interrupt_n		: in		STD_LOGIC;
+		DE4_EthernetPHY0_MDIO_Clock			: out		STD_LOGIC;
+		DE4_EthernetPHY0_MDIO_Data			: inout	STD_LOGIC;
+--		DE4_EthernetPHY0_TX_p						: out		STD_LOGIC;
+--		DE4_EthernetPHY0_TX_n						: out		STD_LOGIC;
+--		DE4_EthernetPHY0_RX_p						: in		STD_LOGIC;
+--		DE4_EthernetPHY0_RX_n						: in		STD_LOGIC;
+		
+		DE4_EthernetPHY1_Interrupt_n		: in		STD_LOGIC;
+		DE4_EthernetPHY1_MDIO_Clock			: out		STD_LOGIC;
+		DE4_EthernetPHY1_MDIO_Data			: inout	STD_LOGIC;
+--		DE4_EthernetPHY1_TX_p						: out		STD_LOGIC;
+--		DE4_EthernetPHY1_TX_n						: out		STD_LOGIC;
+--		DE4_EthernetPHY1_RX_p						: in		STD_LOGIC;
+--		DE4_EthernetPHY1_RX_n						: in		STD_LOGIC;
+		
+		DE4_EthernetPHY2_Interrupt_n		: in		STD_LOGIC;
+		DE4_EthernetPHY2_MDIO_Clock			: out		STD_LOGIC;
+		DE4_EthernetPHY2_MDIO_Data			: inout	STD_LOGIC;
+--		DE4_EthernetPHY2_TX_p						: out		STD_LOGIC;
+--		DE4_EthernetPHY2_TX_n						: out		STD_LOGIC;
+--		DE4_EthernetPHY2_RX_p						: in		STD_LOGIC;
+--		DE4_EthernetPHY2_RX_n						: in		STD_LOGIC;
+		
+		DE4_EthernetPHY3_Interrupt_n		: in		STD_LOGIC;
+		DE4_EthernetPHY3_MDIO_Clock			: out		STD_LOGIC;
+		DE4_EthernetPHY3_MDIO_Data			: inout	STD_LOGIC
+--		DE4_EthernetPHY3_TX_p						: out		STD_LOGIC;
+--		DE4_EthernetPHY3_TX_n						: out		STD_LOGIC;
+--		DE4_EthernetPHY3_RX_p						: in		STD_LOGIC;
+--		DE4_EthernetPHY3_RX_n						: in		STD_LOGIC
 	);
 end;
 --
@@ -70,10 +113,8 @@ end;
 -- <unused>		<unused>		<unused>		<unused>		<unused>		<unused>		<unused>		<unused>
 
 
-architecture top of PauloBlaze_Atlys is
-	attribute KEEP											: BOOLEAN;
-	attribute ASYNC_REG									: STRING;
-	attribute SHREG_EXTRACT							: STRING;
+architecture top of Top_PauloBlaze_DE4 is
+	attribute PRESERVE									: BOOLEAN;
 
 	-- ==========================================================================================================================================================
 	-- configurations
@@ -87,7 +128,7 @@ architecture top of PauloBlaze_Atlys is
 	
 	-- ClockNetwork configuration
 	-- ===========================================================================
-	constant SYSTEM_CLOCK_FREQ					: FREQ								:= SYS_CLOCK_FREQ * 1.25;
+	constant SYSTEM_CLOCK_FREQ					: FREQ								:= SYS_CLOCK_FREQ;
 	
 
 	-- ==========================================================================================================================================================
@@ -99,6 +140,8 @@ architecture top of PauloBlaze_Atlys is
 	signal ClkNet_Reset									: STD_LOGIC;
 	signal ClkNet_ResetDone							: STD_LOGIC;
 
+	signal Control_Clock								: STD_LOGIC;
+	
 	signal SystemClock_200MHz						: STD_LOGIC;
 	signal SystemClock_125MHz						: STD_LOGIC;
 	signal SystemClock_100MHz						: STD_LOGIC;
@@ -109,23 +152,26 @@ architecture top of PauloBlaze_Atlys is
 	signal SystemClock_Stable_100MHz		: STD_LOGIC;
 	signal SystemClock_Stable_10MHz			: STD_LOGIC;
 
-	signal Control_Clock								: STD_LOGIC;
-	
 	signal System_Clock									: STD_LOGIC;
 	signal System_ClockStable						: STD_LOGIC;
 	signal System_Reset									: STD_LOGIC;
 	
-	attribute KEEP of System_Clock			: signal is TRUE;
-	attribute KEEP of System_Reset			: signal is TRUE;
+	attribute PRESERVE of System_Clock	: signal is TRUE;
+	attribute PRESERVE of System_Reset	: signal is TRUE;
 
 	-- active-low board signals
-	signal Atlys_GPIO_Button_Reset			: STD_LOGIC;
---	signal Atlys_EthernetPHY_Reset			: STD_LOGIC;
---	signal Atlys_EthernetPHY_Interrupt	: STD_LOGIC;
+	signal DE4_GPIO_Button_Reset				: STD_LOGIC;
+	signal DE4_GPIO_Button							: STD_LOGIC_VECTOR(3 downto 0);
+	signal DE4_GPIO_DipSwitches					: STD_LOGIC_VECTOR(7 downto 0);
+--	signal DE4_EthernetPHYernetPHY_Reset			: STD_LOGIC;
+--	signal DE4_EthernetPHYernetPHY_Interrupt	: STD_LOGIC;
+	signal DE4_GPIO_LED									: STD_LOGIC_VECTOR(7 downto 0);
+	signal DE4_GPIO_Seg7_Digit0					: STD_LOGIC_VECTOR(7 downto 0);
+	signal DE4_GPIO_Seg7_Digit1					: STD_LOGIC_VECTOR(7 downto 0);
 	
 	-- cross-over signals
-	signal Atlys_UART_TX								: STD_LOGIC;
-	signal Atlys_UART_RX								: STD_LOGIC;
+--	signal DE4_UART_TX									: STD_LOGIC;
+--	signal DE4_UART_RX									: STD_LOGIC;
 	
 	-- debounced button signals (debounce circuit works @10 MHz)
 	signal GPIO_Button_Reset						: STD_LOGIC;
@@ -141,6 +187,8 @@ architecture top of PauloBlaze_Atlys is
 	
 	signal UART_TX											: STD_LOGIC;
 	signal UART_RX											: STD_LOGIC;
+	signal UART_CTS											: STD_LOGIC;
+	signal UART_RTS											: STD_LOGIC;
 
 	signal Raw_IIC_mux									: STD_LOGIC;
 	signal Raw_IIC_Clock_i							: STD_LOGIC;
@@ -168,29 +216,30 @@ begin
 	-- ==========================================================================================================================================================
 	-- Input/output buffers
 	-- ==========================================================================================================================================================
-	IBUFGDS_SystemClock : IBUFG
-		port map (
-			I			=> Atlys_SystemClock_100MHz,
-			O			=> System_RefClock_100MHz
-		);
+	System_RefClock_100MHz		<= DE4_SystemClock_100MHz;
+	
 
 	-- ==========================================================================================================================================================
 	-- active-low to active-high conversion
 	-- ==========================================================================================================================================================
 	-- input signals
-	Atlys_GPIO_Button_Reset				<= not Atlys_GPIO_Button_Reset_n;
---	Atlys_EthernetPHY_Interrupt		<= NOT Atlys_EthernetPHY_Interrupt_n;
+	DE4_GPIO_Button_Reset				<= not DE4_GPIO_Button_Reset_n;
+	DE4_GPIO_Button							<= not DE4_GPIO_Button_n;
+	DE4_GPIO_DipSwitches				<= not DE4_GPIO_DipSwitches_n;
+--	DE4_EthernetPHYernetPHY_Interrupt		<= NOT DE4_EthernetPHYernetPHY_Interrupt_n;
 	
 	-- output signals
---	Atlys_EthernetPHY_Reset_n		<= not Atlys_EthernetPHY_Reset;
+	DE4_GPIO_LED_n							<= not DE4_GPIO_LED;
+	DE4_GPIO_Seg7_Digit0_n			<= not DE4_GPIO_Seg7_Digit0;
+	DE4_GPIO_Seg7_Digit1_n			<= not DE4_GPIO_Seg7_Digit1;
+--	DE4_EthernetPHYernetPHY_Reset_n		<= not DE4_EthernetPHYernetPHY_Reset;
 
 	-- ==========================================================================================================================================================
 	-- cross-over signal renaming
 	-- ==========================================================================================================================================================
 	-- USB-UART is the slave, FPGA is the master
-	Atlys_USB_UART_TX		<= Atlys_UART_TX;
-	Atlys_UART_RX				<= Atlys_USB_UART_RX;
-
+--	DE4_UART_RS232_TX		<= DE4_UART_RX;
+--	DE4_UART_TX					<= DE4_UART_RS232_RX;
 
 	-- ==========================================================================================================================================================
 	-- ClockNetwork
@@ -198,7 +247,7 @@ begin
 	ClkNet_Reset			<= GPIO_Button_Reset;
 	Ex_ClkNet_Reset		<= GPIO_Button_Reset;
 	
-	ClkNet : entity L_Example.ClockNetwork_Atlys
+	ClkNet : entity L_Example.clknet_ClockNetwork_DE4
 		generic map (
 			CLOCK_IN_FREQ						=> SYS_CLOCK_FREQ
 		)
@@ -222,9 +271,9 @@ begin
 		);
 	
 	-- system signals
-	System_Clock				<= SystemClock_125MHz;
-	System_ClockStable	<= SystemClock_Stable_125MHz;
-	System_Reset				<= not SystemClock_Stable_125MHz;
+	System_Clock				<= SystemClock_100MHz;
+	System_ClockStable	<= SystemClock_Stable_100MHz;
+	System_Reset				<= not SystemClock_Stable_100MHz;
 
 	-- ==========================================================================================================================================================
 	-- signal debouncing
@@ -232,19 +281,19 @@ begin
 	DebBtn : entity PoC.io_Debounce
 		generic map (
 			CLOCK_FREQ							=> SYSTEM_CLOCK_FREQ,
-			BOUNCE_TIME							=> 5 ms,
+			BOUNCE_TIME							=> 50 ms,
 			BITS										=> 1,
 			ADD_INPUT_SYNCHRONIZERS	=> TRUE
 		)
 		port map (
 			Clock							=> Control_Clock,
 			Reset							=> '0',
-			Input(0)					=> Atlys_GPIO_Button_Reset,
+			Input(0)					=> DE4_GPIO_Button_Reset,
 			Output(0)					=> GPIO_Button_Reset
 		);
 
 	-- synchronize to System_Clock
-	sync1 : entity PoC.sync_Bits_Xilinx
+	sync1 : entity PoC.sync_Bits_Altera
 		port map (
 			Clock			=> System_Clock,						-- Clock to be synchronized to
 			Input(0)	=> GPIO_Button_Reset,				-- Data to be synchronized
@@ -254,36 +303,41 @@ begin
 	-- ==========================================================================================================================================================
 	-- main design
 	-- ==========================================================================================================================================================
-	-- Button inputs, some are also driven by Chipscope
+	-- Button inputs
 
 
 	-- Switch inputs
-	-- unused				<= Atlys_GPIO_Switches(0);
-	-- unused				<= Atlys_GPIO_Switches(1);
-	-- unused				<= Atlys_GPIO_Switches(2);
-	-- unused				<= Atlys_GPIO_Switches(3);
-	-- unused				<= Atlys_GPIO_Switches(4);
-	-- unused				<= Atlys_GPIO_Switches(5);
-	-- unused				<= Atlys_GPIO_Switches(6);
-	-- unused				<= Atlys_GPIO_Switches(7);
+	-- unused				<= DE4_GPIO_Switches(0);
+	-- unused				<= DE4_GPIO_Switches(1);
+	-- unused				<= DE4_GPIO_Switches(2);
+	-- unused				<= DE4_GPIO_Switches(3);
+	-- unused				<= DE4_GPIO_Switches(4);
+	-- unused				<= DE4_GPIO_Switches(5);
+	-- unused				<= DE4_GPIO_Switches(6);
+	-- unused				<= DE4_GPIO_Switches(7);
 	
 	-- LED outputs
 	blkLED : block
 		signal GPIO_LED				: T_SLV_8;
 		signal GPIO_LED_iob		: T_SLV_8			:= (others => '0');
-		
 	begin
-		GPIO_LED(0)						<= System_ClockStable;	--ClkNet_ResetDone;
-		GPIO_LED(1)						<= Ex_ClkNet_ResetDone;
-		GPIO_LED(2)						<= '0';
+		GPIO_LED(0)						<= ClkNet_ResetDone;
+		GPIO_LED(1)						<= System_ClockStable;
+		GPIO_LED(2)						<= Button_Reset;
 		GPIO_LED(3)						<= '0';
 		GPIO_LED(4)						<= '0';
 		GPIO_LED(5)						<= '0';
 		GPIO_LED(6)						<= '0';
 		GPIO_LED(7)						<= '0';
 	
-		GPIO_LED_iob					<= GPIO_LED				when rising_edge(System_Clock);
-		Atlys_GPIO_LED				<= GPIO_LED_iob;
+		GPIO_LED_iob					<= GPIO_LED	when rising_edge(System_Clock);
+		DE4_GPIO_LED					<= GPIO_LED_iob;
+	end block;
+	
+	blkSeg7 : block
+	begin
+		DE4_GPIO_Seg7_Digit0		<= io_7SegmentDisplayEncoding(x"2", '1');
+		DE4_GPIO_Seg7_Digit1		<= io_7SegmentDisplayEncoding(x"4", '0');
 	end block;
 	
 	Ex : entity L_Example.ex_ExampleDesign
@@ -320,6 +374,28 @@ begin
 --			IICSwitch_Reset						=> IIC_Switch_Reset
 		);
 
+	UART_CTS		<= UART_RTS;
+		
+	blkFanControl : block
+		signal Fan_PWM		: STD_LOGIC;
+	begin
+		Fan : entity PoC.io_FanControl
+			generic map (
+				CLOCK_FREQ			=> SYS_CLOCK_FREQ
+			)
+			port map (
+				Clock						=> System_Clock,
+				Reset						=> System_Reset,
+				
+				Fan_PWM					=> Fan_PWM,
+				Fan_Tacho				=> '0',
+				
+				TachoFrequency	=> open
+			);			
+		
+		DE4_FanControl			<= Fan_PWM;
+	end block;
+		
 	-- ==========================================================================================================================================================
 	-- I2C Bus
 	-- ==========================================================================================================================================================
@@ -340,16 +416,6 @@ begin
 		signal SerialData_async			: STD_LOGIC;
 		signal SerialData_i_meta		: STD_LOGIC					:= '1';
 		signal SerialData_i_sync		: STD_LOGIC					:= '1';
-		
-		-- Mark register DataSync_meta's input as asynchronous
-		attribute ASYNC_REG of SerialClock_i_meta				: signal is "TRUE";
-		attribute ASYNC_REG of SerialData_i_meta				: signal is "TRUE";
-
-		-- Prevent XST from translating two FFs into SRL plus FF
-		attribute SHREG_EXTRACT of SerialClock_i_meta		: signal is "NO";
-		attribute SHREG_EXTRACT of SerialClock_i_sync		: signal is "NO";
-		attribute SHREG_EXTRACT of SerialData_i_meta		: signal is "NO";
-		attribute SHREG_EXTRACT of SerialData_i_sync		: signal is "NO";
 		
 	BEGIN
 		SerialClock_o					<= mux(Raw_IIC_mux, IIC_SerialClock_o, '0');
@@ -373,54 +439,59 @@ begin
 		IIC_SerialData_i			<= SerialData_i_sync	or		 Raw_IIC_mux;
 		Raw_IIC_Data_i				<= SerialData_i_sync	or not Raw_IIC_mux;
 	
-		IOBUF_IIC_SerialClock : IOBUF
-			port map (
-				T		=> SerialClock_t_iob,				-- 3-state enable input, high=input, low=output
-				I		=> SerialClock_o_iob,				-- buffer input
-				O		=> SerialClock_async,				-- buffer output
-				IO	=> Atlys_JA_SerialClock			-- buffer inout port (connect directly to top-level port)
-			);
-
-		IOBUF_IIC_SerialData : IOBUF
-			port map (
-				T		=> SerialData_t_iob,				-- 3-state enable input, high=input, low=output
-				I		=> SerialData_o_iob,				-- buffer input
-				O		=> SerialData_async,				-- buffer output
-				IO	=> Atlys_JA_SerialData			-- buffer inout port (connect directly to top-level port)
-			);
+		DE4_IIC_EEPROM_SerialClock	<= 'Z' when (SerialClock_t_iob = '1')	else SerialClock_o_iob;
+		DE4_IIC_EEPROM_SerialData		<= 'Z' when (SerialData_t_iob = '1')	else SerialData_o_iob;
+		SerialClock_async						<= DE4_IIC_EEPROM_SerialClock;
+		SerialData_async						<= DE4_IIC_EEPROM_SerialData;
+	end block;
+	
+	blkSMBus : block
+	
+	begin
+		DE4_SMBus_SerialClock			<= '1';
+		DE4_SMBus_SerialData			<= '1';
+	end block;
+	
+	blkMDIO : block
+	
+	begin
+		DE4_EthernetPHY_Reset_n					<= '1';
+		DE4_EthernetPHY0_MDIO_Clock			<= '0';
+		DE4_EthernetPHY0_MDIO_Data			<= '0';
+		DE4_EthernetPHY1_MDIO_Clock			<= '0';
+		DE4_EthernetPHY1_MDIO_Data			<= '0';
+		DE4_EthernetPHY2_MDIO_Clock			<= '0';
+		DE4_EthernetPHY2_MDIO_Data			<= '0';
+		DE4_EthernetPHY3_MDIO_Clock			<= '0';
+		DE4_EthernetPHY3_MDIO_Data			<= '0';
 	end block;
 	
 	blkIOBUF_UART : block
-		signal blkUART_TX_iob		: STD_LOGIC			:= '1';
+		signal blkUART_TX_iob			: STD_LOGIC			:= '1';
+		signal blkUART_CTS_iob		: STD_LOGIC			:= '1';
 		
-		signal blkUART_RX_async	: STD_LOGIC;
-		signal blkUART_RX_meta	: STD_LOGIC			:= '1';
-		signal blkUART_RX_sync	: STD_LOGIC			:= '1';
-		
-		-- Mark register DataSync_meta's input as asynchronous
-		attribute ASYNC_REG of blkUART_RX_meta			: signal is "TRUE";
-
-		-- Prevent XST from translating two FFs into SRL plus FF
-		attribute SHREG_EXTRACT of blkUART_RX_meta	: signal is "NO";
-		attribute SHREG_EXTRACT of blkUART_RX_sync	: signal is "NO";
-		
+		signal blkUART_RX_async		: STD_LOGIC;
+		signal blkUART_RX_meta		: STD_LOGIC			:= '1';
+		signal blkUART_RX_sync		: STD_LOGIC			:= '1';
+		signal blkUART_RTS_async	: STD_LOGIC;
+		signal blkUART_RTS_meta		: STD_LOGIC			:= '1';
+		signal blkUART_RTS_sync		: STD_LOGIC			:= '1';
 	begin
-		blkUART_TX_iob		<= UART_TX	when rising_edge(System_Clock);
+		blkUART_TX_iob			<= UART_TX	when rising_edge(System_Clock);
+		blkUART_CTS_iob			<= UART_CTS	when rising_edge(System_Clock);
 	
-		OBUF_UART_TX : OBUF
-			port map (
-				I => blkUART_TX_iob,
-				O => Atlys_UART_TX
-			);
+		-- assign to outputs
+		DE4_UART_RS232_TX		<= blkUART_TX_iob;
+		DE4_UART_RS232_CTS	<= blkUART_CTS_iob;
+		-- assign from inputs
+		blkUART_RX_async		<= DE4_UART_RS232_RX;
+		blkUART_RTS_async		<= DE4_UART_RS232_RTS;
 	
-		IBUF_UART_RX : IBUF
-			port map (
-				I => Atlys_UART_RX,
-				O => blkUART_RX_async
-			);
-	
-		blkUART_RX_meta			<= blkUART_RX_async	when rising_edge(System_Clock);
-		blkUART_RX_sync			<= blkUART_RX_meta	when rising_edge(System_Clock);
+		blkUART_RX_meta			<= blkUART_RX_async		when rising_edge(System_Clock);
+		blkUART_RTS_meta		<= blkUART_RTS_async	when rising_edge(System_Clock);
+		blkUART_RX_sync			<= blkUART_RX_meta		when rising_edge(System_Clock);
+		blkUART_RTS_sync		<= blkUART_RTS_meta		when rising_edge(System_Clock);
 		UART_RX							<= blkUART_RX_sync;
+		UART_RTS						<= blkUART_RTS_sync;
 	end block;
 end;
