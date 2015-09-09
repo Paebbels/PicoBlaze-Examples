@@ -4,7 +4,6 @@
 ; 
 ; ==============================================================================
 ; Authors:					Patrick Lehmann
-;										Martin Zabel
 ;
 ; Assembler-Code:		Entry-Point assembler file
 ; 
@@ -133,7 +132,7 @@ __BootUp:											; initialize spezial registers and data structures
 															;
 															;OUTPUTK		INTC_PIN0_SATASTACK,	KPORT_INTC_INTENABLE0
 															;
-															CALL			__io_BBIO_IIC_Initialise
+															CALL			__io_BBIO_IIC_Initialize
 															;
 															CALL			__UART_EnableRaw											; enable raw UART interface
 															CALL			__io_BBIO_IIC_EnableRaw								; enable raw IIC interface (Bit Banging)

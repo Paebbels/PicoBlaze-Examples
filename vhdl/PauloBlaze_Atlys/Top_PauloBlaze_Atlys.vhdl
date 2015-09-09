@@ -87,7 +87,7 @@ architecture top of PauloBlaze_Atlys is
 	
 	-- ClockNetwork configuration
 	-- ===========================================================================
-	constant SYSTEM_CLOCK_FREQ					: FREQ								:= SYS_CLOCK_FREQ * 1.25;
+	constant SYSTEM_CLOCK_FREQ					: FREQ								:= SYS_CLOCK_FREQ;
 	
 
 	-- ==========================================================================================================================================================
@@ -222,9 +222,9 @@ begin
 		);
 	
 	-- system signals
-	System_Clock				<= SystemClock_125MHz;
-	System_ClockStable	<= SystemClock_Stable_125MHz;
-	System_Reset				<= not SystemClock_Stable_125MHz;
+	System_Clock				<= SystemClock_100MHz;
+	System_ClockStable	<= SystemClock_Stable_100MHz;
+	System_Reset				<= not SystemClock_Stable_100MHz;
 
 	-- ==========================================================================================================================================================
 	-- signal debouncing

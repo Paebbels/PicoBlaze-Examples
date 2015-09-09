@@ -47,20 +47,21 @@ library L_Example;
 
 entity Top_PauloBlaze_DE4 is
 	port (
-		DE4_SystemClock_100MHz		: in		STD_LOGIC;
+		DE4_SystemClock_100MHz					: in		STD_LOGIC;
 		
-		DE4_GPIO_Button_Reset_n		: in		STD_LOGIC;
-		DE4_GPIO_Button_n					: in		STD_LOGIC_VECTOR(3 downto 0);
-		DE4_GPIO_SlideSwitches		: in		STD_LOGIC_VECTOR(3 downto 0);
-		DE4_GPIO_DipSwitches_n		: in		STD_LOGIC_VECTOR(7 downto 0);
-		DE4_GPIO_LED_n						: out		STD_LOGIC_VECTOR(7 downto 0);
-		DE4_GPIO_Seg7_Digit0_n		: out		STD_LOGIC_VECTOR(7 downto 0);
-		DE4_GPIO_Seg7_Digit1_n		: out		STD_LOGIC_VECTOR(7 downto 0);
+		DE4_GPIO_Button_Reset_n					: in		STD_LOGIC;
+		DE4_GPIO_Button_n								: in		STD_LOGIC_VECTOR(3 downto 0);
+		DE4_GPIO_SlideSwitches					: in		STD_LOGIC_VECTOR(3 downto 0);
+		DE4_GPIO_DipSwitches_n					: in		STD_LOGIC_VECTOR(7 downto 0);
+		DE4_GPIO_LED_n									: out		STD_LOGIC_VECTOR(7 downto 0);
+		DE4_GPIO_Seg7_Digit0_n					: out		STD_LOGIC_VECTOR(7 downto 0);
+		DE4_GPIO_Seg7_Digit1_n					: out		STD_LOGIC_VECTOR(7 downto 0);
  
-		DE4_UART_RS232_TX					: out		STD_LOGIC;			-- USB-UART Bridge is "slave"
-		DE4_UART_RS232_RX					: in		STD_LOGIC;			-- USB-UART Bridge is "slave"
-		DE4_UART_RS232_CTS				: out		STD_LOGIC;			-- USB-UART Bridge is "slave"
-		DE4_UART_RS232_RTS				: in		STD_LOGIC;			-- USB-UART Bridge is "slave"
+		-- UART_RS232 connector is Data Communication Equipment (DCE) 
+		DE4_UART_RS232_TX								: out		STD_LOGIC;
+		DE4_UART_RS232_RX								: in		STD_LOGIC;
+		DE4_UART_RS232_CTS							: out		STD_LOGIC;
+		DE4_UART_RS232_RTS							: in		STD_LOGIC;
 
 		DE4_IIC_EEPROM_SerialClock			: inout	STD_LOGIC;
 		DE4_IIC_EEPROM_SerialData				: inout	STD_LOGIC;

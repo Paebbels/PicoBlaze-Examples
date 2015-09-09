@@ -5,7 +5,7 @@
 ; ==============================================================================
 ; Authors:					Patrick Lehmann
 ; 
-; Assembler-Code:		Entry-Point assembler file
+; Assembler-Code:		SoFPGA initialisation routines
 ;
 ; Description:
 ; ------------------------------------
