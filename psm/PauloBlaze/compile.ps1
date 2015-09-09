@@ -50,6 +50,8 @@ param(
 	[Switch]$Assemble,
 		# enable optimizations
 		[Switch]$Optimize,
+		# write MIF files
+		[Switch]$MIF,
 	
 	# run post processing
 	[Switch]$PostProcess,
@@ -101,6 +103,7 @@ if ($Help)
 		Write-Host "  [-PreProcess]  pre-process source files before assembling"
 		Write-Host "  [-Assemble]    assemble all source files"
 		Write-Host "    [-Optimize]  activate optimization"
+		Write-Host "    [-MIF]       write MIF files for Altera tool chains"
 		Write-Host "    [-NoClean]   don't delete temporary files"
 		Write-Host "  [-PostProcess] post-process logfiles"
 		Write-Host "  [-Program]     upload the program to device"
@@ -127,8 +130,7 @@ if ($Assemble)
 				"-t", $TemplateFile,								# template file for instruction ROM pages
 				"-m", "4096",												# instruction ROM size = 4096 instructions
 				"-s", "256",												# scratch pad size = 256 entries
-				"-6",																# compile for KCPSM6
-				"-x"																# generate hex file
+				"-6"																# compile for KCPSM6
 				#"-c"																# generate colored log file
 			)
 
@@ -140,7 +142,14 @@ if ($Assemble)
 			{	$OPBASMCommonParameters += "-d"			# analyse unreachable instructions
 				$OPBASMCommonParameters += "-r"			# remove dead instructions
 			}
-			
+		
+		if ($MIF)																# if Altera MIF file generation is enabled
+			{	$OPBASMCommonParameters += "--mif"	# generate MIF file instead of hex file
+			}
+		else
+			{	$OPBASMCommonParameters += "-x"			# generate hex file
+			}		
+		
 		foreach ($Page in $Pages)
 			{	$OPBASMParameters	= @()
 				$OPBASMParameters	+= "-i"
@@ -152,9 +161,6 @@ if ($Assemble)
 					{	$OPBASMParameters += "-e"
 						$OPBASMParameters += $EntryPoint
 					}
-				
-				if ($Script_EnableVerbose)
-					{	$OPBASMParameters += "--debug-preproc=" + $Page['Main'] + ".pre.log" }
 				
 				# call opbasm
 				Write-Host "Assembling $($Page['File']) ... " -NoNewline

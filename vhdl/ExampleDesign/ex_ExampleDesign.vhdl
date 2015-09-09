@@ -153,9 +153,6 @@ architecture rtl of ex_ExampleDesign is
 	signal SoFPGA_PicoBlazeDeviceBus				: T_PB_IOBUS_PB_DEV_VECTOR(EXTNERN_PB_IOBUS_PORTS - 1 downto 0);
 	signal SoFPGA_DevicePicoBlazeBus				: T_PB_IOBUS_DEV_PB_VECTOR(EXTNERN_PB_IOBUS_PORTS - 1 downto 0);
 
-	signal SoFPGA_UART_TX										: STD_LOGIC;
-	signal SoFPGA_UART_RX										: STD_LOGIC;
-	
 --	signal SoFPGA_PBIIC1_Request						: STD_LOGIC;
 --	signal SoFPGA_PBIIC1_Command						: T_IO_IIC_COMMAND;
 --	signal SoFPGA_PBIIC1_Address						: STD_LOGIC_VECTOR(6 downto 0);

@@ -308,31 +308,39 @@ begin
 	-- PB_DataIn multiplexer
 	blkDataInMux : block
 		function getDeviceMappingInBus(System : T_PB_SYSTEM; BusID : T_PB_BUSID) return T_NATVEC is
+			constant CurBus				: T_PB_BUS := System.Busses(BusID);
 			variable BusIndex 		: NATURAL;
 			variable Result				: T_NATVEC(0 to System.DeviceInstanceCount-1);
-			variable CurBus				: T_PB_BUS := System.Busses(BusID);
 			variable SubBusID			: T_PB_BUSID;
 			variable SubResult		: T_NATVEC(0 to System.DeviceInstanceCount-1);
 		begin
 			BusIndex := 0;
-			assert not PB_VERBOSE report "DEVINBUS: Enter " & integer'image(BusID) severity note;
+			if (PB_VERBOSE = TRUE) then
+				report "DEVINBUS: Enter " & integer'image(BusID) severity note;
+			end if;
 			for i in 0 to CurBus.SubBusCount-1 loop
 				SubBusID	:= CurBus.SubBusses(i);
 				SubResult := getDeviceMappingInBus(System, SubBusID);
 				for j in 0 to System.Busses(SubBusID).TotalDeviceCount-1 loop
 					Result(BusIndex)	:= SubResult(j);
-					assert not PB_VERBOSE report "DEVINBUS: Result(" & integer'image(BusIndex) & ") := " & integer'image(SubResult(j)) severity note;
+					if (PB_VERBOSE = TRUE) then
+						report "DEVINBUS: Result(" & integer'image(BusIndex) & ") := " & integer'image(SubResult(j)) severity note;
+					end if;
 					BusIndex 					:= BusIndex+1;
 				end loop;
 			end loop;
 			
 			for i in 0 to CurBus.DeviceCount-1 loop
 				Result(BusIndex) 	:= CurBus.Devices(i); -- DeviceID
-				assert not PB_VERBOSE report "DEVINBUS: Result(" & integer'image(BusIndex) & ") := " & integer'image(CurBus.Devices(i)) severity note;
+				if (PB_VERBOSE = TRUE) then
+					report "DEVINBUS: Result(" & integer'image(BusIndex) & ") := " & integer'image(CurBus.Devices(i)) severity note;
+				end if;
 				BusIndex 					:= BusIndex+1;
 			end loop;
 			
-			assert not PB_VERBOSE report "DEVINBUS: Exit  " & integer'image(BusID) severity note;
+			if (PB_VERBOSE = TRUE) then
+				report "DEVINBUS: Exit  " & integer'image(BusID) severity note;
+			end if;
 			return Result;
 		end function;
 		
@@ -361,7 +369,9 @@ begin
 					
 					if (Mapping.MappingKind = PB_MAPPING_KIND_READ) then
 						Result(Mapping.PortNumber) := DevicePicoBlazeBus(PositionInsideAnyBus(i)).Data;
-						assert not PB_VERBOSE report "MUXIN: PortNumber = " & integer'image(Mapping.PortNumber) & ", AnyBusID = " & integer'image(PositionInsideAnyBus(i)) severity note;
+						if (PB_VERBOSE = TRUE) then
+							report "MUXIN: PortNumber = " & integer'image(Mapping.PortNumber) & ", AnyBusID = " & integer'image(PositionInsideAnyBus(i)) severity note;
+						end if;
 					end if;
 				end loop;
 			end loop;
@@ -721,7 +731,7 @@ begin
 			generic map (
 				DEBUG								=> DEBUG,
 				ENABLE_CHIPSCOPE		=> ENABLE_UART_ILA,
-				CLOCK_FREQ					=> CLOCK_FREQ,
+				CLOCK_FREQ					=> PICOBLAZE_CLOCK_FREQ,
 				DEVICE_INSTANCE			=> DEVICE_INST,
 				BAUDRATE						=> UART_BAUDRATE,
 				USE_POC_UART				=> USE_POC_UART

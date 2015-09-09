@@ -54,7 +54,7 @@ set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
 set_global_assignment -name VHDL_INPUT_VERSION VHDL_2008
 set_global_assignment -name VHDL_SHOW_LMF_MAPPING_MESSAGES OFF
-set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_NETLIST_TYPE POST_SYNTH -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "2.5 V"
@@ -199,7 +199,6 @@ set_global_assignment -name VHDL_FILE ../../lib/PoC/src/arith/arith_div.vhdl -hd
 set_global_assignment -name VHDL_FILE ../../lib/PoC/src/arith/arith_scaler.vhdl -hdl_version VHDL_2008 -library PoC
 set_global_assignment -name VHDL_FILE ../../lib/PoC/src/arith/arith_sqrt.vhdl -hdl_version VHDL_2008 -library PoC
 set_global_assignment -name VHDL_FILE ../../lib/PoC/src/bus/bus_Arbiter.vhdl -hdl_version VHDL_2008 -library PoC
-set_global_assignment -name VHDL_FILE ../../lib/PoC/src/common/board.vhdl -hdl_version VHDL_2008 -library PoC
 set_global_assignment -name VHDL_FILE ../../lib/PoC/src/common/components.vhdl -hdl_version VHDL_2008 -library PoC
 set_global_assignment -name VHDL_FILE ../../lib/PoC/src/common/config.vhdl -hdl_version VHDL_2008 -library PoC
 set_global_assignment -name VHDL_FILE ../../lib/PoC/src/common/debug.vhdl -hdl_version VHDL_2008 -library PoC
@@ -260,5 +259,215 @@ set_global_assignment -name VHDL_FILE ../../vhdl/PauloBlaze_DE4/Top_PauloBlaze_D
 set_global_assignment -name VHDL_FILE ../../vhdl/PauloBlaze_DE4/pb_SoFPGA.pkg.vhdl -hdl_version VHDL_2008 -library L_Example
 set_global_assignment -name VHDL_FILE ../../vhdl/PauloBlaze_DE4/pb_SoFPGA_System.vhdl -hdl_version VHDL_2008 -library L_Example
 set_global_assignment -name SDC_FILE ../../ucf/ExampleDesign/PauloBlaze_DE4.sdc
-set_global_assignment -name CDF_FILE output_files/DE4.cdf
+set_global_assignment -name CDF_FILE DE4.cdf
+set_global_assignment -name ENABLE_SIGNALTAP ON
+set_global_assignment -name USE_SIGNALTAP_FILE output_files/stp2.stp
+set_global_assignment -name SIGNALTAP_FILE output_files/stp2.stp
+set_global_assignment -name SLD_NODE_CREATOR_ID 110 -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_ENTITY_NAME sld_signaltap -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_clk -to "clknet_ClockNetwork_DE4:ClkNet|mypll:PLL|altpll:altpll_component|mypll_altpll1:auto_generated|wire_pll1_clk[0]~clkctrl" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_RAM_BLOCK_TYPE=AUTO" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_NODE_INFO=805334528" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_POWER_UP_TRIGGER=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STORAGE_QUALIFIER_INVERSION_MASK_LENGTH=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ATTRIBUTE_MEM_MODE=OFF" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STATE_FLOW_USE_GENERATED=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STATE_BITS=11" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_BUFFER_FULL_STOP=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_CURRENT_RESOURCE_WIDTH=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_INCREMENTAL_ROUTING=1" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[0] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[2] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[3] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[4] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[5] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[6] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[9] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[12] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[13] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[15] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[16] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[20] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[21] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[22] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[24] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[25] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[29] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_LEVEL=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_IN_ENABLED=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ADVANCED_TRIGGER_ENTITY=basic,1," -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_LEVEL_PIPELINE=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ENABLE_ADVANCED_TRIGGER=0" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[17] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[19] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[23] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[26] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[30] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[1] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[7] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[8] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[14] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[0] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|CPU_Reset" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[1] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataIn[0]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[2] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataIn[1]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[3] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataIn[2]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[4] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataIn[3]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[5] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataIn[4]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[6] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataIn[5]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[7] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataIn[6]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[8] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataIn[7]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[9] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataOut[0]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[10] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataOut[1]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[11] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataOut[2]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[12] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataOut[3]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[13] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataOut[4]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[14] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataOut[5]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[15] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataOut[6]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[16] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataOut[7]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[17] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_InstructionFetch_d" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[18] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_PortID[0]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[19] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_PortID[1]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[20] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_PortID[2]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[21] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_PortID[3]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[22] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_PortID[4]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[23] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_PortID[5]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[24] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_PortID[6]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[25] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_PortID[7]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[26] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_ReadStrobe" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[27] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_WriteStrobe" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[28] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|PicoBlaze_AddressDecoder:AdrDec|Out_WriteStrobe_i" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[29] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Reg_PageNumber[0]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[30] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Reg_PageNumber[1]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[31] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Reg_PageNumber[2]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[32] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Reg_PageNumber[3]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[33] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Reg_PageNumber[4]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[34] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Reg_PageNumber[5]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[35] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Reg_PageNumber[6]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[36] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Reg_PageNumber[7]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[37] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|AdrDec_we" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[0] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|CPU_Reset" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[1] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataIn[0]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[2] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataIn[1]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[3] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataIn[2]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[4] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataIn[3]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[5] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataIn[4]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[6] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataIn[5]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[7] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataIn[6]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[8] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataIn[7]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[9] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataOut[0]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[10] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataOut[1]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[11] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataOut[2]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[12] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataOut[3]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[13] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataOut[4]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[14] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataOut[5]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[15] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataOut[6]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[16] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_DataOut[7]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[17] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_InstructionFetch_d" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[18] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_PortID[0]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[19] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_PortID[1]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[20] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_PortID[2]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[21] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_PortID[3]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[22] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_PortID[4]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[23] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_PortID[5]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[24] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_PortID[6]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[25] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_PortID[7]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[26] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_ReadStrobe" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[27] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|PB_WriteStrobe" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_BITS=38" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_INVERSION_MASK=0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_INVERSION_MASK_LENGTH=142" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_SEGMENT_SIZE=16384" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[10] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[11] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[18] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[27] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[31] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_SAMPLE_DEPTH=16384" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[28] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|decoder:decoder_inst|reset_int_o~0" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[29] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|decoder:decoder_inst|ret~0" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[30] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|decoder:decoder_inst|ret~1" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[31] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|address[0]~0" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[32] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|address[10]~10" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[33] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|address[11]~11" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[34] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|address[1]~1" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[35] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|address[2]~2" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[36] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|address[3]~3" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[37] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|address[4]~4" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[38] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|address[5]~5" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[39] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|address[6]~6" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[40] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|address[7]~7" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[41] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|address[8]~8" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[42] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|address[9]~9" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[43] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|clken~0" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[44] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|clken~1" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[45] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|jmp_done" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[46] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|jmp_done~0" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[47] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|pointer~0" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[48] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|pointer~1" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[49] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|rst_req" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[50] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|rst_req~0" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[51] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pauloBlaze:PauloBlaze|program_counter:pc|rst_req~1" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[52] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Instruction[0]~5" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[53] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Instruction[12]~3" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[54] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Instruction[13]~4" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[55] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Instruction[14]~0" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[56] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Instruction[15]~1" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[57] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Instruction[16]~2" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[58] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Instruction[1]~8" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[59] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Instruction[2]~6" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[60] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Instruction[3]~9" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[61] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Instruction[4]~10" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[62] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Instruction[5]~11" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[63] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Instruction[6]~12" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[64] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Instruction[7]~7" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[65] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|PicoBlaze_AddressDecoder:AdrDec|Out_WriteStrobe_i" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[66] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Reg_PageNumber[0]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[67] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Reg_PageNumber[1]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[68] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Reg_PageNumber[2]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[69] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Reg_PageNumber[3]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[70] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Reg_PageNumber[4]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[71] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Reg_PageNumber[5]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[72] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Reg_PageNumber[6]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[73] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|Reg_PageNumber[7]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[74] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[0]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[75] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[10]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[76] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[11]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[77] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[12]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[78] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[13]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[79] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[14]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[80] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[15]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[81] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[16]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[82] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[17]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[83] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[1]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[84] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[2]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[85] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[3]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[86] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[4]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[87] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[5]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[88] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[6]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[89] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[7]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[90] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[8]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[91] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_InstructionROM_Device:\\blkROM:ROM|ocrom_sp:\\genLoadFile:genPages:0:genOCROM:genericMemory|ocram_sp_altera:\\gAltera:i|altsyncram:mem|altsyncram_r6t1:auto_generated|q_a[9]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[92] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|AdrDec_we" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[93] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|PicoBlaze_AddressDecoder:AdrDec|Out_WriteAddress_i[0]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[94] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|PicoBlaze_AddressDecoder:AdrDec|Out_WriteAddress_i[1]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[95] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|PicoBlaze_AddressDecoder:AdrDec|Out_WriteAddress_i[2]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[96] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|PicoBlaze_AddressDecoder:AdrDec|Out_WriteAddress_i[3]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[97] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|PicoBlaze_AddressDecoder:AdrDec|Out_WriteAddress_i[4]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[98] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|PicoBlaze_AddressDecoder:AdrDec|Out_WriteAddress_i[5]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[99] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|PicoBlaze_AddressDecoder:AdrDec|Out_WriteAddress_i[6]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[100] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|PicoBlaze_AddressDecoder:AdrDec|Out_WriteAddress_i[7]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[101] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|Reg_Status[0]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[102] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|Reg_Status[1]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[103] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|Reg_Status[2]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[104] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|Reg_Status[3]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[105] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|Reg_Status[4]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[106] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|Reg_Status[5]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[107] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|Reg_Status[6]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[108] -to "ex_ExampleDesign:Ex|pb_SoFPGA_System:SoFPGA|pb_UART_Wrapper:\\blkUART:UART|pb_UART_Device:UART|Reg_Status[7]" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_DATA_BITS=109" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STORAGE_QUALIFIER_BITS=109" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[28] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_global_assignment -name QIP_FILE ../../IPCores/AlteraEthernet.qip
+set_global_assignment -name SIP_FILE ../../IPCores/AlteraEthernet.sip
+set_global_assignment -name SLD_FILE db/stp2_auto_stripped.stp
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
