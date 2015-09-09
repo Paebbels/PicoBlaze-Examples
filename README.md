@@ -175,8 +175,7 @@ tool chains and IDEs.
 
 
 
- [wiki:download]:		https://github.com/VLSI-EDA/PoC/wiki/Download
- [wiki:requirements]:	https://github.com/VLSI-EDA/PoC/wiki/Requirements
- [wiki:configuration]:	https://github.com/VLSI-EDA/PoC/wiki/Configuration
- [wiki:installation]:	https://github.com/VLSI-EDA/PoC/wiki/Installation
-
+ [wiki:download]:		https://github.com/Paebbels/PicoBlaze-Examples/wiki/Download
+ [wiki:requirements]:	https://github.com/Paebbels/PicoBlaze-Examples/wiki/Requirements
+ [wiki:configuration]:	https://github.com/Paebbels/PicoBlaze-Examples/wiki/Configuration
+ 
