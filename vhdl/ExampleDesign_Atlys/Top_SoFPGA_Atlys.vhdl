@@ -229,19 +229,19 @@ begin
 	-- ==========================================================================================================================================================
 	DebBtn : entity PoC.io_Debounce
 		generic map (
-			CLOCK_FREQ				=> SYSTEM_CLOCK_FREQ,		-- 100 MHz
-			BOUNCE_TIME				=> 5.0 ms,							-- 5.0 ms
-			BITS							=> 1										-- 3 bit
+			CLOCK_FREQ				=> SYSTEM_CLOCK_FREQ,
+			BOUNCE_TIME				=> 5.0 ms,
+			BITS							=> 1
 		)
 		port map (
-			clk								=> System_Clock,
-			rst								=> '0',
+			Clock							=> System_Clock,
+			Reset							=> '0',
 			Input(0)					=> Atlys_GPIO_Button_Reset,
 			Output(0)					=> GPIO_Button_Reset
 		);
 
 	-- synchronize to System_Clock
-	sync1 : entity PoC.xil_SyncBits
+	sync1 : entity PoC.sync_Bits
 		port map (
 			Clock			=> System_Clock,						-- Clock to be synchronized to
 			Input(0)	=> GPIO_Button_Reset,				-- Data to be synchronized
@@ -306,8 +306,7 @@ begin
 			Raw_IIC_Clock_i						=> Raw_IIC_Clock_i,
 			Raw_IIC_Clock_t						=> Raw_IIC_Clock_t,
 			Raw_IIC_Data_i						=> Raw_IIC_Data_i,
-			Raw_IIC_Data_t						=> Raw_IIC_Data_t,
-			Raw_IIC_Switch_Reset			=> Raw_IIC_Switch_Reset--,
+			Raw_IIC_Data_t						=> Raw_IIC_Data_t--,
 			
 --			IIC_SerialClock_i					=> IIC_SerialClock_i,
 --			IIC_SerialClock_o					=> IIC_SerialClock_o,

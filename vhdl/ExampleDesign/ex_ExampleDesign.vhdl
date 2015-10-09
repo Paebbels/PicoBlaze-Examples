@@ -108,10 +108,10 @@ architecture rtl of ex_ExampleDesign is
 
 	constant SOFPGA_DUMMY 					: T_BOOLVEC 	:= (
 		0 => pb_PrintAddressMapping(SOFPGA_SYSTEM),
-		1 => pb_PrintBusses(SOFPGA_SYSTEM)--,
---		2 => pb_ExportAddressMappingAsAssemblerConstants(SOFPGA_SYSTEM,				PROJECT_DIR & "psm/" & MY_PROJECT_NAME & "/SoFPGA_PortID.psm"),
---		3 => pb_ExportAddressMappingAsAssemblerInterruptVector(SOFPGA_SYSTEM,	PROJECT_DIR & "psm/" & MY_PROJECT_NAME & "/SoFPGA_InterruptVector.psm", 16),
---		4 => pb_ExportAddressMappingAsChipScopeTokens(SOFPGA_SYSTEM,					PROJECT_DIR & "ChipScope/TokenFiles/SoFPGA_PortID." & MY_PROJECT_NAME & ".tok")
+		1 => pb_PrintBusses(SOFPGA_SYSTEM),
+		2 => pb_ExportAddressMappingAsAssemblerConstants(SOFPGA_SYSTEM,				PROJECT_DIR & "psm/" & MY_PROJECT_NAME & "/SoFPGA_PortID.psm"),
+		3 => pb_ExportAddressMappingAsAssemblerInterruptVector(SOFPGA_SYSTEM,	PROJECT_DIR & "psm/" & MY_PROJECT_NAME & "/SoFPGA_InterruptVector.psm", 16),
+		4 => pb_ExportAddressMappingAsChipScopeTokens(SOFPGA_SYSTEM,					PROJECT_DIR & "ChipScope/TokenFiles/SoFPGA_PortID." & MY_PROJECT_NAME & ".tok")
 	);
 
 	-- ===========================================================================

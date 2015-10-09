@@ -3,16 +3,16 @@
 ; This file contains the PicoBlaze PortNumber to DeviceRegister mappings.
 ; =======================================================================
 ;
-; Reset Circuit
+; Reset
 CONSTANT OPORT_RESET_RESET,                        0'd    ; Reset
 CONSTANT KPORT_RESET_RESET,                        0'd    ; Reset
 ;
-; Instruction ROM
+; InstROM
 CONSTANT IPORT_INSTROM_PAGENUMBER,                 1'd    ; PageNumber(dummy[3:0],dummy[7:4])
 CONSTANT OPORT_INSTROM_PAGENUMBER,                 1'd    ; PageNumber
 CONSTANT KPORT_INSTROM_PAGENUMBER,                 1'd    ; PageNumber
 ;
-; Interrupt Controller (16 ports)
+; IntC
 CONSTANT OPORT_INTC_INTENABLE0,                    4'd    ; IntEnable0
 CONSTANT KPORT_INTC_INTENABLE0,                    4'd    ; IntEnable0
 CONSTANT OPORT_INTC_INTENABLE1,                    5'd    ; IntEnable1
@@ -33,7 +33,7 @@ CONSTANT OPORT_TIMER_MAXVALUE1,                   11'd    ; MaxValue1
 CONSTANT IPORT_TIMER_CURVALUE0,                   10'd    ; CurValue0(dummy[3:0],dummy[7:4])
 CONSTANT IPORT_TIMER_CURVALUE1,                   11'd    ; CurValue1(dummy[3:0],dummy[7:4])
 ;
-; Converter Bin2BCD (24 bit)
+; ConvBCD24
 CONSTANT OPORT_CONVBCD24_OPERANDA0,               12'd    ; OperandA0
 CONSTANT OPORT_CONVBCD24_OPERANDA1,               13'd    ; OperandA1
 CONSTANT OPORT_CONVBCD24_OPERANDA2,               14'd    ; OperandA2
@@ -42,7 +42,7 @@ CONSTANT IPORT_CONVBCD24_RESULT1,                 13'd    ; Result1(dummy[3:0],d
 CONSTANT IPORT_CONVBCD24_RESULT2,                 14'd    ; Result2(dummy[3:0],dummy[7:4])
 CONSTANT IPORT_CONVBCD24_STATUS,                  15'd    ; Status(dummy[3:0],dummy[7:4])
 ;
-; Multiplier (32 bit)
+; Mult32
 CONSTANT OPORT_MULT32_OPERANDA0,                  16'd    ; OperandA0
 CONSTANT OPORT_MULT32_OPERANDA1,                  17'd    ; OperandA1
 CONSTANT OPORT_MULT32_OPERANDA2,                  18'd    ; OperandA2
@@ -60,7 +60,7 @@ CONSTANT IPORT_MULT32_RESULT5,                    21'd    ; Result5(dummy[3:0],d
 CONSTANT IPORT_MULT32_RESULT6,                    22'd    ; Result6(dummy[3:0],dummy[7:4])
 CONSTANT IPORT_MULT32_RESULT7,                    23'd    ; Result7(dummy[3:0],dummy[7:4])
 ;
-; Divider (32 bit)
+; Div32
 CONSTANT OPORT_DIV32_OPERANDA0,                   24'd    ; OperandA0
 CONSTANT OPORT_DIV32_OPERANDA1,                   25'd    ; OperandA1
 CONSTANT OPORT_DIV32_OPERANDA2,                   26'd    ; OperandA2
@@ -75,14 +75,14 @@ CONSTANT IPORT_DIV32_RESULT2,                     26'd    ; Result2(dummy[3:0],d
 CONSTANT IPORT_DIV32_RESULT3,                     27'd    ; Result3(dummy[3:0],dummy[7:4])
 CONSTANT IPORT_DIV32_STATUS,                      31'd    ; Status(dummy[3:0],dummy[7:4])
 ;
-; General Purpose I/O
+; GPIO
 CONSTANT IPORT_GPIO_DATAOUT,                      40'd    ; DataOut(dummy[3:0],dummy[7:4])
 CONSTANT OPORT_GPIO_DATAOUT,                      40'd    ; DataOut
 CONSTANT KPORT_GPIO_DATAOUT,                       8'd    ; DataOut
 CONSTANT IPORT_GPIO_DATAIN,                       41'd    ; DataIn(dummy[3:0],dummy[7:4])
 CONSTANT OPORT_GPIO_INTENABLE,                    41'd    ; IntEnable
 ;
-; Bit Banging I/O
+; BBIO8
 CONSTANT OPORT_BBIO8_SET,                         42'd    ; Set
 CONSTANT KPORT_BBIO8_SET,                          9'd    ; Set
 CONSTANT OPORT_BBIO8_CLEAR,                       43'd    ; Clear

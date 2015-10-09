@@ -7,7 +7,7 @@
 # Default token value
 @DEFAULT_TOKEN=
 #
-# Reset Circuit
+# Reset
 WR_Reset_Reset=100
 WK_Reset_Reset=400
 WK_Reset_Reset=410
@@ -26,7 +26,7 @@ WK_Reset_Reset=4D0
 WK_Reset_Reset=4E0
 WK_Reset_Reset=4F0
 #
-# Instruction ROM
+# InstROM
 RD_InstROM_PageNumber=201
 WR_InstROM_PageNumber=101
 WK_InstROM_PageNumber=401
@@ -46,7 +46,7 @@ WK_InstROM_PageNumber=4D1
 WK_InstROM_PageNumber=4E1
 WK_InstROM_PageNumber=4F1
 #
-# Interrupt Controller (16 ports)
+# IntC
 WR_IntC_IntEnable0=104
 WK_IntC_IntEnable0=404
 WK_IntC_IntEnable0=414
@@ -142,7 +142,7 @@ WR_Timer_MaxValue1=10B
 RD_Timer_CurValue0=20A
 RD_Timer_CurValue1=20B
 #
-# Converter Bin2BCD (24 bit)
+# ConvBCD24
 WR_ConvBCD24_OperandA0=10C
 WR_ConvBCD24_OperandA1=10D
 WR_ConvBCD24_OperandA2=10E
@@ -151,7 +151,7 @@ RD_ConvBCD24_Result1=20D
 RD_ConvBCD24_Result2=20E
 RD_ConvBCD24_Status=20F
 #
-# Multiplier (32 bit)
+# Mult32
 WR_Mult32_OperandA0=110
 WR_Mult32_OperandA1=111
 WR_Mult32_OperandA2=112
@@ -169,7 +169,7 @@ RD_Mult32_Result5=215
 RD_Mult32_Result6=216
 RD_Mult32_Result7=217
 #
-# Divider (32 bit)
+# Div32
 WR_Div32_OperandA0=118
 WR_Div32_OperandA1=119
 WR_Div32_OperandA2=11A
@@ -184,7 +184,7 @@ RD_Div32_Result2=21A
 RD_Div32_Result3=21B
 RD_Div32_Status=21F
 #
-# General Purpose I/O
+# GPIO
 RD_GPIO_DataOut=228
 WR_GPIO_DataOut=128
 WK_GPIO_DataOut=408
@@ -206,7 +206,7 @@ WK_GPIO_DataOut=4F8
 RD_GPIO_DataIn=229
 WR_GPIO_IntEnable=129
 #
-# Bit Banging I/O
+# BBIO8
 WR_BBIO8_Set=12A
 WK_BBIO8_Set=409
 WK_BBIO8_Set=419
